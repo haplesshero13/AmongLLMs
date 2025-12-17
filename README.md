@@ -27,6 +27,7 @@ The aim is to simulate the popular multiplayer game "Among Us" using AI agents a
 3. Install dependencies:
    ```bash
    pip install -r requirements.txt
+   pip install numpy pandas networkx streamlit dotenv requests aiohttp
    ```
 
 ## Run Games

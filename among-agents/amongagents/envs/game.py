@@ -169,10 +169,6 @@ class AmongUs:
             self.agents = []
             for i, player in enumerate(self.players):
                 if self.include_human and i == random_idx:
-<<<<<<< HEAD
-                    self.agents.append(HumanAgent(player))
-                    print(f"{i} Initializing player {player.name} with identity {player.identity} and LLM choice {self.agents[-1].model}")
-=======
                     # Create HumanAgent with game_id set to game_index
                     human_agent = HumanAgent(player, game_index=self.game_index)
                     # Set the game_id attribute to match the game_index
@@ -183,7 +179,6 @@ class AmongUs:
                     # Update max_steps for human agent
                     if hasattr(self.agents[-1], 'update_max_steps'):
                         self.agents[-1].update_max_steps(self.game_config.get("max_timesteps", 50))
->>>>>>> 0174da6c2c3d3921bdacd805e6a4b721e1205517
                 else:
                     self.agents.append(agent_dict[self.agent_config[player.identity]](player))
                     print(f"{i} Initializing player {player.name} with identity {player.identity} and LLM choice {self.agents[-1].model}")
