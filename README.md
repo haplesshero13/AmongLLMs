@@ -49,11 +49,13 @@ You will need to add a `.env` file with an API key. The system supports:
 
 2. **Local HuggingFace Transformers Serving or other OpenAI-compatible endpoints**: 
    - Set `OPENAI_API_BASE_URL` to your endpoint (e.g., `http://localhost:8000/v1/chat/completions`)
-   - You may still need `OPENROUTER_API_KEY` for authorization, or set it to a dummy value if your local endpoint doesn't require authentication
+   - Set `OPENROUTER_API_KEY` to a dummy value (e.g., `"dummy"`) if your local endpoint doesn't require authentication, or to your actual API key if it does
    ```
    OPENAI_API_BASE_URL=http://localhost:8000/v1/chat/completions
-   OPENROUTER_API_KEY=dummy_or_your_key
+   OPENROUTER_API_KEY=dummy
    ```
+   
+   **Note**: The authorization header `Authorization: Bearer {OPENROUTER_API_KEY}` is always sent with requests. If your local endpoint doesn't require authentication, it will typically ignore this header.
 
 If `OPENAI_API_BASE_URL` is not set, the system will default to OpenRouter.
 
