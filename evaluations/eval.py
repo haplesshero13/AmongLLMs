@@ -44,11 +44,13 @@ def setup_experiment(expt_name, results_path) -> None:
     return agent_df, results_file
 
 async def send_request(messages, model):
+    # Allow configurable API URL for compatibility with local HuggingFace serving or other OpenAI-compatible endpoints
+    api_url = os.getenv("OPENAI_API_BASE_URL", "https://openrouter.ai/api/v1/chat/completions")
     for attempt in range(10):
         try:
             async with aiohttp.ClientSession() as client:
                 async with client.post(
-                    url="https://openrouter.ai/api/v1/chat/completions",
+                    url=api_url,
                     headers = {"Authorization": f"Bearer {os.getenv('OPENROUTER_API_KEY')}"},
                     data=json.dumps({
                         "model": model,

@@ -37,7 +37,25 @@ To run the sandbox and log games of various LLMs playing against each other, run
 ```
 main.py
 ```
-You will need to add a `.env` file with an [OpenRouter](https://openrouter.ai/) API key.
+
+### Configuration
+
+You will need to add a `.env` file with an API key. The system supports:
+
+1. **OpenRouter** (default): Add `OPENROUTER_API_KEY` to your `.env` file
+   ```
+   OPENROUTER_API_KEY=your_openrouter_key_here
+   ```
+
+2. **Local HuggingFace Transformers Serving or other OpenAI-compatible endpoints**: 
+   - Set `OPENAI_API_BASE_URL` to your endpoint (e.g., `http://localhost:8000/v1/chat/completions`)
+   - You may still need `OPENROUTER_API_KEY` for authorization, or set it to a dummy value if your local endpoint doesn't require authentication
+   ```
+   OPENAI_API_BASE_URL=http://localhost:8000/v1/chat/completions
+   OPENROUTER_API_KEY=dummy_or_your_key
+   ```
+
+If `OPENAI_API_BASE_URL` is not set, the system will default to OpenRouter.
 
 Alternatively, you can download 400 full-game logs (for `Phi-4-15b` and `Llama-3.3-70b-instruct`) and 810 game summaries from the [HuggingFace](https://huggingface.co/datasets/7vik/AmongUs) dataset to reproduce the results in the paper (and evaluate your own techniques!).
 

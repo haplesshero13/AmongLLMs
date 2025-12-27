@@ -55,7 +55,8 @@ class LLMAgent(Agent):
         self.model = model
         self.temperature = 0.7
         self.api_key = os.getenv("OPENROUTER_API_KEY")
-        self.api_url = "https://openrouter.ai/api/v1/chat/completions"
+        # Allow configurable API URL for compatibility with local HuggingFace serving or other OpenAI-compatible endpoints
+        self.api_url = os.getenv("OPENAI_API_BASE_URL", "https://openrouter.ai/api/v1/chat/completions")
         self.summarization = "No thought process has been made."
         self.processed_memory = "No memory has been processed."
         self.chat_history = []
