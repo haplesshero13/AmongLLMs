@@ -28,7 +28,7 @@ BIG_LIST_OF_MODELS = [
 
 # Default game configuration
 DEFAULT_GAME_ARGS = {
-    "game_config": "FIVE_MEMBER_GAME",
+    "game_config": "SEVEN_MEMBER_GAME",  # 7 players with 2 impostors
     "include_human": True,  # Set to True for human players
     "test": False,
     "personality": False,

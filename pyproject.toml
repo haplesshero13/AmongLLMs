@@ -1,0 +1,39 @@
+[project]
+name = "amongllms"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "aiohttp>=3.11.11",
+    "amongagents",
+    "fastapi>=0.103.1",
+    "uvicorn[standard]>=0.23.2",
+    "streamlit>=1.44.1",
+    "python-dotenv>=1.0.1",
+    "numpy>=2.0.2",
+    "pandas>=2.2.2",
+    "networkx>=3.2.1",
+    "matplotlib>=3.9.1",
+    "seaborn>=0.13.2",
+    "openai>=1.32.0",
+    "langchain>=0.1.0",
+    "langchain-openai>=0.1.0",
+    "tqdm>=4.66.2",
+    "flask>=2.3.3",
+    "flask-cors>=4.0.0",
+    "flask-socketio>=5.3.6",
+    "python-socketio>=5.10.0",
+    "python-engineio>=4.8.0",
+    "eventlet>=0.33.3",
+    "pydantic>=2.3.0",
+    "torch>=2.5.1",
+    "torchvision>=0.20.1",
+    "transformer-lens>=2.11.0",
+    "types-python-dateutil>=2.9.0.20241206",
+    "types-requests>=2.32.0.20241016",
+    "typing-extensions>=4.12.2",
+]
+
+[tool.uv.sources]
+amongagents = { path = "among-agents" }

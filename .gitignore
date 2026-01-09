@@ -7,6 +7,9 @@ deception-detection/
 # expt-logs
 expt-logs/
 
+# all logs directories
+logs/
+
 # probes/TransformerLens
 linear-probes/TransformerLens/
 linear-probes/data/

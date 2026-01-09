@@ -599,7 +599,7 @@
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({
-                        game_config: "FIVE_MEMBER_GAME", // Or make this selectable
+                        game_config: "SEVEN_MEMBER_GAME", // 7 players with 2 impostors
                         include_human: true,
                         // Add other config options if needed
                     })
@@ -947,17 +947,70 @@
         }
 
         function displayGameResult(state) {
-            let resultMessage = `Game Over! Status: ${state.status.toUpperCase()}`;
+            let resultMessage = '';
+
             if (state.error_message) {
-                 resultMessage += `<br>Error: ${state.error_message}`;
+                resultMessage = `<div style="color: var(--error-color);">
+                    <h2>❌ Game Error</h2>
+                    <p>Error: ${state.error_message}</p>
+                </div>`;
             } else if (state.results) {
-                // Format the results nicely (assuming summary_json structure)
-                resultMessage += `<br>Winner: ${state.results.winner || 'Unknown'}`;
-                resultMessage += `<br>Reason: ${state.results.reason || 'N/A'}`;
-                // Add more details from results if needed
+                // Format the results nicely
+                const winner = state.results.winner || 'Unknown';
+                const reason = state.results.reason || 'N/A';
+
+                // Determine if human won
+                let winnerColor = winner.toLowerCase().includes('impostor') ? 'var(--error-color)' : 'var(--success-color)';
+                let winnerEmoji = winner.toLowerCase().includes('impostor') ? '🔪' : '✅';
+
+                resultMessage = `<div style="border: 3px solid ${winnerColor}; padding: 30px; border-radius: 15px;">
+                    <h2 style="font-size: 2em; margin: 0 0 20px 0; color: ${winnerColor};">
+                        ${winnerEmoji} GAME OVER! ${winnerEmoji}
+                    </h2>
+                    <div style="font-size: 1.5em; margin-bottom: 15px;">
+                        <strong>${winner}</strong>
+                    </div>
+                    <div style="font-size: 1.1em; color: var(--text-dark); margin-bottom: 20px;">
+                        ${reason}
+                    </div>`;
+
+                // Add additional game statistics if available
+                if (state.results.total_timesteps) {
+                    resultMessage += `<div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--text-dark);">
+                        <div><strong>Total Timesteps:</strong> ${state.results.total_timesteps}</div>`;
+                }
+
+                if (state.results.impostors && state.results.impostors.length > 0) {
+                    resultMessage += `<div><strong>Impostors:</strong> ${state.results.impostors.join(', ')}</div>`;
+                }
+
+                if (state.results.total_timesteps) {
+                    resultMessage += `</div>`;
+                }
+
+                resultMessage += `<div style="margin-top: 30px;">
+                    <button onclick="location.reload()" style="padding: 15px 30px; font-size: 1.1em; background-color: var(--primary-color); border: none; border-radius: 8px; color: white; cursor: pointer;">
+                        Play Again
+                    </button>
+                </div></div>`;
+            } else {
+                resultMessage = `<div style="color: var(--accent-color);">
+                    <h2>Game ${state.status.toUpperCase()}</h2>
+                    <p>The game has ended.</p>
+                    <button onclick="location.reload()" style="padding: 15px 30px; margin-top: 20px; font-size: 1.1em; background-color: var(--primary-color); border: none; border-radius: 8px; color: white; cursor: pointer;">
+                        Play Again
+                    </button>
+                </div>`;
             }
+
             gameResultDiv.innerHTML = resultMessage;
             gameResultDiv.style.display = 'block';
+
+            // Hide other game elements when game is over
+            if (gameScreen) {
+                const actionElements = gameScreen.querySelectorAll('.action-section, .available-actions');
+                actionElements.forEach(el => el.style.display = 'none');
+            }
         }
 
         function showLoading(message = 'Loading...') {
@@ -1024,12 +1077,12 @@
         // Function to update the human player display
         function updateHumanPlayerDisplay() {
             if (!humanPlayerNameDisplay) return;
-            
+
             const playerName = playerNameInput.value || 'Victor';
-            
+
             if (humanPlayerInfo) {
                 console.log("Using human player info:", humanPlayerInfo);
-                
+
                 // Extract player number from the player_name field
                 let playerNumber = '';
                 if (humanPlayerInfo.player_name) {
@@ -1038,12 +1091,24 @@
                         playerNumber = nameMatch[1];
                     }
                 }
-                
-                // Get color directly from the player_color field
+
+                // Get color and identity directly from the fields
                 const playerColor = humanPlayerInfo.player_color || '';
-                
+                const playerIdentity = humanPlayerInfo.player_identity || '';
+
+                // Color code the identity
+                let identityText = playerIdentity;
+                let identityColor = 'var(--text-light)';
+                if (playerIdentity.toLowerCase() === 'impostor') {
+                    identityColor = 'var(--error-color)';
+                    identityText = '🔪 ' + playerIdentity;
+                } else if (playerIdentity.toLowerCase() === 'crewmate') {
+                    identityColor = 'var(--success-color)';
+                    identityText = '✅ ' + playerIdentity;
+                }
+
                 if (playerNumber && playerColor) {
-                    humanPlayerNameDisplay.textContent = `${playerName} (Player ${playerNumber}: ${playerColor})`;
+                    humanPlayerNameDisplay.innerHTML = `${playerName} (Player ${playerNumber}: ${playerColor}) <span style="color: ${identityColor}; font-weight: bold;">${identityText}</span>`;
                 } else {
                     humanPlayerNameDisplay.textContent = playerName;
                 }

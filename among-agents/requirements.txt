@@ -1,9 +1,0 @@
-langchain
-langchain_openai
-python-dotenv
-matplotlib==3.9.1
-networkx==3.3
-openai==1.32.0
-pandas==2.2.2
-seaborn==0.13.2
-tqdm==4.66.2

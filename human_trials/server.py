@@ -12,8 +12,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import uvicorn
 
-sys.path.append(os.path.join(os.path.abspath(".."), "among-agents"))
-sys.path.append(os.path.abspath(".."))
+script_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.abspath(os.path.join(script_dir, ".."))
+sys.path.append(os.path.join(project_root, "among-agents"))
+sys.path.append(project_root)
 
 from amongagents.envs.configs.game_config import FIVE_MEMBER_GAME, SEVEN_MEMBER_GAME, THREE_MEMBER_GAME
 from amongagents.envs.game import AmongUs
@@ -189,19 +191,30 @@ async def run_game_endpoint(game_id: int, background_tasks: BackgroundTasks):
 async def get_game_state(game_id: int):
     if game_id not in active_games:
         raise HTTPException(status_code=404, detail="Game not found")
-    
-    game = active_games[game_id]["game"]
+
+    game_info = active_games[game_id]
+    game = game_info["game"]
     human_player_result = get_human_player(game)
-    
+
+    # Check if game has completed/errored/cancelled
+    game_status = game_info.get("status", "running" if game_id in running_games else "waiting")
+
     # Initialize state object
     state = {
         "timestep": game.timestep,
         "current_phase": game.current_phase,
         "is_human_turn": game.is_human_turn,
         "available_actions": [],
-        "status": "running" if game_id in running_games else "waiting",
+        "status": game_status,
         "max_timesteps": game.game_config.get("max_timesteps", 50)  # Add max_timesteps from game config
     }
+
+    # Add results and error message if game is completed/errored
+    if game_status in ["completed", "error", "cancelled"]:
+        if "results" in game_info:
+            state["results"] = game_info["results"]
+        if "error_message" in game_info:
+            state["error_message"] = game_info["error_message"]
     
     # Add human-specific information if it's their turn
     if game.is_human_turn and human_player_result is not None:

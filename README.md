@@ -34,12 +34,54 @@ The aim is to simulate the popular multiplayer game "Among Us" using AI agents a
 
 To run the sandbox and log games of various LLMs playing against each other, run:
 
-```
-main.py
+```bash
+uv run main.py
 ```
 You will need to add a `.env` file with an [OpenRouter](https://openrouter.ai/) API key.
 
+### Sample Commands
+
+Run a single game with the UI enabled:
+```bash
+uv run main.py --num_games 1 --display_ui True
+```
+
+Run 10 games with free models (using Llama or GPT-based open-source models):
+```bash
+uv run main.py --num_games 10 --crewmate_llm "meta-llama/llama-3.1-8b-instruct:free" --impostor_llm "meta-llama/llama-3.1-8b-instruct:free"
+```
+
+Run a tournament with multiple models:
+```bash
+uv run main.py --num_games 100 --tournament_style "1on1"
+```
+
 Alternatively, you can download 400 full-game logs (for `Phi-4-15b` and `Llama-3.3-70b-instruct`) and 810 game summaries from the [HuggingFace](https://huggingface.co/datasets/7vik/AmongUs) dataset to reproduce the results in the paper (and evaluate your own techniques!).
+
+## Run Human Trials
+
+The `human_trials/` directory contains a web-based interface that allows humans to play Among Us with or against AI agents. This is useful for testing agent behavior and gathering human evaluation data.
+
+To run the human trials interface:
+
+1. Navigate to the human trials directory:
+   ```bash
+   cd human_trials
+   ```
+
+2. Start the FastAPI server:
+   ```bash
+   uv run server.py
+   ```
+
+3. Open your browser and navigate to:
+   ```
+   http://localhost:3000
+   ```
+
+4. Follow the on-screen instructions to create a game and join as a human player alongside AI agents.
+
+The interface provides a real-time view of the game state, allows you to make moves, participate in meetings, and vote on suspected impostors just like the AI agents.
 
 ## Deception ELO
 
