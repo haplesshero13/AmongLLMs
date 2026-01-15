@@ -1,9 +1,11 @@
 import json
-from pandas import DataFrame, json_normalize
 from functools import reduce
-from typing import List, Dict
-import pandas as pd
+from typing import List, Dict, TYPE_CHECKING
 import os
+
+if TYPE_CHECKING:
+    import pandas as pd
+    from pandas import DataFrame
 
 
 def setup_experiment(experiment_name, LOGS_PATH, DATE, COMMIT_HASH, DEFAULT_ARGS):
@@ -42,11 +44,14 @@ def setup_experiment(experiment_name, LOGS_PATH, DATE, COMMIT_HASH, DEFAULT_ARGS
     
     return experiment_name
 
-def load_game_summary(filepath: str) -> pd.DataFrame:
+def load_game_summary(filepath: str) -> "pd.DataFrame":
+    """Load game summary from JSONL file. Requires pandas."""
+    import pandas as pd
+
     # Read each line of the JSONL file
     with open(filepath, 'r') as file:
         data = [json.loads(line.strip()) for line in file]
-    
+
     # Extract Game, Winner, and Winner Reason
     games_summary = [
         {
@@ -57,7 +62,7 @@ def load_game_summary(filepath: str) -> pd.DataFrame:
         for entry in data
         for game_id, game_details in entry.items()
     ]
-    
+
     # Create DataFrame
     return pd.DataFrame(games_summary)
 
@@ -65,10 +70,12 @@ def read_jsonl_as_json(file_path):
     with open(file_path, 'r') as file:
         return [json.loads(line) for line in file]
 
-def load_agent_logs_df(path: str) -> DataFrame:
+def load_agent_logs_df(path: str) -> "DataFrame":
+    """Load agent logs from JSONL file into DataFrame. Requires pandas."""
+    from pandas import DataFrame, json_normalize
 
     df: DataFrame = json_normalize(read_jsonl_as_json(path))
-    
+
     action_cols = [
         "interaction.response.Action",
         "interaction.response.Action.action",
@@ -76,7 +83,7 @@ def load_agent_logs_df(path: str) -> DataFrame:
         "interaction.response.ACTION",
         "interaction.response.Thinking Process.action",
     ]
-    
+
     thinking_cols = [
         "interaction.response.Thinking Process",
         "interaction.response.Thinking Process.thought",
@@ -85,20 +92,19 @@ def load_agent_logs_df(path: str) -> DataFrame:
         "interaction.response",
         "interaction.response.Action.thought",
     ]
-    
 
     df["action"] = reduce(
         lambda x, y: x.combine_first(df[y]) if y in df else x,
         action_cols,
         df.assign(action=None)["action"]  # Start with a column of None
     )
-    
+
     df["thought"] = reduce(
         lambda x, y: x.combine_first(df[y]) if y in df else x,
         thinking_cols,
         df.assign(thought=None)["thought"]  # Start with a column of None
     )
-    
+
     df = df.drop(columns=(action_cols + thinking_cols), errors='ignore')
 
     return df
