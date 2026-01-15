@@ -170,11 +170,20 @@ class AmongUs:
             impostor_models = self.agent_config.get("IMPOSTOR_LLM_CHOICES", []).copy()
             crewmate_models = self.agent_config.get("CREWMATE_LLM_CHOICES", []).copy()
 
+            # Check if both lists are the same (unified pool case, e.g., --models flag)
+            use_unified_pool = impostor_models == crewmate_models and use_unique_models
+            unified_models = []
+
             if use_unique_models:
                 import random
 
-                random.shuffle(impostor_models)
-                random.shuffle(crewmate_models)
+                if use_unified_pool:
+                    # Use a single pool for all players to ensure true uniqueness
+                    unified_models = impostor_models.copy()
+                    random.shuffle(unified_models)
+                else:
+                    random.shuffle(impostor_models)
+                    random.shuffle(crewmate_models)
 
             agent_dict = {
                 "LLM": lambda player, model=None: LLMAgent(
@@ -207,7 +216,10 @@ class AmongUs:
                 else:
                     selected_model = None
                     if use_unique_models:
-                        if player.identity == "Impostor" and impostor_models:
+                        if use_unified_pool and unified_models:
+                            # Use unified pool for all players
+                            selected_model = unified_models.pop(0)
+                        elif player.identity == "Impostor" and impostor_models:
                             selected_model = impostor_models.pop(0)
                         elif player.identity == "Crewmate" and crewmate_models:
                             selected_model = crewmate_models.pop(0)

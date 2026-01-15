@@ -1,5 +1,7 @@
-# !/usr/bin/env python3
-# usage: main.py [-h] [--name NAME]
+#!/usr/bin/env python3
+# Usage examples:
+#   uv run main.py --num_games 1 --models "model1,model2,model3,model4,model5" --unique --game_size 5
+#   uv run main.py --num_games 10 --crewmate_llm "openai/gpt-4o" --impostor_llm "anthropic/claude-3.5-sonnet"
 
 import os
 import sys
@@ -111,14 +113,49 @@ if __name__ == "__main__":
     parser.add_argument("--display_ui", type=bool, default=False, help="Display UI.")
     parser.add_argument("--crewmate_llm", type=str, default=None, help="Crewmate LLM model.")
     parser.add_argument("--impostor_llm", type=str, default=None, help="Impostor LLM model.")
+    parser.add_argument("--models", type=str, default=None,
+                        help="Comma-separated list of models for all players (e.g., 'model1,model2,model3').")
+    parser.add_argument("--unique", action="store_true",
+                        help="Assign each player a unique model from the list (no duplicates).")
+    parser.add_argument("--game_size", type=int, default=7, choices=[5, 7],
+                        help="Number of players: 5 or 7 (default: 7).")
     parser.add_argument("--streamlit", type=bool, default=False, help="Streamlit.")
     parser.add_argument("--tournament_style", type=str, default="random", help="random or 1on1.")
     args = parser.parse_args()
+
+    # Set game config based on size
+    if args.game_size == 5:
+        ARGS["game_config"] = FIVE_MEMBER_GAME
+    else:
+        ARGS["game_config"] = SEVEN_MEMBER_GAME
+
     if args.num_games > 1 or args.display_ui == False:
         ARGS["UI"] = False
-    if args.crewmate_llm:
-        ARGS["agent_config"]["CREWMATE_LLM_CHOICES"] = [args.crewmate_llm]
-    if args.impostor_llm:
-        ARGS["agent_config"]["IMPOSTOR_LLM_CHOICES"] = [args.impostor_llm]
+
+    # Handle model selection
+    if args.models:
+        # Parse comma-separated model list
+        model_list = [m.strip() for m in args.models.split(",")]
+        ARGS["agent_config"]["CREWMATE_LLM_CHOICES"] = model_list
+        ARGS["agent_config"]["IMPOSTOR_LLM_CHOICES"] = model_list
+    elif args.crewmate_llm or args.impostor_llm:
+        # Legacy single-model flags
+        if args.crewmate_llm:
+            ARGS["agent_config"]["CREWMATE_LLM_CHOICES"] = [args.crewmate_llm]
+        if args.impostor_llm:
+            ARGS["agent_config"]["IMPOSTOR_LLM_CHOICES"] = [args.impostor_llm]
+
+    # Set assignment mode
+    if args.unique:
+        ARGS["agent_config"]["assignment_mode"] = "unique"
+
+        # Validate: unique mode requires at least as many models as players
+        num_players = ARGS["game_config"]["num_players"]
+        model_list = ARGS["agent_config"]["CREWMATE_LLM_CHOICES"]
+        if len(model_list) < num_players:
+            print(f"Error: --unique requires at least {num_players} models for a {num_players}-player game.")
+            print(f"       You provided {len(model_list)} model(s): {model_list}")
+            sys.exit(1)
+
     ARGS["tournament_style"] = args.tournament_style
     asyncio.run(multiple_games(experiment_name=args.name, num_games=args.num_games))

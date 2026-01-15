@@ -193,6 +193,7 @@ class LLMAgent(Agent):
             "top_k": 0,
         }
 
+        last_error = None
         async with aiohttp.ClientSession() as session:
             for attempt in range(10):
                 try:
@@ -200,29 +201,48 @@ class LLMAgent(Agent):
                         self.api_url, headers=headers, data=json.dumps(payload)
                     ) as response:
                         if response is None:
-                            print(
-                                f"API request failed: response is None for {self.model}."
-                            )
+                            last_error = f"Response is None for {self.model}"
+                            print(f"[API Error] {last_error}")
                             continue
-                        if response.status == 200:
-                            data = await response.json()
-                            if "choices" not in data:
-                                print(
-                                    f"API request failed: 'choices' key not in response for {self.model}."
-                                )
-                                continue
-                            if not data["choices"]:
-                                print(
-                                    f"API request failed: 'choices' key is empty in response for {self.model}."
-                                )
-                                continue
-                            return data["choices"][0]["message"]["content"]
+
+                        # Try to get response body for error messages
+                        response_text = await response.text()
+
+                        if response.status != 200:
+                            # Parse error details from response
+                            try:
+                                error_data = json.loads(response_text)
+                                error_msg = error_data.get("error", {}).get("message", response_text[:200])
+                            except:
+                                error_msg = response_text[:200]
+
+                            last_error = f"HTTP {response.status} for {self.model}: {error_msg}"
+                            print(f"[API Error] {last_error}")
+
+                            # Don't retry on auth/permission errors - they won't succeed
+                            if response.status in (401, 403, 404):
+                                break
+                            continue
+
+                        data = json.loads(response_text)
+                        if "choices" not in data:
+                            last_error = f"'choices' key not in response for {self.model}"
+                            print(f"[API Error] {last_error}")
+                            continue
+                        if not data["choices"]:
+                            last_error = f"'choices' key is empty in response for {self.model}"
+                            print(f"[API Error] {last_error}")
+                            continue
+                        return data["choices"][0]["message"]["content"]
                 except Exception as e:
-                    print(
-                        f"API request failed. Retrying... ({attempt + 1}/10) for {self.model}."
-                    )
+                    last_error = f"Exception for {self.model}: {str(e)}"
+                    print(f"[API Error] {last_error} (attempt {attempt + 1}/10)")
                     continue
-            return "SPEAK: ..."
+
+            # All retries exhausted - raise an error instead of silently failing
+            error_msg = f"API request failed after all retries for model {self.model}. Last error: {last_error}"
+            print(f"\n[FATAL API ERROR] {error_msg}")
+            raise RuntimeError(error_msg)
 
     def respond(self, message):
         all_info = self.player.all_info_prompt()
