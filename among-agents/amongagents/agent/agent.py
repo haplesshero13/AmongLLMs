@@ -230,18 +230,20 @@ class LLMAgent(Agent):
 
                         data = json.loads(response_text)
                         if "choices" not in data:
-                            last_error = (
-                                f"'choices' key not in response for {self.model}"
-                            )
-                            print(f"[API Error] {last_error}")
+                            last_error = f"'choices' key not in response for {self.model}: {response_text[:200]}"
+                            print(f"[API Error] {last_error} (attempt {attempt + 1}/10)")
                             continue
                         if not data["choices"]:
-                            last_error = (
-                                f"'choices' key is empty in response for {self.model}"
-                            )
-                            print(f"[API Error] {last_error}")
+                            last_error = f"'choices' key is empty in response for {self.model}"
+                            print(f"[API Error] {last_error} (attempt {attempt + 1}/10)")
                             continue
-                        return data["choices"][0]["message"]["content"]
+                        content = data["choices"][0]["message"]["content"]
+                        # Validate that the model returned actual content
+                        if not content or not content.strip():
+                            last_error = f"Model {self.model} returned empty response"
+                            print(f"[API Error] {last_error} (attempt {attempt + 1}/10)")
+                            continue
+                        return content
                 except Exception as e:
                     last_error = f"Exception for {self.model}: {str(e)}"
                     print(f"[API Error] {last_error} (attempt {attempt + 1}/10)")
