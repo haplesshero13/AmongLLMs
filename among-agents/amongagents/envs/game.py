@@ -288,9 +288,8 @@ class AmongUs:
         # Add kill history  
         self.summary_json[game_key]["kill_history"] = self.kill_history
         
-        # Add enhanced game outcome
-        surviving_players = [p.name for p in self.players if p.is_alive]
-        eliminated_players = [p.name for p in self.players if not p.is_alive]
+        surviving_players = [f"{p.name}: {p.color}" for p in self.players if p.is_alive]
+        eliminated_players = [f"{p.name}: {p.color}" for p in self.players if not p.is_alive]
         
         final_impostor_count = sum(1 for p in self.players if p.is_alive and p.identity == "Impostor")
         final_crewmate_count = sum(1 for p in self.players if p.is_alive and p.identity == "Crewmate")
@@ -453,18 +452,38 @@ class AmongUs:
             print(voter)
             vote_info.append(f"{str(voter)} voted for {str(vote_target)}")
         
-        # Create vote tally with player names
+        # Create vote tally with full player names (including color)
         vote_tally = {}
         for player, vote_count in self.votes.items():
-            vote_tally[player.name] = vote_count
+            full_name = f"{player.name}: {player.color}"
+            vote_tally[full_name] = vote_count
         
-        # Record this voting round in history
+        # Create votes array with detailed breakdown
+        votes = []
+        for voter_name, target_name in self.vote_info_one_round.items():
+            # Find full names with colors
+            voter_player = next((p for p in self.players if p.name == voter_name), None)
+            target_player = next((p for p in self.players if p.name == target_name), None)
+            if voter_player and target_player:
+                votes.append({
+                    "voter": f"{voter_player.name}: {voter_player.color}",
+                    "target": f"{target_player.name}: {target_player.color}",
+                    "timestep": self.timestep
+                })
+        
+        # Determine eliminated player with full name
+        eliminated_full_name = None
+        if len(players_with_max_votes) == 1:
+            p = players_with_max_votes[0]
+            eliminated_full_name = f"{p.name}: {p.color}"
+        
+        # Record this voting round in history (matches log_parser.py format)
         voting_round = {
             "timestep": self.timestep,
             "meeting_number": self.meeting_number,
-            "vote_breakdown": dict(self.vote_info_one_round),
+            "votes": votes,
             "vote_tally": vote_tally,
-            "eliminated_player": players_with_max_votes[0].name if len(players_with_max_votes) == 1 else None,
+            "eliminated": eliminated_full_name,  # Use 'eliminated' not 'eliminated_player'
             "was_tie": len(players_with_max_votes) > 1
         }
         self.voting_history.append(voting_round)

@@ -257,13 +257,13 @@ class Kill(Action):
         
         # Record kill in history
         current_location = player.location
-        witnesses = [p.name for p in env.map.get_players_in_room(current_location) 
+        witnesses = [f"{p.name}: {p.color}" for p in env.map.get_players_in_room(current_location) 
                     if p != player and p != self.other_player and p.is_alive]
         
         kill_record = {
             "timestep": env.timestep,
-            "killer": player.name,
-            "victim": self.other_player.name,
+            "killer": f"{player.name}: {player.color}",
+            "victim": f"{self.other_player.name}: {self.other_player.color}",
             "location": current_location,
             "witnesses": witnesses,
             "method": "kill"
