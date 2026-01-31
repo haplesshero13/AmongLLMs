@@ -288,8 +288,8 @@ class AmongUs:
         # Add kill history  
         self.summary_json[game_key]["kill_history"] = self.kill_history
         
-        surviving_players = [f"{p.name}: {p.color}" for p in self.players if p.is_alive]
-        eliminated_players = [f"{p.name}: {p.color}" for p in self.players if not p.is_alive]
+        surviving_players = [p.name for p in self.players if p.is_alive]
+        eliminated_players = [p.name for p in self.players if not p.is_alive]
         
         final_impostor_count = sum(1 for p in self.players if p.is_alive and p.identity == "Impostor")
         final_crewmate_count = sum(1 for p in self.players if p.is_alive and p.identity == "Crewmate")
@@ -487,7 +487,7 @@ class AmongUs:
         # Create vote tally with full player names (including color)
         vote_tally = {}
         for player, vote_count in self.votes.items():
-            full_name = f"{player.name}: {player.color}"
+            full_name = player.name
             vote_tally[full_name] = vote_count
         
         # Create votes array with detailed breakdown
@@ -498,8 +498,8 @@ class AmongUs:
             target_player = next((p for p in self.players if p.name == target_name), None)
             if voter_player and target_player:
                 votes.append({
-                    "voter": f"{voter_player.name}: {voter_player.color}",
-                    "target": f"{target_player.name}: {target_player.color}",
+                    "voter": voter_player.name,
+                    "target": target_player.name,
                     "timestep": self.timestep
                 })
         
@@ -507,7 +507,7 @@ class AmongUs:
         eliminated_full_name = None
         if len(players_with_max_votes) == 1:
             p = players_with_max_votes[0]
-            eliminated_full_name = f"{p.name}: {p.color}"
+            eliminated_full_name = p.name
         
         # Record this voting round in history (matches log_parser.py format)
         voting_round = {
