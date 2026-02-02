@@ -1,5 +1,3 @@
-import re
-
 import networkx as nx
 
 

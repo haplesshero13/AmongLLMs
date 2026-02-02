@@ -1,9 +1,6 @@
 # app.py
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
-import asyncio
-import json
-from threading import Thread
 
 app = Flask(__name__)
 socketio = SocketIO(app, async_mode="eventlet")

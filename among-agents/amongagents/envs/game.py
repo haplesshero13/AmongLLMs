@@ -1,4 +1,3 @@
-import asyncio
 import json
 import os
 import random
@@ -14,13 +13,10 @@ from amongagents.agent.neutral_prompts import (
     ImpostorPersonalities,
 )
 from amongagents.envs.configs.agent_config import (
-    ALL_LLM,
-    ALL_RANDOM,
-    CREWMATE_LLM,
     IMPOSTOR_LLM,
 )
-from amongagents.envs.configs.game_config import FIVE_MEMBER_GAME, SEVEN_MEMBER_GAME
-from amongagents.envs.map import Map, Spaceship
+from amongagents.envs.configs.game_config import SEVEN_MEMBER_GAME
+from amongagents.envs.map import Map
 from amongagents.envs.player import PLAYER_COLORS, Crewmate, Impostor
 from amongagents.envs.task import TaskAssignment
 from amongagents.envs.tools import GetBestPath
@@ -41,6 +37,7 @@ class AmongUs:
         interviewer=None,
         UI=None,
         game_index=0,
+        sabotage_enabled=False,
     ):
         """
         include_human: bool
@@ -67,6 +64,7 @@ class AmongUs:
         self.interviewer = interviewer
         self.UI = UI
         self.game_index = game_index
+        self.sabotage_enabled = sabotage_enabled
         self.map = Map()
         self.players = []
         self.agents = {}
@@ -89,6 +87,11 @@ class AmongUs:
         self.all_phases = ["meeting", "task"]
         self.summary_json = {f"Game {game_index}": {"config": game_config}}
         self.list_of_impostors = []
+        self.sabotage_state = {
+            "lights": False,
+            "reactor": False,
+            "reactor_countdown": 10,
+        }
 
     def initialize_game(self):
         # reset game state
@@ -112,6 +115,13 @@ class AmongUs:
         self.initialize_players()
         self.initialize_agents()
         self.agent_log = []
+
+        # Sabotage states
+        self.sabotage_state = {
+            "lights": False,
+            "reactor": False,
+            "reactor_countdown": 10,  # turns until meltdown
+        }
 
     def initialize_players(self):
         self.players = []
@@ -255,16 +265,17 @@ class AmongUs:
             2: "Crewmates win! (Impostors eliminated)",
             3: "Crewmates win! (All task completed)",
             4: "Impostors win! (Time limit reached)",
+            5: "Impostors win! (Reactor Meltdown)",
         }
         text = winner_reason_map[winner]
         if self.UI:
             self.UI.report(text)
             self.UI.quit_UI()
         print(text)
-        
+
         # Generate enhanced summary data
         self.add_enhanced_summary_data(winner, winner_reason_map[winner])
-        
+
         # add to summary json
         self.summary_json[f"Game {self.game_index}"]["winner"] = winner
         self.summary_json[f"Game {self.game_index}"]["winner_reason"] = (
@@ -281,43 +292,47 @@ class AmongUs:
     def add_enhanced_summary_data(self, winner, winner_reason):
         """Add enhanced summary data including voting history, kill history, and game outcome."""
         game_key = f"Game {self.game_index}"
-        
+
         # Add voting history
         self.summary_json[game_key]["voting_history"] = self.voting_history
-        
-        # Add kill history  
+
+        # Add kill history
         self.summary_json[game_key]["kill_history"] = self.kill_history
-        
+
         surviving_players = [p.name for p in self.players if p.is_alive]
         eliminated_players = [p.name for p in self.players if not p.is_alive]
-        
-        final_impostor_count = sum(1 for p in self.players if p.is_alive and p.identity == "Impostor")
-        final_crewmate_count = sum(1 for p in self.players if p.is_alive and p.identity == "Crewmate")
-        
+
+        final_impostor_count = sum(
+            1 for p in self.players if p.is_alive and p.identity == "Impostor"
+        )
+        final_crewmate_count = sum(
+            1 for p in self.players if p.is_alive and p.identity == "Crewmate"
+        )
+
         game_outcome = {
             "winner": "Crewmates" if winner in [2, 3] else "Impostors",
             "reason": winner_reason,
             "surviving_players": surviving_players,
             "eliminated_players": eliminated_players,
             "final_impostor_count": final_impostor_count,
-            "final_crewmate_count": final_crewmate_count
+            "final_crewmate_count": final_crewmate_count,
         }
-        
+
         self.summary_json[game_key]["game_outcome"] = game_outcome
-        
+
         # Collect issues from all agents, grouped by model
         all_issues = []
         issues_by_model = {}
         for agent in self.agents:
-            if hasattr(agent, 'issues') and agent.issues:
-                model = getattr(agent, 'model', 'unknown')
+            if hasattr(agent, "issues") and agent.issues:
+                model = getattr(agent, "model", "unknown")
                 if model not in issues_by_model:
                     issues_by_model[model] = {
                         "api_issues": 0,
-                        "format_issues": 0, 
+                        "format_issues": 0,
                         "resolved": 0,
                         "unresolved": 0,
-                        "details": []
+                        "details": [],
                     }
                 for issue in agent.issues:
                     all_issues.append(issue)
@@ -330,11 +345,11 @@ class AmongUs:
                         issues_by_model[model]["resolved"] += 1
                     else:
                         issues_by_model[model]["unresolved"] += 1
-        
+
         if all_issues:
             self.summary_json[game_key]["issues"] = {
                 "total_count": len(all_issues),
-                "by_model": issues_by_model
+                "by_model": issues_by_model,
             }
 
     def check_game_over(self):
@@ -360,6 +375,11 @@ class AmongUs:
             return 3  # Crewmates win (task completed)
         elif self.timestep >= self.game_config["max_timesteps"]:
             return 4  # Impostors win (time limit)
+        elif (
+            self.sabotage_state["reactor"]
+            and self.sabotage_state["reactor_countdown"] <= 0
+        ):
+            return 5  # Impostors win (Reactor meltdown)
         return 0  # Game continues
 
     def check_actions(self):
@@ -419,7 +439,7 @@ class AmongUs:
         elif self.current_phase == "meeting":
             await self.meeting_phase()
         self.timestep += 1
-        print(f"|", end="", flush=True)
+        print("|", end="", flush=True)
         # import pdb; pdb.set_trace() # waiting after each timestep
 
     async def task_phase_step(self):
@@ -432,11 +452,15 @@ class AmongUs:
             if self.current_phase == "meeting":
                 break
 
+        # Decrement Reactor countdown if active
+        if self.sabotage_state["reactor"]:
+            self.sabotage_state["reactor_countdown"] -= 1
+
     async def meeting_phase(self):
         # Move all players to the Cafeteria
         for player in self.players:
             player.location = "Cafeteria"
-        
+
         self.meeting_number += 1  # Track meeting count
         self.update_map()
 
@@ -483,32 +507,36 @@ class AmongUs:
         for voter, vote_target in self.vote_info_one_round.items():
             print(voter)
             vote_info.append(f"{str(voter)} voted for {str(vote_target)}")
-        
+
         # Create vote tally with full player names (including color)
         vote_tally = {}
         for player, vote_count in self.votes.items():
             full_name = player.name
             vote_tally[full_name] = vote_count
-        
+
         # Create votes array with detailed breakdown
         votes = []
         for voter_name, target_name in self.vote_info_one_round.items():
             # Find full names with colors
             voter_player = next((p for p in self.players if p.name == voter_name), None)
-            target_player = next((p for p in self.players if p.name == target_name), None)
+            target_player = next(
+                (p for p in self.players if p.name == target_name), None
+            )
             if voter_player and target_player:
-                votes.append({
-                    "voter": voter_player.name,
-                    "target": target_player.name,
-                    "timestep": self.timestep
-                })
-        
+                votes.append(
+                    {
+                        "voter": voter_player.name,
+                        "target": target_player.name,
+                        "timestep": self.timestep,
+                    }
+                )
+
         # Determine eliminated player with full name
         eliminated_full_name = None
         if len(players_with_max_votes) == 1:
             p = players_with_max_votes[0]
             eliminated_full_name = p.name
-        
+
         # Record this voting round in history (matches log_parser.py format)
         voting_round = {
             "timestep": self.timestep,
@@ -516,20 +544,20 @@ class AmongUs:
             "votes": votes,
             "vote_tally": vote_tally,
             "eliminated": eliminated_full_name,  # Use 'eliminated' not 'eliminated_player'
-            "was_tie": len(players_with_max_votes) > 1
+            "was_tie": len(players_with_max_votes) > 1,
         }
         self.voting_history.append(voting_round)
-        
+
         # Also log to activity log for compatibility
         vote_summary_record = {
             "timestep": self.timestep,
             "phase": "voting_results",
             "round": round,
             "action": "VOTE_SUMMARY",
-            "vote_data": voting_round
+            "vote_data": voting_round,
         }
         self.activity_log.append(vote_summary_record)
-        
+
         if len(players_with_max_votes) == 1:
             player = players_with_max_votes[0]
             player.is_alive = False
@@ -642,9 +670,29 @@ class MessageSystem:
         message = f"Game Time: {env.timestep}/{env.game_config['max_timesteps']}\n"
         message += f"Current phase: {phase_info}\n"
         message += f"{instruction}\n"
-        players_text = ", ".join(record["players"])
-        message += f"Current Location: {record['location']}\n"
-        message += f"Players in {record['location']}: {players_text}\n\n"
+        message += f"{instruction}\n"
+
+        # Handle Lights Sabotage
+        if env.sabotage_state["lights"] and env.current_phase == "task":
+            message += f"Current Location: {record['location']}\n"
+            if record["location"] == "Electrical":  # Can see in Electrical to fix it
+                players_text = ", ".join(record["players"])
+                message += f"Players in {record['location']}: {players_text}\n"
+                message += "WARNING: Lights are sabotaged! Vision is limited in other rooms.\n\n"
+            else:
+                message += (
+                    f"Players in {record['location']}: (Hidden - Lights Sabotaged)\n\n"
+                )
+        else:
+            players_text = ", ".join(record["players"])
+            message += f"Current Location: {record['location']}\n"
+            message += f"Players in {record['location']}: {players_text}\n\n"
+
+        # Handle Reactor Sabotage Warning
+        if env.sabotage_state["reactor"]:
+            message += f"!!! CRITICAL EMERGENCY: REACTOR MELTDOWN IN {env.sabotage_state['reactor_countdown']} TURNS !!!\n"
+            message += "!!! GO TO REACTOR AND FIX IT IMMEDIATELY !!!\n\n"
+
         return message
 
     def route_location_info_message(self, env):

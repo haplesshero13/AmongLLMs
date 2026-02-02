@@ -4,13 +4,11 @@ import json
 import os
 import random
 import re
-import time
 from datetime import datetime
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict
 
 import aiohttp
 import numpy as np
-import requests
 
 from amongagents.envs.action import AttemptedAction
 from amongagents.agent.neutral_prompts import *
@@ -181,10 +179,18 @@ class LLMAgent(Agent):
 
         print(".", end="", flush=True)
 
-    def _record_issue(self, issue_type, error_msg, attempt, timestep=None, response_snippet=None, **kwargs):
+    def _record_issue(
+        self,
+        issue_type,
+        error_msg,
+        attempt,
+        timestep=None,
+        response_snippet=None,
+        **kwargs,
+    ):
         """
         Record an issue (API error or format error) for later reporting.
-        
+
         Args:
             issue_type: "api" or "format"
             error_msg: Description of the error
@@ -225,7 +231,9 @@ class LLMAgent(Agent):
 
         last_error = None
         async with aiohttp.ClientSession() as session:
-            for attempt in range(5):  # 5 API retries (format retries handled separately)
+            for attempt in range(
+                5
+            ):  # 5 API retries (format retries handled separately)
                 try:
                     async with session.post(
                         self.api_url, headers=headers, data=json.dumps(payload)
@@ -253,7 +261,12 @@ class LLMAgent(Agent):
                                 f"HTTP {response.status} for {self.model}: {error_msg}"
                             )
                             print(f"[API Error] {last_error}")
-                            self._record_issue("api", last_error, attempt + 1, http_status=response.status)
+                            self._record_issue(
+                                "api",
+                                last_error,
+                                attempt + 1,
+                                http_status=response.status,
+                            )
 
                             # Don't retry on auth/permission errors - they won't succeed
                             if response.status in (401, 403, 404):
@@ -267,7 +280,9 @@ class LLMAgent(Agent):
                             self._record_issue("api", last_error, attempt + 1)
                             continue
                         if not data["choices"]:
-                            last_error = f"'choices' key is empty in response for {self.model}"
+                            last_error = (
+                                f"'choices' key is empty in response for {self.model}"
+                            )
                             print(f"[API Error] {last_error} (attempt {attempt + 1}/5)")
                             self._record_issue("api", last_error, attempt + 1)
                             continue
@@ -282,7 +297,9 @@ class LLMAgent(Agent):
                 except Exception as e:
                     last_error = f"Exception for {self.model}: {str(e)}"
                     print(f"[API Error] {last_error} (attempt {attempt + 1}/5)")
-                    self._record_issue("api", last_error, attempt + 1, exception_type=type(e).__name__)
+                    self._record_issue(
+                        "api", last_error, attempt + 1, exception_type=type(e).__name__
+                    )
                     continue
 
             # All retries exhausted - raise an error instead of silently failing
@@ -302,7 +319,7 @@ class LLMAgent(Agent):
     def _validate_and_parse_action(self, response, available_actions):
         """
         Validate and parse an LLM response to extract an action.
-        
+
         Returns:
             tuple: (action, memory, summarization, error_message)
             - action: The matched action if valid, None otherwise
@@ -312,65 +329,95 @@ class LLMAgent(Agent):
         """
         if not response or not response.strip():
             return None, None, None, "Response is empty"
-        
-        # Try to parse the structured format
-        pattern = r"\[Condensed Memory\]((.|\n)*?)\[Thinking Process\]((.|\n)*?)\[Action\]((.|\n)*)$"
-        match = re.search(pattern, response, re.IGNORECASE)
-        
+
         memory = None
         summarization = None
-        
-        if match:
-            memory = match.group(1).strip()
-            summarization = match.group(3).strip()
-            output_action = match.group(5).strip()
-        else:
-            # Try to find just [Action] section
-            action_match = re.search(r"\[Action\]\s*(.+)", response, re.IGNORECASE | re.DOTALL)
-            if action_match:
-                output_action = action_match.group(1).strip()
+        output_action = None
+
+        # Try to parse as JSON first
+        try:
+            # Clean up potential markdown code blocks
+            clean_response = response.strip()
+            if clean_response.startswith("```json"):
+                clean_response = clean_response[7:]
+            if clean_response.endswith("```"):
+                clean_response = clean_response[:-3]
+
+            data = json.loads(clean_response)
+            if isinstance(data, dict):
+                memory = data.get("condensed_memory")
+                summarization = data.get("thinking_process")
+                output_action = data.get("action")
+        except json.JSONDecodeError:
+            pass
+
+        # Fallback to regex format if JSON parsing failed or didn't yield an action
+        if not output_action:
+            # Try to parse the structured format
+            pattern = r"\[Condensed Memory\]((.|\n)*?)\[Thinking Process\]((.|\n)*?)\[Action\]((.|\n)*)$"
+            match = re.search(pattern, response, re.IGNORECASE)
+
+            if match:
+                memory = match.group(1).strip()
+                summarization = match.group(3).strip()
+                output_action = match.group(5).strip()
             else:
-                # Last resort: use the whole response
-                output_action = response.strip()
-        
+                # Try to find just [Action] section
+                action_match = re.search(
+                    r"\[Action\]\s*(.+)", response, re.IGNORECASE | re.DOTALL
+                )
+                if action_match:
+                    output_action = action_match.group(1).strip()
+                else:
+                    # Last resort: use the whole response
+                    output_action = response.strip()
+
+        # Ensure we have an action string to process
         # Normalize the output action for matching
         output_action_lower = output_action.lower()
-        output_action_normalized = ' '.join(output_action.split())  # Collapse whitespace
-        
+        output_action_normalized = " ".join(
+            output_action.split()
+        )  # Collapse whitespace
+
         # Try to match against available actions
         for action in available_actions:
             action_repr = repr(action)
             action_repr_lower = action_repr.lower()
-            action_repr_normalized = ' '.join(action_repr.split())
-            
+            action_repr_normalized = " ".join(action_repr.split())
+
             # Exact match
             if action_repr in output_action:
                 return action, memory, summarization, None
-            
+
             # Case-insensitive match
             if action_repr_lower in output_action_lower:
                 return action, memory, summarization, None
-            
+
             # Normalized whitespace match
             if action_repr_normalized.lower() in output_action_normalized.lower():
                 return action, memory, summarization, None
-            
+
             # Handle SPEAK action specially
             if action.name == "SPEAK" and "speak" in output_action_lower:
                 # Extract message after SPEAK:
-                speak_match = re.search(r"speak[:\s]+(.+)", output_action, re.IGNORECASE | re.DOTALL)
+                speak_match = re.search(
+                    r"speak[:\s]+(.+)", output_action, re.IGNORECASE | re.DOTALL
+                )
                 if speak_match:
                     action.message = speak_match.group(1).strip()
                     return action, memory, summarization, None
-            
+
             # Handle VOTE action specially - look for "VOTE Player X"
             if action.name == "VOTE":
                 vote_match = re.search(r"vote\s+(.+)", output_action, re.IGNORECASE)
                 if vote_match:
                     vote_target = vote_match.group(1).strip().lower()
-                    if hasattr(action, 'other_player') and action.other_player.name.lower() in vote_target:
+                    if (
+                        hasattr(action, "other_player")
+                        and action.other_player.name.lower() in vote_target
+                    ):
                         return action, memory, summarization, None
-        
+
         # Check for Attempted Illegal Actions (Hallucinations)
         # Define patterns for known game actions to catch likely hallucinations
         known_patterns = [
@@ -381,17 +428,25 @@ class LLMAgent(Agent):
             (r"COMPLETE\s+TASK\s+(.+)", "COMPLETE TASK"),
             (r"COMPLETE\s+FAKE\s+TASK\s+(.+)", "COMPLETE FAKE TASK"),
             (r"SABOTAGE\s+(.+)", "SABOTAGE"),
+            (r"FIX\s+(.+)", "FIX"),
             (r"VIEW\s+MONITOR", "VIEW MONITOR"),
             (r"CALL\s+MEETING", "CALL MEETING"),
             (r"REPORT\s+DEAD\s+BODY", "REPORT DEAD BODY"),
             (r"SPEAK[:\s]+(.+)", "SPEAK"),
         ]
-        
+
         for pattern, action_name in known_patterns:
             if re.search(pattern, output_action, re.IGNORECASE):
                 # It looks like a valid action type, but wasn't in available_actions
                 # Return an AttemptedAction so the game records the failure instead of forcing retry
-                return AttemptedAction(output_action, current_location=self.player.location), memory, summarization, None
+                return (
+                    AttemptedAction(
+                        output_action, current_location=self.player.location
+                    ),
+                    memory,
+                    summarization,
+                    None,
+                )
 
         # No match found - generate helpful error message
         available_action_strs = [repr(a) for a in available_actions]
@@ -409,7 +464,7 @@ class LLMAgent(Agent):
         )
 
         base_content = f"Summarization: {self.summarization}\n\n{all_info}\n\nMemory: {self.processed_memory}\n\nPhase: {phase}. Return your output."
-        
+
         messages = [
             {"role": "system", "content": self.system_prompt},
             {"role": "user", "content": base_content},
@@ -425,32 +480,32 @@ class LLMAgent(Agent):
 
         # Format retry loop (up to 3 attempts)
         max_format_retries = 3
-        last_response = None
         last_error = None
-        
+
         for format_attempt in range(max_format_retries):
             response = await self.send_request(messages)
-            last_response = response
-            
+
             action, memory, summarization, error_msg = self._validate_and_parse_action(
                 response, available_actions
             )
-            
+
             if action is not None:
                 # Success! Update state and return
                 if memory is not None:
                     self.processed_memory = memory
                 if summarization is not None:
                     self.summarization = summarization
-                
+
                 # Log success (especially important if retries were needed)
                 if format_attempt > 0:
-                    print(f"[Format Retry SUCCESS on attempt {format_attempt + 1}] {self.player.name}: Selected action {repr(action)}")
+                    print(
+                        f"[Format Retry SUCCESS on attempt {format_attempt + 1}] {self.player.name}: Selected action {repr(action)}"
+                    )
                     # Mark the last issue as resolved
                     if self.issues:
                         self.issues[-1]["resolved"] = True
                         self.issues[-1]["resolved_on_attempt"] = format_attempt + 1
-                
+
                 self.log_interaction(
                     sysprompt=self.system_prompt,
                     prompt=full_prompt,
@@ -458,18 +513,20 @@ class LLMAgent(Agent):
                     step=timestep,
                 )
                 return action
-            
+
             # Validation failed - record the issue and prepare feedback for retry
             last_error = error_msg
             self._record_issue(
-                "format", 
-                error_msg, 
+                "format",
+                error_msg,
                 format_attempt + 1,
                 timestep=timestep,
-                response_snippet=response[:200] if response else "(empty)"
+                response_snippet=response[:200] if response else "(empty)",
             )
-            available_action_strs = "\n".join([f"  - {repr(a)}" for a in available_actions])
-            
+            available_action_strs = "\n".join(
+                [f"  - {repr(a)}" for a in available_actions]
+            )
+
             feedback = f"""Your previous response could not be parsed correctly.
 
 Your response was:
@@ -477,20 +534,22 @@ Your response was:
 
 Error: {error_msg}
 
-You MUST respond with EXACTLY this format:
-[Condensed Memory]
-{{your memory summary}}
-[Thinking Process]
-{{your reasoning}}
-[Action] {{EXACTLY one of the following actions}}
+You MUST respond with strict JSON format:
+{{
+    "condensed_memory": "...",
+    "thinking_process": "...",
+    "action": "{{EXACTLY one of the following actions}}"
+}}
 
 Available actions (choose EXACTLY one, copy it exactly):
 {available_action_strs}
 
-Please reformat your response."""
-            
-            print(f"[Format Retry {format_attempt + 1}/{max_format_retries}] {self.player.name}: {error_msg[:80]}")
-            
+Please reformat your response as valid JSON."""
+
+            print(
+                f"[Format Retry {format_attempt + 1}/{max_format_retries}] {self.player.name}: {error_msg[:80]}"
+            )
+
             # Add feedback as a new message for retry
             messages = [
                 {"role": "system", "content": self.system_prompt},
@@ -498,7 +557,7 @@ Please reformat your response."""
                 {"role": "assistant", "content": response},
                 {"role": "user", "content": feedback},
             ]
-        
+
         # All format retries exhausted - raise error (issues already tracked in self.issues)
         error_msg = f"Format validation failed after {max_format_retries} retries for {self.player.name} ({self.model}). Last error: {last_error}"
         print(f"\n[FATAL FORMAT ERROR] {error_msg}")

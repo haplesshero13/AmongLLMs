@@ -58,20 +58,48 @@ class Vent(MoveTo):
             return []
 
 
-class CallMeeting(Action):
+class EmergencyMeeting(Action):
     def __init__(self, current_location):
         super().__init__("CALL MEETING", current_location=current_location)
 
     def __repr__(self):
-        if self.current_location == "Cafeteria":
-            return f"{self.name} using the emergency button at {self.current_location}"
-        else:
-            return f"REPORT DEAD BODY at {self.current_location}"
+        return f"{self.name} using the emergency button at {self.current_location}"
 
     def execute(self, env, player):
         super().execute(env, player)
         env.current_phase = "meeting"
         env.button_num += 1
+
+    @staticmethod
+    def can_execute_actions(env, player):
+        # Can't call meeting if sabotage is active (if feature enabled)
+        sabotage_enabled = getattr(env, "sabotage_enabled", False)
+        sabotage_active = env.sabotage_state["lights"] or env.sabotage_state["reactor"]
+
+        can_call = True
+        if sabotage_enabled and sabotage_active:
+            can_call = False
+
+        if env.current_phase == "task" and can_call:
+            current_location = player.location
+            if (
+                current_location == "Cafeteria"
+                and env.button_num < env.game_config["max_num_buttons"]
+            ):
+                return [EmergencyMeeting(current_location=current_location)]
+        return []
+
+
+class ReportDeadBody(Action):
+    def __init__(self, current_location):
+        super().__init__("REPORT DEAD BODY", current_location=current_location)
+
+    def execute(self, env, player):
+        super().execute(env, player)
+        env.current_phase = "meeting"
+        # Reporting body clears critical sabotage (Reactor)
+        env.sabotage_state["reactor"] = False
+
         for player in env.players:
             if not player.is_alive and not player.reported_death:
                 player.reported_death = True
@@ -86,15 +114,9 @@ class CallMeeting(Action):
             other_players_in_the_same_room = [
                 p for p in players_in_the_same_room if p != player
             ]
-            if (
-                current_location == "Cafeteria"
-                and env.button_num < env.game_config["max_num_buttons"]
-            ):
-                return [CallMeeting(current_location=current_location)]
-            else:
-                for other_player in other_players_in_the_same_room:
-                    if not other_player.is_alive and not other_player.reported_death:
-                        return [CallMeeting(current_location=current_location)]
+            for other_player in other_players_in_the_same_room:
+                if not other_player.is_alive and not other_player.reported_death:
+                    return [ReportDeadBody(current_location=current_location)]
         return []
 
 
@@ -154,7 +176,7 @@ class ViewMonitor(Action):
         super().__init__("ViewMonitor", current_location=current_location)
 
     def __repr__(self):
-        return f"VIEW MONITOR"
+        return "VIEW MONITOR"
 
     def execute(self, env, player, choose_location):
         super().execute(env, player)
@@ -198,7 +220,6 @@ class ViewMonitor(Action):
         # TODO: Implement this
 
     def can_execute_actions(env, player):
-        available_tasks = []
         if player.location == "Security":
             return [ViewMonitor("Security")]
         else:
@@ -214,7 +235,7 @@ class CompleteTask(Action):
         return f"{self.name} - {self.task.name}"
 
     def action_text(self):
-        return f"Seemingly doing task"
+        return "Seemingly doing task"
 
     def execute(self, env, player):
         super().execute(env, player)
@@ -233,13 +254,91 @@ class CompleteTask(Action):
         return available_tasks
 
 
-class Sabotage(Action):
+class SabotageLights(Action):
     def __init__(self, current_location):
-        super().__init__("SABOTAGE", current_location=current_location)
+        super().__init__("SABOTAGE LIGHTS", current_location=current_location)
 
     def execute(self, env, player):
         super().execute(env, player)
-        # TODO: Implement this
+        env.sabotage_state["lights"] = True
+
+    @staticmethod
+    def can_execute_actions(env, player):
+        # Check if sabotage feature is enabled
+        if not getattr(env, "sabotage_enabled", False):
+            return []
+
+        # Can only sabotage if no other sabotage is active
+        sabotage_active = env.sabotage_state["lights"] or env.sabotage_state["reactor"]
+        if env.current_phase == "task" and not sabotage_active:
+            return [SabotageLights(current_location=player.location)]
+        return []
+
+
+class SabotageReactor(Action):
+    def __init__(self, current_location):
+        super().__init__("SABOTAGE REACTOR", current_location=current_location)
+
+    def execute(self, env, player):
+        super().execute(env, player)
+        env.sabotage_state["reactor"] = True
+        env.sabotage_state["reactor_countdown"] = 10  # reset countdown
+
+    @staticmethod
+    def can_execute_actions(env, player):
+        # Check if sabotage feature is enabled
+        if not getattr(env, "sabotage_enabled", False):
+            return []
+
+        # Can only sabotage if no other sabotage is active
+        sabotage_active = env.sabotage_state["lights"] or env.sabotage_state["reactor"]
+        if env.current_phase == "task" and not sabotage_active:
+            return [SabotageReactor(current_location=player.location)]
+        return []
+
+
+class FixLights(Action):
+    def __init__(self, current_location):
+        super().__init__("FIX LIGHTS", current_location=current_location)
+
+    def execute(self, env, player):
+        super().execute(env, player)
+        env.sabotage_state["lights"] = False
+
+    @staticmethod
+    def can_execute_actions(env, player):
+        if not getattr(env, "sabotage_enabled", False):
+            return []
+
+        if (
+            env.current_phase == "task"
+            and env.sabotage_state["lights"]
+            and player.location == "Electrical"
+        ):
+            return [FixLights(current_location=player.location)]
+        return []
+
+
+class FixReactor(Action):
+    def __init__(self, current_location):
+        super().__init__("FIX REACTOR", current_location=current_location)
+
+    def execute(self, env, player):
+        super().execute(env, player)
+        env.sabotage_state["reactor"] = False
+
+    @staticmethod
+    def can_execute_actions(env, player):
+        if not getattr(env, "sabotage_enabled", False):
+            return []
+
+        if (
+            env.current_phase == "task"
+            and env.sabotage_state["reactor"]
+            and player.location == "Reactor"
+        ):
+            return [FixReactor(current_location=player.location)]
+        return []
 
 
 class Kill(Action):
@@ -254,19 +353,22 @@ class Kill(Action):
         super().execute(env, player)
         self.other_player.is_alive = False
         player.kill_cooldown = env.game_config["kill_cooldown"]
-        
+
         # Record kill in history
         current_location = player.location
-        witnesses = [p.name for p in env.map.get_players_in_room(current_location) 
-                    if p != player and p != self.other_player and p.is_alive]
-        
+        witnesses = [
+            p.name
+            for p in env.map.get_players_in_room(current_location)
+            if p != player and p != self.other_player and p.is_alive
+        ]
+
         kill_record = {
             "timestep": env.timestep,
             "killer": player.name,
             "victim": self.other_player.name,
             "location": current_location,
             "witnesses": witnesses,
-            "method": "kill"
+            "method": "kill",
         }
         env.kill_history.append(kill_record)
 
@@ -293,7 +395,7 @@ class CompleteFakeTask(CompleteTask):
         return f"{self.name} - {self.task.name}"
 
     def action_text(self):
-        return f"Seemingly doing task"
+        return "Seemingly doing task"
 
     def execute(self, env, player):
         super().execute(env, player)
@@ -317,18 +419,28 @@ class AttemptedAction(Action):
 
     def __repr__(self):
         return f"ATTEMPTED: {self.action_text_content}"
-    
+
     def action_text(self):
         return f"attempted {self.action_text_content} but failed"
 
     def execute(self, env, player):
         # Do nothing, the failure is recorded in the activity log via the action_text
         pass
-    
+
     @staticmethod
     def can_execute_actions(env, player):
         return []
 
-COMMON_ACTIONS = [MoveTo, CallMeeting, Vote, Speak, ViewMonitor]
+
+COMMON_ACTIONS = [
+    MoveTo,
+    EmergencyMeeting,
+    ReportDeadBody,
+    Vote,
+    Speak,
+    ViewMonitor,
+    FixLights,
+    FixReactor,
+]
 CREWMATE_ACTIONS = [CompleteTask]
-IMPOSTER_ACTIONS = [Sabotage, Vent, Kill, CompleteFakeTask]
+IMPOSTER_ACTIONS = [SabotageLights, SabotageReactor, Vent, Kill, CompleteFakeTask]

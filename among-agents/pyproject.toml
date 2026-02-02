@@ -24,3 +24,8 @@ web-ui = [
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["amongagents*"]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.14.14",
+]
