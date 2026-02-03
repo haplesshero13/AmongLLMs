@@ -52,7 +52,7 @@ class MapUI:
             max_x, min_x = max(x_coords), min(x_coords)
             max_y, min_y = max(y_coords), min(y_coords)
             midx = (max_x + min_x) / 2
-            (max_y + min_y) / 2
+            # (max_y + min_y) / 2
             text_coord = (midx, min_y + 10)
             if room == "Upper Engine":
                 room_text = "Upper Eng."

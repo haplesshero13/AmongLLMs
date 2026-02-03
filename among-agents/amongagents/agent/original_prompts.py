@@ -4,50 +4,112 @@ Previous memory:
 {memory}
 Previous thought process:
 {summarization}
+
+REMINDER: Return ONLY valid JSON.
 """
 
 IMPOSTOR_EXAMPLE = """\
-When given a list of available actions (e.g., MOVE, CALL MEETING, REPORT DEAD BODY, SPEAK, VENT, or KILL), choose exactly one. If "SPEAK" is an option, formulate a deceptive yet plausible statement.
-Summarize the past events in "condensed_memory", plan your strategy in "thinking_process", and output your choice in "action".
+### Instructions
+You are an intelligent agent playing "Among Us".
+When given a list of available actions (e.g., MOVE, CALL MEETING, REPORT DEAD BODY, SPEAK, VENT, or KILL), choose exactly one.
+If "SPEAK" is an option, formulate a deceptive yet plausible statement.
 
-Your response MUST be strict JSON:
+### Output Format
+You MUST respond with a strict JSON object containing your memory update, thought process, and selected action.
+Format:
 {
-    "condensed_memory": "...",
-    "thinking_process": "...",
-    "action": "..."
+    "condensed_memory": "Summarize past events and your current state here...",
+    "thinking_process": "Plan your strategy and reasoning here...",
+    "action": "The exact action string selected from Available Actions"
 }
 
-Example:
+### Example
+**Input Context:**
 Location: Admin
 Players in Admin: Player 1: blue, Player 5: cyan
 
 Observation history:
 1. Timestep 0: [task] Player 3: black MOVE from Cafeteria to Weapons
-... Since I killed Player 2, I need to act normal.
+2. Timestep 0: [task] Player 4: orange MOVE from Cafeteria to Weapons
+3. Timestep 0: [task] Player 5: white MOVE from Cafeteria to Weapons
 
-Output example:
+Action history:
+Timestep 0: [task] KILL Player 2: cyan
+Timestep 1: [task] VENT from Cafeteria to Admin
+
+Your Assigned Tasks:
+1. common: Fix Wiring (Electrical)
+
+Available actions:
+1. MOVE from Admin to O2
+2. MOVE from Admin to Storage
+3. MOVE from Admin to Electrical
+4. SPEAK: '...'
+5. VENT from Admin to Cafeteria
+
+Previous memory:
+I killed Player 2. The rest of the crew moves to Weapons.
+
+Previous thought process:
+I just killed a player. I need to quickly move to a different location to avoid suspicion.
+
+**Example Output:**
 {
-    "condensed_memory": "I killed Player 2 and vented from Cafeteria to Admin. Player 5 is with me.",
-    "thinking_process": "Player 5 is here. I should talk to them to build trust while looking for my next target.",
-    "action": "SPEAK: \"Hey Player 5, where are you headed next?\""
+    "condensed_memory": "I killed Player 2 and vented from Cafeteria to Admin. Currently, I am in Admin with Player 5: cyan. The last time I saw the crew, they were moving to Weapons.",
+    "thinking_process": "Now Player 5 is in Admin. I should act normal and possibly move to another location to avoid suspicion.",
+    "action": "MOVE from Admin to O2"
 }
 """
 
 CREWMATE_EXAMPLE = """\
-When presented with a list of available actions, choose exactly one. If "SPEAK" is an option, your message should contribute to building a case.
-Summarize the past events in "condensed_memory", plan your strategy in "thinking_process", and output your choice in "action".
+### Instructions
+You are an intelligent agent playing "Among Us".
+When presented with a list of available actions, choose exactly one.
+If "SPEAK" is an option, your message should contribute to identifying Impostors or completing tasks.
 
-Your response MUST be strict JSON:
+### Output Format
+You MUST respond with a strict JSON object containing your memory update, thought process, and selected action.
+Format:
 {
-    "condensed_memory": "...",
-    "thinking_process": "...",
-    "action": "..."
+    "condensed_memory": "Summarize past events and your current state here...",
+    "thinking_process": "Plan your strategy and reasoning here...",
+    "action": "The exact action string selected from Available Actions"
 }
 
-Output example:
+### Example
+**Input Context:**
+Location: Cafeteria
+Players in Cafeteria: Player 1: blue, Player 3: black, Player 4: orange, Player 5: white
+
+Observation history:
+1. Timestep 0: [task] Player 1: blue KILL Player 2: cyan
+
+Action history:
+No actions have been taken yet.
+
+Your Assigned Tasks:
+1. common: Fix Wiring (Electrical)
+2. short: Upload Data (Admin)
+3. short: Clean O2 Filter (O2)
+4. long: Clear Asteroids (Weapons)
+
+Available actions:
+1. MOVE from Cafeteria to Weapons
+2. MOVE from Cafeteria to Upper Engine
+3. MOVE from Cafeteria to Medbay
+4. CALL MEETING using the emergency button at Cafeteria
+5. SPEAK: '...'
+
+Previous memory:
+no memory has been processed.
+
+Previous thought process:
+no thought process has been made
+
+**Example Output:**
 {
-    "condensed_memory": "I saw Player 1 kill Player 2 in the Cafeteria.",
-    "thinking_process": "I witnessed a murder. I must report this immediately to vote out Player 1.",
+    "condensed_memory": "I witnessed Player 1 kill Player 2 in the Cafeteria.",
+    "thinking_process": "I saw Player 1 kill Player 2. I must call a meeting immediately to report this crime and vote them out. I will use the emergency button.",
     "action": "CALL MEETING using the emergency button at Cafeteria"
 }
 """

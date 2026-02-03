@@ -120,32 +120,43 @@ class LLMAgent(Agent):
             except:
                 pass
         if isinstance(original_response, str):
-            sections = {}
-            current_section = None
-            current_content = []
+            try:
+                # Try to parse as JSON first
+                data = json.loads(original_response)
+                # Map to Title Case to match legacy log format
+                new_response = {
+                    "Condensed Memory": data.get("condensed_memory"),
+                    "Thinking Process": data.get("thinking_process"),
+                    "Action": data.get("action"),
+                }
+            except json.JSONDecodeError:
+                # Fallback to legacy parsing if JSON fails
+                sections = {}
+                current_section = None
+                current_content = []
 
-            for line in original_response.split("\n"):
-                line = line.strip()
-                if line.startswith("[") and line.endswith("]"):
-                    if current_section:
-                        sections[current_section] = " ".join(current_content).strip()
-                        current_content = []
-                    current_section = line[1:-1]  # Remove brackets
-                elif line and current_section:
-                    current_content.append(line)
+                for line in original_response.split("\n"):
+                    line = line.strip()
+                    if line.startswith("[") and line.endswith("]"):
+                        if current_section:
+                            sections[current_section] = " ".join(current_content).strip()
+                            current_content = []
+                        current_section = line[1:-1]  # Remove brackets
+                    elif line and current_section:
+                        current_content.append(line)
 
-            if current_section and current_content:
-                sections[current_section] = " ".join(current_content).strip()
+                if current_section and current_content:
+                    sections[current_section] = " ".join(current_content).strip()
 
-            new_response = sections if sections else original_response
+                new_response = sections if sections else original_response
 
-            # Parse any dictionary strings in the response sections and handle [Action]
-            if isinstance(new_response, dict):
-                for key, value in new_response.items():
-                    if isinstance(value, str):
-                        new_response[key] = extract_action(value)
-                    else:
-                        new_response[key] = parse_dict_string(value)
+                # Parse any dictionary strings in the response sections and handle [Action]
+                if isinstance(new_response, dict):
+                    for key, value in new_response.items():
+                        if isinstance(value, str):
+                            new_response[key] = extract_action(value)
+                        else:
+                            new_response[key] = parse_dict_string(value)
 
         # Create the interaction object with proper nesting
         interaction = {
@@ -463,7 +474,9 @@ class LLMAgent(Agent):
             else "Task phase"
         )
 
-        base_content = f"Summarization: {self.summarization}\n\n{all_info}\n\nMemory: {self.processed_memory}\n\nPhase: {phase}. Return your output."
+        base_content = LLM_ACTION_TEMPLATE.format(
+            all_info=all_info, memory=self.processed_memory, summarization=self.summarization
+        )
 
         messages = [
             {"role": "system", "content": self.system_prompt},
