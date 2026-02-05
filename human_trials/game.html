@@ -518,7 +518,7 @@
         let currentGameId = null;
         let gameStateInterval = null;
         let lastGameState = null;  // Store the last valid game state
-        const API_BASE_URL = 'http://localhost:3000/api'; // Make sure this matches your server port
+        const API_BASE_URL = `http://${window.location.hostname}:${window.location.port}/api`;
 
         const homeScreen = document.getElementById('homeScreen');
         const gameScreen = document.getElementById('gameScreen');
@@ -648,7 +648,7 @@
                 console.error("Error starting game:", error);
                 showError(`Error: ${error.message}`);
                  startGameBtn.disabled = false;
-                 startGameBtn.textContent = 'Start New Game (5 Players)';
+                 startGameBtn.textContent = 'Start New Game';
                  hideLoading();
             }
         }

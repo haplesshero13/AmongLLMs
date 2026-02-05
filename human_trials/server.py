@@ -4,6 +4,7 @@ import os
 import sys
 import asyncio
 import json
+import traceback
 from typing import Dict, Optional, Any, List
 import uuid
 from fastapi import FastAPI, HTTPException, BackgroundTasks
@@ -67,7 +68,7 @@ game_tasks: Dict[int, asyncio.Task] = {}
 
 
 class GameStartRequest(BaseModel):
-    game_config: str = "FIVE_MEMBER_GAME"
+    game_config: str = "SEVEN_MEMBER_GAME"
     include_human: bool = True
     tournament_style: str = "random"
     impostor_model: Optional[str] = None
@@ -124,6 +125,7 @@ async def run_game_background(game_id: int):
         game_info["status"] = "error"
         game_info["error_message"] = str(e)
         print(f"[Server] Error running game {game_id}: {e}")
+        traceback.print_exc()
     finally:
         running_games.discard(game_id)  # Remove from running games set
         if game_id in game_tasks:
@@ -191,6 +193,7 @@ async def start_game(request: GameStartRequest):
 
     except Exception as e:
         print(f"[Server] Error in start_game: {e}")
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -365,6 +368,7 @@ async def submit_human_action(game_id: int, action: HumanActionRequest):
         return {"status": "success"}
     except Exception as e:
         print(f"[Server] Error setting result for game {game_id}: {str(e)}")
+        traceback.print_exc()
         try:
             loop = asyncio.get_running_loop()
             loop.call_soon_threadsafe(future.cancel)
@@ -379,11 +383,12 @@ if __name__ == "__main__":
     log = logging.getLogger("uvicorn")
     log.setLevel(logging.ERROR)
 
-    print("Starting Among Us FastAPI Server...")
+    port = int(os.environ.get("PORT", 8888))
+    print(f"Starting Among Us FastAPI Server on port {port}...")
     uvicorn.run(
         "server:app",
         host="0.0.0.0",
-        port=3000,
+        port=port,
         reload=True,
         log_level="error",
         access_log=False,
