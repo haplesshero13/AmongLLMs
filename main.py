@@ -41,6 +41,9 @@ COMMIT_HASH = (
     subprocess.check_output(["git", "rev-parse", "HEAD"]).strip().decode("utf-8")
 )
 
+# only used as a fallback if those lists are missing or if you
+# explicitly set the tournament_style to "1on1" (which randomly
+# picks one model from the big list for each role
 BIG_LIST_OF_MODELS: List[str] = [
     "anthropic/claude-3.5-sonnet",
     "anthropic/claude-3-opus",

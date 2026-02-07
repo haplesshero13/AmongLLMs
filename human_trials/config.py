@@ -11,7 +11,7 @@ COMMIT_HASH = (
     subprocess.check_output(["git", "rev-parse", "HEAD"]).strip().decode("utf-8")
 )
 
-# List of available models for tournament style
+# List of available models for 1on1 tournament style
 BIG_LIST_OF_MODELS = [
     "microsoft/phi-4",
     "anthropic/claude-3.5-sonnet",
@@ -28,7 +28,7 @@ BIG_LIST_OF_MODELS = [
     "openai/gpt-oss-20b:free",
 ]
 
-# Default game configuration
+# Actual default game configuration for Human Trials
 DEFAULT_GAME_ARGS = {
     "game_config": "SEVEN_MEMBER_GAME",  # 7 players with 2 impostors
     "include_human": True,  # Set to True for human players
@@ -39,21 +39,19 @@ DEFAULT_GAME_ARGS = {
         "Crewmate": "LLM",
         "IMPOSTOR_LLM_CHOICES": [
             "openai/gpt-oss-120b",
-            "stepfun/step-3.5-flash:free",
-            "moonshotai/kimi-k2-thinking",
-            "minimax/minimax-m2",
+            "moonshotai/kimi-k2.5",
+            "mistralai/mistral-large-2512",
             "google/gemini-3-flash-preview",
-            "google/gemini-3-pro-preview",
-            "arcee-ai/trinity-large-preview:free",
+            "meta-llama/llama-3.3-70b-instruct",
+            "anthropic/claude-sonnet-4.5",
         ],
         "CREWMATE_LLM_CHOICES": [
             "openai/gpt-oss-120b",
-            "stepfun/step-3.5-flash:free",
-            "moonshotai/kimi-k2-thinking",
-            "minimax/minimax-m2",
+            "moonshotai/kimi-k2.5",
+            "mistralai/mistral-large-2512",
             "google/gemini-3-flash-preview",
-            "google/gemini-3-pro-preview",
-            "arcee-ai/trinity-large-preview:free",
+            "meta-llama/llama-3.3-70b-instruct",
+            "anthropic/claude-sonnet-4.5",
         ],
         "assignment_mode": "unique",  # 'random' picks with replacement, 'unique' picks without replacement
     },
