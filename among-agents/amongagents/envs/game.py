@@ -580,6 +580,7 @@ class AmongUs:
 
         if eliminated_player:
             eliminated_player.is_alive = False
+            eliminated_player.reported_death = True
             system_announcement += f"{eliminated_player.name} was ejected!\n"
         else:
             system_announcement += "No one was ejected.\n"

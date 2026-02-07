@@ -107,12 +107,25 @@ GAME PHASES:
 - Task Phase: Move around, perform fake tasks, and KILL isolated Crewmates. You can VENT to travel quickly between connected vent locations.
 - Meeting Phase: Discuss (SPEAK), then VOTE to eject a player or SKIP VOTE. Deceive others and redirect suspicion.
 
-IMPOSTOR ABILITIES:
+IMPOSTOR ABILITIES (only you can do these):
 - KILL: Eliminate a Crewmate in the same room ({kill_cooldown}-timestep cooldown between kills)
-- VENT: Travel instantly between connected vent locations (only Impostors can do this)
+- VENT: Travel instantly between connected vent locations
 - COMPLETE FAKE TASK: Pretend to do tasks (doesn't actually complete them)
 
-WITNESSES: If you kill in front of others, they will see and can report you immediately.
+SHARED ABILITIES (Task Phase — all players can use):
+- MOVE: Travel to adjacent rooms
+- CALL MEETING: Press the emergency button (only in Cafeteria)
+- REPORT DEAD BODY: Report a dead body in your current room (starts a meeting)
+- VIEW MONITOR: Watch security cameras (only in Security)
+
+SHARED ABILITIES (Meeting Phase — all players can use):
+- SPEAK: Share your statement during discussions (format: "SPEAK: your message")
+- VOTE: Vote to eject a player
+- SKIP VOTE: Abstain from voting
+
+IMPORTANT:
+- WITNESSES can see your kills and report them! Kill only when isolated.
+- Voted-out players are EJECTED (thrown off the ship). Only Impostor KILLS leave dead bodies that can be discovered and reported.
 
 """ + MAP_CONFIG + "\n" + CONNECTION_INFO + """
 Note: Only Impostors can KILL and VENT.
@@ -126,17 +139,25 @@ OBJECTIVE: Complete all tasks OR identify and eject all Impostors before they el
 ## IMPORTANT ##
 - Impostors KILL Crewmates in the same room ({kill_cooldown}-timestep cooldown between kills). If Impostors equal or outnumber Crewmates, you lose!
 - Impostors can VENT between non-adjacent rooms. If you see someone vent, they are an Impostor!
+- Voted-out players are EJECTED (thrown off the ship). Only Impostor KILLS leave dead bodies that can be discovered and reported.
 
 GAME PHASES:
-- Task Phase: COMPLETE TASK at task locations, MOVE to gather evidence, CALL MEETING if you witness a crime or find a body.
+- Task Phase: COMPLETE TASK at task locations, MOVE to gather evidence, REPORT DEAD BODY if you find one, or CALL MEETING in Cafeteria.
 - Meeting Phase: SPEAK to share observations, then VOTE to eject suspected Impostors or SKIP VOTE if unsure.
 
-CREWMATE ABILITIES:
+CREWMATE ABILITY (only Crewmates can do this):
 - COMPLETE TASK: Do your assigned tasks to help the crew win
+
+SHARED ABILITIES (Task Phase — all players can use):
 - MOVE: Travel to adjacent rooms
-- CALL MEETING: Press emergency button in Cafeteria OR report a dead body (will appear as "REPORT DEAD BODY at [location]" when you find a body)
-- SPEAK: Share observations during meetings (format as "SPEAK: your message")
-- VOTE / SKIP VOTE: Vote to eject a player or skip
+- CALL MEETING: Press the emergency button (only in Cafeteria)
+- REPORT DEAD BODY: Report a dead body in your current room (starts a meeting)
+- VIEW MONITOR: Watch security cameras (only in Security)
+
+SHARED ABILITIES (Meeting Phase — all players can use):
+- SPEAK: Share your observations during discussions (format: "SPEAK: your message")
+- VOTE: Vote to eject a suspected player
+- SKIP VOTE: Abstain from voting
 
 """ + MAP_CONFIG + "\n" + CONNECTION_INFO + """
 Note: Only Impostors can KILL and VENT. If you see either, they are definitely an Impostor!

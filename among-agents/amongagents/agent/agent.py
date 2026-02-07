@@ -364,11 +364,11 @@ class LLMAgent(Agent):
                     action.message = speak_match.group(1).strip()
                     return action, memory, summarization, None
             
-            # Handle CALL MEETING / REPORT DEAD BODY interchangeably
+            # Handle CALL MEETING / REPORT DEAD BODY with strict pattern matching
             # Since CallMeeting.__repr__() changes based on location, agents might use either term
             if action.name == "CALL MEETING":
-                if ("call" in output_action_lower and "meeting" in output_action_lower) or \
-                   ("report" in output_action_lower and "body" in output_action_lower):
+                if re.search(r"CALL\s+MEETING", output_action, re.IGNORECASE) or \
+                   re.search(r"REPORT\s+(?:DEAD\s+)?BODY", output_action, re.IGNORECASE):
                     return action, memory, summarization, None
             
             # Handle VOTE action specially - look for "VOTE Player X"
