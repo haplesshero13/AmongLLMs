@@ -74,6 +74,11 @@ Run 10 games with free models (using Llama or GPT-based open-source models):
 ```bash
 uv run main.py --num_games 10 --crewmate_llm "openai/gpt-oss-20b:free" --impostor_llm "meta-llama/llama-3.3-70b-instruct:free"
 ```
+Run 20 games with 7 member game on different models (paid models) in an AI vs AI mode:
+
+```bash
+uv run main.py --num_games 20 --models "openai/gpt-5-mini","moonshotai/kimi-k2.5","mistralai/mistral-large-2512","google/gemini-3-flash-preview","meta-llama/llama-3.3-70b-instruct","anthropic/claude-opus-4.6","qwen/qwen3-next-80b-a3b-thinking" --unique --game_size 7 --name ai_vs_ai_trials
+```
 
 Run 20 games with 7 member game on different models (paid models) in an AI vs AI mode:
 
