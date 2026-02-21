@@ -3,8 +3,8 @@
 Key differences from LLMAgent (Season 0):
 - Full chat history maintained (no summarization/truncation)
 - Structured JSON output (not free-text with [Action] tags)
-- Per-turn and cumulative token tracking
-- Per-player JSONL logging (no system_prompt repetition)
+- Token usage captured from OpenRouter API responses
+- Per-player JSONL logging with unified `thinking` + `action` fields
 """
 
 import json
@@ -22,7 +22,7 @@ from amongagents.long_context.prompts import (
     build_user_turn,
     build_correction_prompt,
 )
-from amongagents.long_context.token_counter import count_tokens, get_context_length
+from amongagents.long_context.model_info import get_model_info, ModelInfo
 
 
 class LongContextAgent:
@@ -57,14 +57,16 @@ class LongContextAgent:
         self.api_key = os.getenv("OPENROUTER_API_KEY")
         self.api_url = "https://openrouter.ai/api/v1/chat/completions"
 
-        # Build system prompt
-        self.system_prompt = build_system_prompt(
-            player=player,
-            list_of_impostors=list_of_impostors,
-            kill_cooldown=kill_cooldown,
-            num_impostors=num_impostors,
-            num_players=num_players,
-        )
+        # Prompt + model info are set during async setup(), before the game loop starts.
+        self.system_prompt = None
+        self.model_info: Optional[ModelInfo] = None
+        self._setup_done: bool = False
+
+        # Save init params for deferred setup
+        self._init_list_of_impostors = list_of_impostors
+        self._init_kill_cooldown = kill_cooldown
+        self._init_num_impostors = num_impostors
+        self._init_num_players = num_players
 
         # Full conversation history (no truncation)
         self.chat_history: list[dict] = []
@@ -73,12 +75,58 @@ class LongContextAgent:
         experiment_path = os.getenv("EXPERIMENT_PATH", ".")
         self.log_path = os.path.join(experiment_path, "agent-logs.jsonl")
 
-        # Token tracking
-        self.tokens_this_turn: int = 0
+        # Token usage tracking (populated from API response `usage` field)
         self.tokens_cumulative: int = 0
-        self.token_log: list[dict] = []
-        self.context_length: Optional[int] = None
-        self._context_length_fetched: bool = False
+        self.usage_log: list[dict] = []
+
+    # -------------------------------------------------------------------------
+    # Async setup — must be called before the game loop starts
+    # -------------------------------------------------------------------------
+
+    async def setup(self):
+        """Fetch model capabilities and build the system prompt.
+
+        Must be called once before the first choose_action(). This is
+        separated from __init__ because it requires async I/O.
+        """
+        if self._setup_done:
+            return
+
+        # Fetch model info from OpenRouter /api/v1/models
+        if self.api_key:
+            self.model_info = await get_model_info(self.model, self.api_key)
+
+        # Build system prompt with correct JSON format for this model
+        self.system_prompt = build_system_prompt(
+            player=self.player,
+            list_of_impostors=self._init_list_of_impostors,
+            kill_cooldown=self._init_kill_cooldown,
+            num_impostors=self._init_num_impostors,
+            num_players=self._init_num_players,
+            supports_reasoning=self.supports_reasoning,
+        )
+        self._setup_done = True
+
+        if self.model_info:
+            print(f"  [{self.player.name}] {self.model}: "
+                  f"ctx={self.model_info.context_length:,}, "
+                  f"reasoning={self.supports_reasoning}")
+
+    # -------------------------------------------------------------------------
+    # Convenience properties derived from model_info
+    # -------------------------------------------------------------------------
+
+    @property
+    def context_length(self) -> Optional[int]:
+        return self.model_info.context_length if self.model_info else None
+
+    @property
+    def supports_reasoning(self) -> bool:
+        return self.model_info.supports_reasoning if self.model_info else False
+
+    @property
+    def supports_include_reasoning(self) -> bool:
+        return self.model_info.supports_include_reasoning if self.model_info else False
 
     # -------------------------------------------------------------------------
     # Core action selection
@@ -93,10 +141,9 @@ class LongContextAgent:
         Raises:
             RuntimeError: If all retry attempts fail in task phase
         """
-        # Fetch context length on first call (lazy initialization)
-        if not self._context_length_fetched and self.api_key:
-            self.context_length = await get_context_length(self.model, self.api_key or "")
-            self._context_length_fetched = True
+        # Safety net — setup() should have been called already
+        if not self._setup_done:
+            await self.setup()
 
         available_actions = self.player.get_available_actions()
         all_info = self.player.all_info_prompt()
@@ -116,7 +163,10 @@ class LongContextAgent:
         last_error = None
 
         for attempt in range(3):
-            response = await self._send_request(messages)
+            result = await self._send_request(messages)
+            message = result["message"]
+            usage = result["usage"]
+            response = message.get("content", "")
 
             # Parse JSON
             parsed = self._parse_json_response(response)
@@ -128,7 +178,7 @@ class LongContextAgent:
                 messages = base_messages + [
                     {"role": "assistant", "content": response},
                     {"role": "user", "content": build_correction_prompt(
-                        error, attempt + 1, available_actions)},
+                        error, attempt + 1, available_actions, supports_reasoning=self.supports_reasoning)},
                 ]
                 continue
 
@@ -144,7 +194,7 @@ class LongContextAgent:
                 messages = base_messages + [
                     {"role": "assistant", "content": response},
                     {"role": "user", "content": build_correction_prompt(
-                        error, attempt + 1, available_actions)},
+                        error, attempt + 1, available_actions, supports_reasoning=self.supports_reasoning)},
                 ]
                 continue
 
@@ -156,15 +206,34 @@ class LongContextAgent:
                     self.issues[-1]["resolved"] = True
                     self.issues[-1]["resolved_on_attempt"] = attempt + 1
 
-            # Update token tracking
-            self._update_token_tracking(base_messages, response, timestep)
-
-            # Append to permanent history
+            # Append to permanent history (only role + content, no metadata)
             self.chat_history.append({"role": "user", "content": current_user_content})
             self.chat_history.append({"role": "assistant", "content": response})
 
-            # Log interaction
-            self._log_turn(response, timestep)
+            # Track token usage from API response
+            self._record_usage(usage, timestep)
+
+            # Determine `thinking`:
+            #   - Reasoning models: native reasoning tokens from the API
+            #   - Non-reasoning models: "thinking" field from the JSON response
+            if self.supports_reasoning:
+                thinking = message.get("reasoning", "")
+            else:
+                thinking = parsed.get("thinking", "")
+
+            # Log: input messages + unified thinking + action
+            if len(self.chat_history) == 2:
+                log_messages = [
+                    {"role": "system", "content": self.system_prompt},
+                    {"role": "user", "content": current_user_content},
+                ]
+            else:
+                log_messages = [
+                    {"role": "user", "content": current_user_content},
+                ]
+
+            self._log_turn(log_messages, thinking=thinking,
+                           action=action_str, step=timestep, usage=usage)
 
             return action
 
@@ -174,7 +243,23 @@ class LongContextAgent:
             skip = SkipVote(current_location=self.player.location)
             print(f"\n[LongContext FALLBACK] {self.player.name} defaulting to SKIP VOTE "
                   f"after 3 failed retries. Last error: {last_error}")
-            self._log_turn(f"[FALLBACK] SKIP VOTE. Last error: {last_error}", timestep)
+
+            self.chat_history.append({"role": "user", "content": current_user_content})
+            self.chat_history.append({"role": "assistant", "content": '{"action": "SKIP VOTE"}'})
+
+            if len(self.chat_history) == 2:
+                log_messages = [
+                    {"role": "system", "content": self.system_prompt},
+                    {"role": "user", "content": current_user_content},
+                ]
+            else:
+                log_messages = [
+                    {"role": "user", "content": current_user_content},
+                ]
+
+            self._log_turn(log_messages,
+                           thinking=f"[FALLBACK] {last_error}",
+                           action="SKIP VOTE", step=timestep)
             return skip
 
         raise RuntimeError(
@@ -186,11 +271,11 @@ class LongContextAgent:
     # API communication
     # -------------------------------------------------------------------------
 
-    async def _send_request(self, messages: list[dict]) -> str:
+    async def _send_request(self, messages: list[dict]) -> dict:
         """POST to OpenRouter. 5 API retries (same as LLMAgent).
 
         Returns:
-            Response content string
+            Dict with "message" (the assistant message) and "usage" (token counts from API).
 
         Raises:
             RuntimeError: After all retries exhausted
@@ -206,6 +291,11 @@ class LongContextAgent:
             "repetition_penalty": 1,
             "top_k": 0,
         }
+
+        if self.supports_reasoning:
+            payload["reasoning"] = {"enabled": True}
+        if self.supports_include_reasoning:
+            payload["include_reasoning"] = True
 
         last_error = None
         async with aiohttp.ClientSession() as session:
@@ -231,7 +321,6 @@ class LongContextAgent:
                             self._record_issue("api", last_error, attempt + 1,
                                                http_status=resp.status)
 
-                            # Don't retry on auth/permission errors
                             if resp.status in (401, 403, 404):
                                 break
                             continue
@@ -247,7 +336,16 @@ class LongContextAgent:
 
                         content = message.get("content", "")
                         if content and content.strip():
-                            return content
+                            # Build clean message dict; include reasoning only if present
+                            clean_msg = {"role": "assistant", "content": content}
+                            reasoning = message.get("reasoning")
+                            if reasoning:
+                                clean_msg["reasoning"] = reasoning
+
+                            # Capture usage from API response
+                            usage = data.get("usage", {})
+
+                            return {"message": clean_msg, "usage": usage}
 
                         last_error = "Empty response content"
                         self._record_issue("api", last_error, attempt + 1)
@@ -354,56 +452,54 @@ class LongContextAgent:
         return None
 
     # -------------------------------------------------------------------------
-    # Token tracking
+    # Token usage tracking (from API response)
     # -------------------------------------------------------------------------
 
-    def _update_token_tracking(self, messages: list[dict],
-                                response: str, timestep: int) -> None:
-        """Update token tracking for this turn."""
-        tokens_sent = count_tokens(messages, self.model)
-        tokens_recv = count_tokens(
-            [{"role": "assistant", "content": response}], self.model
-        )
-        self.tokens_this_turn = tokens_sent + tokens_recv
-        self.tokens_cumulative += self.tokens_this_turn
+    def _record_usage(self, usage: dict, timestep: int) -> None:
+        """Record token usage from the OpenRouter API response.
 
-        token_record: dict[str, Any] = {
+        The `usage` dict typically contains:
+        - prompt_tokens: tokens in the input
+        - completion_tokens: tokens in the output
+        - total_tokens: sum of the above
+        Plus provider-specific detail like completion_tokens_details.reasoning_tokens.
+        """
+        total = usage.get("total_tokens", 0)
+        self.tokens_cumulative += total
+
+        record = {
             "timestep": timestep,
-            "tokens_sent": tokens_sent,
-            "tokens_received": tokens_recv,
-            "tokens_total_this_turn": self.tokens_this_turn,
+            **usage,
             "tokens_cumulative": self.tokens_cumulative,
-            "history_length": len(self.chat_history),
+            "history_messages": len(self.chat_history),
         }
 
-        # Add context window info if available
+        # Warn if approaching context limit
         if self.context_length:
-            token_record["context_length"] = self.context_length
-            token_record["context_pct_used"] = float(round(
-                tokens_sent / self.context_length * 100.0, 1
-            ))
+            prompt_tokens = usage.get("prompt_tokens", 0)
+            if prompt_tokens:
+                pct = round(prompt_tokens / self.context_length * 100.0, 1)
+                record["context_pct_used"] = pct
+                if pct > 80:
+                    print(f"\n[LongContext INFO] {self.player.name} ({self.model}): "
+                          f"context {pct}% full "
+                          f"({prompt_tokens:,} / {self.context_length:,} tokens, turn {timestep})")
 
-            # Print warning if >80% full
-            if token_record["context_pct_used"] > 80:
-                print(f"\n[LongContext INFO] {self.player.name} ({self.model}): "
-                      f"context {token_record['context_pct_used']}% full "
-                      f"({tokens_sent:,} / {self.context_length:,} tokens used, turn {timestep})")
-
-        self.token_log.append(token_record)
+        self.usage_log.append(record)
 
     @property
     def token_summary(self) -> dict:
         """Return summary of token usage across all turns."""
         return {
             "total_tokens": self.tokens_cumulative,
-            "turns": len(self.token_log),
+            "turns": len(self.usage_log),
             "avg_tokens_per_turn": (
-                self.tokens_cumulative / max(len(self.token_log), 1)
+                self.tokens_cumulative / max(len(self.usage_log), 1)
             ),
             "max_tokens_single_turn": max(
-                (r["tokens_total_this_turn"] for r in self.token_log), default=0
+                (r.get("total_tokens", 0) for r in self.usage_log), default=0
             ),
-            "log": self.token_log,
+            "log": self.usage_log,
         }
 
     # -------------------------------------------------------------------------
@@ -433,8 +529,17 @@ class LongContextAgent:
     # Per-player JSONL logging
     # -------------------------------------------------------------------------
 
-    def _log_turn(self, response: str, step: int):
-        """Append one JSONL line to agent-logs.jsonl."""
+    def _log_turn(self, messages: list[dict], *, thinking: str, action: str,
+                  step: int, usage: Optional[dict] = None):
+        """Append one JSONL line to agent-logs.jsonl.
+
+        Log format is unified regardless of model type:
+        - `messages`: input context (system + user turns)
+        - `thinking`: the model's reasoning (from native reasoning tokens OR
+          from the "thinking" JSON field, depending on model capability)
+        - `action`: the matched action string
+        - `usage`: raw token usage from the OpenRouter API
+        """
         os.makedirs(os.path.dirname(self.log_path), exist_ok=True)
 
         entry = {
@@ -444,13 +549,13 @@ class LongContextAgent:
             "player": self.player.name,
             "identity": self.player.identity,
             "model": self.model,
-            "response": response,
-            "token_tracking": {
-                "this_turn": self.tokens_this_turn,
-                "cumulative": self.tokens_cumulative,
-                "history_messages": len(self.chat_history),
-            },
+            "messages": messages,
+            "thinking": thinking,
+            "action": action,
         }
+
+        if usage:
+            entry["usage"] = usage
 
         with open(self.log_path, "a") as f:
             json.dump(entry, f, separators=(",", ":"))

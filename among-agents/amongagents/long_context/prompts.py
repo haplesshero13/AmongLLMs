@@ -23,19 +23,46 @@ from amongagents.agent.prompts import (
 
 JSON_OUTPUT_FORMAT = """\
 OUTPUT FORMAT:
-You must respond with ONLY a JSON object — no other text, no markdown, no code blocks.
+Respond with ONLY a valid JSON object — no other text, no markdown, no code blocks.
 
 {{
   "thinking": "<your reasoning about the current situation and what to do>",
   "action": "<EXACTLY one action string copied from the Available actions list>"
 }}
-
-For SPEAK actions: "action": "SPEAK: <your message here>"
-For VOTE actions: "action": "VOTE Player X: color"
-For SKIP VOTE: "action": "SKIP VOTE"
-
-Do not include any text outside the JSON object.
 """
+
+JSON_OUTPUT_FORMAT_REASONING = """\
+OUTPUT FORMAT:
+Think before you act using your native reasoning output.
+Respond with ONLY a valid JSON object — no other text, no markdown, no code blocks.
+
+{{
+  "action": "<EXACTLY one action string copied from the Available actions list>"
+}}
+"""
+
+SHORT_CONTEXT_JSON_FORMAT = """\
+OUTPUT FORMAT:
+Respond with ONLY a valid JSON object — no other text, no markdown, no code blocks.
+
+{{
+  "memory": "<concise summary of key observations, suspicions, and past events you want to remember>",
+  "thinking": "<your reasoning about the current situation and what to do>",
+  "action": "<EXACTLY one action string copied from the Available actions list>"
+}}
+"""
+
+SHORT_CONTEXT_JSON_FORMAT_REASONING = """\
+OUTPUT FORMAT:
+Think before you act using your native reasoning output.
+Respond with ONLY a valid JSON object — no other text, no markdown, no code blocks.
+
+{{
+  "memory": "<concise summary of key observations, suspicions, and past events you want to remember>",
+  "action": "<EXACTLY one action string copied from the Available actions list>"
+}}
+"""
+
 
 
 # =============================================================================
@@ -107,6 +134,7 @@ def build_system_prompt(
     kill_cooldown: int = 0,
     num_impostors: int = 1,
     num_players: int = 7,
+    supports_reasoning: bool = False,
 ) -> str:
     """Build the system prompt for a player.
     
@@ -127,6 +155,8 @@ def build_system_prompt(
         num_players=num_players,
     )
     
+    output_format_prompt = JSON_OUTPUT_FORMAT_REASONING if supports_reasoning else JSON_OUTPUT_FORMAT
+
     if player.identity == "Crewmate":
         system_prompt = LONG_CONTEXT_CREWMATE_SYSTEM_PROMPT.format(**prompt_vars)
         
@@ -136,8 +166,10 @@ def build_system_prompt(
                 JSON_OUTPUT_FORMAT,
                 PERSONALITY_PROMPT.format(
                     personality=CrewmatePersonalities[player.personality]
-                ) + "\n\n" + JSON_OUTPUT_FORMAT
+                ) + "\n\n" + output_format_prompt
             )
+        else:
+            system_prompt = system_prompt.replace(JSON_OUTPUT_FORMAT, output_format_prompt)
             
     elif player.identity == "Impostor":
         # Format teammate information
@@ -159,8 +191,10 @@ def build_system_prompt(
                 JSON_OUTPUT_FORMAT,
                 PERSONALITY_PROMPT.format(
                     personality=ImpostorPersonalities[player.personality]
-                ) + "\n\n" + JSON_OUTPUT_FORMAT
+                ) + "\n\n" + output_format_prompt
             )
+        else:
+            system_prompt = system_prompt.replace(JSON_OUTPUT_FORMAT, output_format_prompt)
     else:
         raise ValueError(f"Unknown player identity: {player.identity}")
     
@@ -180,7 +214,7 @@ def build_user_turn(timestep: int, all_info: str) -> str:
     return f"=== Turn {timestep} ===\n{all_info}"
 
 
-def build_correction_prompt(error_message: str, attempt: int, available_actions: list) -> str:
+def build_correction_prompt(error_message: str, attempt: int, available_actions: list, supports_reasoning: bool = False) -> str:
     """Build a correction prompt for retry attempts.
     
     Args:
@@ -193,20 +227,67 @@ def build_correction_prompt(error_message: str, attempt: int, available_actions:
     """
     action_list = "\n".join([f"  - {repr(a)}" for a in available_actions])
     
+    if supports_reasoning:
+        json_req = '{"action": "<EXACTLY one action from the list below>"}'
+    else:
+        json_req = '{"thinking": "<your reasoning>", "action": "<EXACTLY one action from the list below>"}'
+
     return f"""\
-Your response could not be parsed correctly.
+Attempt {attempt}/3. Error: {error_message}
 
-Attempt {attempt}/3.
-Error: {error_message}
+Respond with ONLY a valid JSON object: {json_req}
 
-You MUST respond with a valid JSON object:
-{{
-  "thinking": "<your reasoning>",
-  "action": "<EXACTLY one of the following>"
-}}
-
-Available actions (copy the action string exactly):
+Available actions (copy exactly):
 {action_list}
-
-Do not include any text outside the JSON object.
 """
+
+
+def build_short_context_user_turn(timestep: int, all_info: str, memory: str) -> str:
+    """Build the user message for a short-context turn (includes memory).
+
+    Args:
+        timestep: Current game timestep
+        all_info: The player's all_info_prompt() output
+        memory: Carried-over memory from previous turns
+
+    Returns:
+        Formatted user message content
+    """
+    return f"=== Turn {timestep} ===\n{all_info}\nPrevious memory:\n{memory}\n"
+
+
+def build_system_prompt_short_context(
+    player,
+    list_of_impostors: list[str],
+    kill_cooldown: int = 0,
+    num_impostors: int = 1,
+    num_players: int = 7,
+    supports_reasoning: bool = False,
+) -> str:
+    """Build system prompt for ShortContextAgent (uses memory-based JSON format).
+
+    Same as build_system_prompt but injects SHORT_CONTEXT_JSON_FORMAT
+    (which includes a "memory" field) instead of JSON_OUTPUT_FORMAT.
+    """
+    # Build the base prompt using the standard function (always non-reasoning
+    # so the prompt contains JSON_OUTPUT_FORMAT, which we then swap out).
+    system_prompt = build_system_prompt(
+        player=player,
+        list_of_impostors=list_of_impostors,
+        kill_cooldown=kill_cooldown,
+        num_impostors=num_impostors,
+        num_players=num_players,
+        supports_reasoning=False,
+    )
+
+    # Replace with the short-context JSON format (includes memory field).
+    # Note: .format() is needed because the constants use {{ }} for literal braces,
+    # but build_system_prompt already called .format() so the prompt has single braces.
+    short_fmt = SHORT_CONTEXT_JSON_FORMAT_REASONING if supports_reasoning else SHORT_CONTEXT_JSON_FORMAT
+    formatted_std = JSON_OUTPUT_FORMAT.format()
+    formatted_short = short_fmt.format()
+
+    system_prompt = system_prompt.replace(formatted_std, formatted_short)
+
+    return system_prompt
+
