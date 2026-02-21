@@ -43,10 +43,16 @@ Run a single game with the UI enabled:
 uv run main.py --num_games 1 --display_ui True
 ```
 
-Run a game using long-context agents (multi-turn conversation format):
+Run a game using long-context agents (multi-turn conversation format, keeps full history):
 
 ```bash
 uv run main.py --num_games 1 --long_context
+```
+
+Run a game using short-context agents (JSON output + memory-based context, no full history):
+
+```bash
+uv run main.py --num_games 1 --short_context
 ```
 
 Run 10 games with free models (using Llama or GPT-based open-source models):
