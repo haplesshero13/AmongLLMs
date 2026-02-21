@@ -17,10 +17,12 @@ from amongagents.agent.prompts import (
 )
 from amongagents.envs.configs.agent_config import (
     ALL_LLM,
+    ALL_LONG_CONTEXT,
     ALL_RANDOM,
     CREWMATE_LLM,
     IMPOSTOR_LLM,
 )
+from amongagents.long_context import LongContextAgent
 from amongagents.envs.configs.game_config import FIVE_MEMBER_GAME, SEVEN_MEMBER_GAME
 from amongagents.envs.action import AttemptedAction
 from amongagents.envs.map import Map, Spaceship
@@ -210,6 +212,17 @@ class AmongUs:
                     num_impostors=self.game_config["num_impostors"],
                     num_players=self.game_config["num_players"],
                 ),
+                "LongContext": lambda player, model=None: LongContextAgent(
+                    player,
+                    tools,
+                    self.game_index,
+                    self.agent_config,
+                    self.list_of_impostors,
+                    model=model,
+                    kill_cooldown=self.game_config["kill_cooldown"],
+                    num_impostors=self.game_config["num_impostors"],
+                    num_players=self.game_config["num_players"],
+                ),
                 "Random": lambda player, model=None: RandomAgent(player),
             }
             self.agents = []
@@ -274,6 +287,18 @@ class AmongUs:
 
         # Generate enhanced summary data
         self.add_enhanced_summary_data(winner, winner_reason_map[winner])
+
+        # Add turn-by-turn action log
+        game_key = f"Game {self.game_index}"
+        self.summary_json[game_key]["turn_log"] = [
+            {
+                "timestep": entry["timestep"],
+                "phase": entry["phase"],
+                "player": entry["player"].name if hasattr(entry["player"], "name") else str(entry["player"]),
+                "action": str(entry["action"]),
+            }
+            for entry in self.activity_log
+        ]
 
         # add to summary json
         self.summary_json[f"Game {self.game_index}"]["winner"] = winner

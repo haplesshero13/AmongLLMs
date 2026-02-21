@@ -164,6 +164,11 @@ if __name__ == "__main__":
     parser.add_argument(
         "--tournament_style", type=str, default="random", help="random or 1on1."
     )
+    parser.add_argument(
+        "--long_context",
+        action="store_true",
+        help="Use LongContextAgent instead of standard LLMAgent (multi-turn conversation format).",
+    )
     args = parser.parse_args()
 
     # Set game config based on size
@@ -203,4 +208,11 @@ if __name__ == "__main__":
             sys.exit(1)
 
     ARGS["tournament_style"] = args.tournament_style
+
+    # Handle long_context agent type
+    if args.long_context:
+        ARGS["agent_config"]["Impostor"] = "LongContext"
+        ARGS["agent_config"]["Crewmate"] = "LongContext"
+        print("Using LongContextAgent")
+
     asyncio.run(multiple_games(experiment_name=args.name, num_games=args.num_games))
