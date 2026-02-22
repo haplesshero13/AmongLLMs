@@ -108,9 +108,11 @@ class LongContextAgent:
         self._setup_done = True
 
         if self.model_info:
-            print(f"  [{self.player.name}] {self.model}: "
-                  f"ctx={self.model_info.context_length:,}, "
-                  f"reasoning={self.supports_reasoning}")
+            print(
+                f"  [{self.player.name}] {self.model}: "
+                f"ctx={self.model_info.context_length:,}, "
+                f"reasoning={self.supports_reasoning}"
+            )
 
     # -------------------------------------------------------------------------
     # Convenience properties derived from model_info
@@ -173,12 +175,24 @@ class LongContextAgent:
             if parsed is None:
                 error = f"Response is not valid JSON. Got: {response[:150]!r}"
                 last_error = error
-                self._record_issue("format", error, attempt + 1, timestep=timestep,
-                                   response_snippet=response[:200])
+                self._record_issue(
+                    "format",
+                    error,
+                    attempt + 1,
+                    timestep=timestep,
+                    response_snippet=response[:200],
+                )
                 messages = base_messages + [
                     {"role": "assistant", "content": response},
-                    {"role": "user", "content": build_correction_prompt(
-                        error, attempt + 1, available_actions, supports_reasoning=self.supports_reasoning)},
+                    {
+                        "role": "user",
+                        "content": build_correction_prompt(
+                            error,
+                            attempt + 1,
+                            available_actions,
+                            supports_reasoning=self.supports_reasoning,
+                        ),
+                    },
                 ]
                 continue
 
@@ -186,22 +200,38 @@ class LongContextAgent:
             action_str = parsed.get("action", "")
             action = self._match_action(action_str, available_actions)
             if action is None:
-                error = (f"Action '{action_str[:80]}' not found in available actions. "
-                         f"Available: {[repr(a) for a in available_actions[:5]]}")
+                error = (
+                    f"Action '{action_str[:80]}' not found in available actions. "
+                    f"Available: {[repr(a) for a in available_actions[:5]]}"
+                )
                 last_error = error
-                self._record_issue("format", error, attempt + 1, timestep=timestep,
-                                   response_snippet=response[:200])
+                self._record_issue(
+                    "format",
+                    error,
+                    attempt + 1,
+                    timestep=timestep,
+                    response_snippet=response[:200],
+                )
                 messages = base_messages + [
                     {"role": "assistant", "content": response},
-                    {"role": "user", "content": build_correction_prompt(
-                        error, attempt + 1, available_actions, supports_reasoning=self.supports_reasoning)},
+                    {
+                        "role": "user",
+                        "content": build_correction_prompt(
+                            error,
+                            attempt + 1,
+                            available_actions,
+                            supports_reasoning=self.supports_reasoning,
+                        ),
+                    },
                 ]
                 continue
 
             # SUCCESS
             if attempt > 0:
-                print(f"[LongContext Retry SUCCESS attempt {attempt+1}] "
-                      f"{self.player.name}: {repr(action)}")
+                print(
+                    f"[LongContext Retry SUCCESS attempt {attempt + 1}] "
+                    f"{self.player.name}: {repr(action)}"
+                )
                 if self.issues:
                     self.issues[-1]["resolved"] = True
                     self.issues[-1]["resolved_on_attempt"] = attempt + 1
@@ -232,8 +262,13 @@ class LongContextAgent:
                     {"role": "user", "content": current_user_content},
                 ]
 
-            self._log_turn(log_messages, thinking=thinking,
-                           action=action_str, step=timestep, usage=usage)
+            self._log_turn(
+                log_messages,
+                thinking=thinking,
+                action=action_str,
+                step=timestep,
+                usage=usage,
+            )
 
             return action
 
@@ -241,11 +276,15 @@ class LongContextAgent:
         is_voting = all(a.name in ["VOTE", "SKIP VOTE"] for a in available_actions)
         if is_voting:
             skip = SkipVote(current_location=self.player.location)
-            print(f"\n[LongContext FALLBACK] {self.player.name} defaulting to SKIP VOTE "
-                  f"after 3 failed retries. Last error: {last_error}")
+            print(
+                f"\n[LongContext FALLBACK] {self.player.name} defaulting to SKIP VOTE "
+                f"after 3 failed retries. Last error: {last_error}"
+            )
 
             self.chat_history.append({"role": "user", "content": current_user_content})
-            self.chat_history.append({"role": "assistant", "content": '{"action": "SKIP VOTE"}'})
+            self.chat_history.append(
+                {"role": "assistant", "content": '{"action": "SKIP VOTE"}'}
+            )
 
             if len(self.chat_history) == 2:
                 log_messages = [
@@ -257,9 +296,12 @@ class LongContextAgent:
                     {"role": "user", "content": current_user_content},
                 ]
 
-            self._log_turn(log_messages,
-                           thinking=f"[FALLBACK] {last_error}",
-                           action="SKIP VOTE", step=timestep)
+            self._log_turn(
+                log_messages,
+                thinking=f"[FALLBACK] {last_error}",
+                action="SKIP VOTE",
+                step=timestep,
+            )
             return skip
 
         raise RuntimeError(
@@ -302,8 +344,7 @@ class LongContextAgent:
             for attempt in range(5):
                 try:
                     async with session.post(
-                        self.api_url, headers=headers,
-                        data=json.dumps(payload)
+                        self.api_url, headers=headers, data=json.dumps(payload)
                     ) as resp:
                         text = await resp.text()
 
@@ -318,8 +359,9 @@ class LongContextAgent:
                                 pass
 
                             last_error = f"HTTP {resp.status}: {error_msg}"
-                            self._record_issue("api", last_error, attempt + 1,
-                                               http_status=resp.status)
+                            self._record_issue(
+                                "api", last_error, attempt + 1, http_status=resp.status
+                            )
 
                             if resp.status in (401, 403, 404):
                                 break
@@ -352,8 +394,9 @@ class LongContextAgent:
 
                 except Exception as e:
                     last_error = f"Exception: {str(e)}"
-                    self._record_issue("api", last_error, attempt + 1,
-                                       exception_type=type(e).__name__)
+                    self._record_issue(
+                        "api", last_error, attempt + 1, exception_type=type(e).__name__
+                    )
                     continue
 
         raise RuntimeError(
@@ -378,7 +421,7 @@ class LongContextAgent:
             pass
 
         # 2. Extract ```json ... ``` block
-        code_match = re.search(r'```(?:json)?\s*(\{.*?\})\s*```', response, re.DOTALL)
+        code_match = re.search(r"```(?:json)?\s*(\{.*?\})\s*```", response, re.DOTALL)
         if code_match:
             try:
                 return json.loads(code_match.group(1))
@@ -386,7 +429,7 @@ class LongContextAgent:
                 pass
 
         # 3. Extract first { ... } block (non-greedy)
-        brace_match = re.search(r'\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}', response, re.DOTALL)
+        brace_match = re.search(r"\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}", response, re.DOTALL)
         if brace_match:
             try:
                 return json.loads(brace_match.group(0))
@@ -420,8 +463,9 @@ class LongContextAgent:
 
             # Handle SPEAK action specially
             if action.name == "SPEAK" and "speak" in action_str_lower:
-                speak_match = re.search(r'speak[:\s]+(.+)', action_str,
-                                        re.IGNORECASE | re.DOTALL)
+                speak_match = re.search(
+                    r"speak[:\s]+(.+)", action_str, re.IGNORECASE | re.DOTALL
+                )
                 if speak_match:
                     action.provide_message(speak_match.group(1).strip())
                     return action
@@ -429,19 +473,23 @@ class LongContextAgent:
             # Handle CALL MEETING / REPORT DEAD BODY
             if action.name == "CALL MEETING":
                 if hasattr(action, "is_report") and action.is_report:
-                    if re.search(r'REPORT\s+(?:DEAD\s+)?BODY', action_str, re.IGNORECASE):
+                    if re.search(
+                        r"REPORT\s+(?:DEAD\s+)?BODY", action_str, re.IGNORECASE
+                    ):
                         return action
                 elif hasattr(action, "is_report") and not action.is_report:
-                    if re.search(r'CALL\s+MEETING', action_str, re.IGNORECASE):
+                    if re.search(r"CALL\s+MEETING", action_str, re.IGNORECASE):
                         return action
 
             # Handle VOTE action specially
             if action.name == "VOTE":
-                vote_match = re.search(r'vote\s+(.+)', action_str, re.IGNORECASE)
+                vote_match = re.search(r"vote\s+(.+)", action_str, re.IGNORECASE)
                 if vote_match:
                     target = vote_match.group(1).strip().lower()
-                    if (hasattr(action, "other_player") and
-                            action.other_player.name.lower() in target):
+                    if (
+                        hasattr(action, "other_player")
+                        and action.other_player.name.lower() in target
+                    ):
                         return action
 
             # Handle SKIP VOTE
@@ -481,9 +529,11 @@ class LongContextAgent:
                 pct = round(prompt_tokens / self.context_length * 100.0, 1)
                 record["context_pct_used"] = pct
                 if pct > 80:
-                    print(f"\n[LongContext INFO] {self.player.name} ({self.model}): "
-                          f"context {pct}% full "
-                          f"({prompt_tokens:,} / {self.context_length:,} tokens, turn {timestep})")
+                    print(
+                        f"\n[LongContext INFO] {self.player.name} ({self.model}): "
+                        f"context {pct}% full "
+                        f"({prompt_tokens:,} / {self.context_length:,} tokens, turn {timestep})"
+                    )
 
         self.usage_log.append(record)
 
@@ -506,8 +556,15 @@ class LongContextAgent:
     # Issue tracking (same interface as LLMAgent)
     # -------------------------------------------------------------------------
 
-    def _record_issue(self, issue_type, error_msg, attempt,
-                      timestep=None, response_snippet=None, **kwargs):
+    def _record_issue(
+        self,
+        issue_type,
+        error_msg,
+        attempt,
+        timestep=None,
+        response_snippet=None,
+        **kwargs,
+    ):
         """Record an issue (API error or format error) for later reporting."""
         issue = {
             "type": issue_type,
@@ -529,8 +586,15 @@ class LongContextAgent:
     # Per-player JSONL logging
     # -------------------------------------------------------------------------
 
-    def _log_turn(self, messages: list[dict], *, thinking: str, action: str,
-                  step: int, usage: Optional[dict] = None):
+    def _log_turn(
+        self,
+        messages: list[dict],
+        *,
+        thinking: str,
+        action: str,
+        step: int,
+        usage: Optional[dict] = None,
+    ):
         """Append one JSONL line to agent-logs.jsonl.
 
         Log format is unified regardless of model type:
@@ -570,4 +634,5 @@ class LongContextAgent:
     def choose_observation_location(self, map):
         """Called by game.py when action is ViewMonitor."""
         import random
+
         return random.choice(list(map))

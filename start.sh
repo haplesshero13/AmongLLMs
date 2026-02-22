@@ -1,0 +1,1 @@
+uv run main.py --num_games 1 --models "openai/gpt-oss-120b","moonshotai/kimi-k2.5","mistralai/mistral-large-2512","google/gemini-3.1-pro-preview","meta-llama/llama-3.3-70b-instruct","anthropic/claude-sonnet-4.6","qwen/qwen3.5-397b-a17b" --unique --game_size 7 --long_context --name ai_vs_ai_trials

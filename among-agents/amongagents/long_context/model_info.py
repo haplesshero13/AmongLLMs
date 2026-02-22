@@ -14,10 +14,13 @@ _model_info_cache: dict[str, "ModelInfo"] = {}
 @dataclass
 class ModelInfo:
     """Properties fetched from the OpenRouter /api/v1/models endpoint."""
+
     context_length: int
     max_completion_tokens: Optional[int] = None
-    supports_reasoning: bool = False          # "reasoning" in supported_parameters
-    supports_include_reasoning: bool = False   # "include_reasoning" in supported_parameters
+    supports_reasoning: bool = False  # "reasoning" in supported_parameters
+    supports_include_reasoning: bool = (
+        False  # "include_reasoning" in supported_parameters
+    )
     supported_parameters: list[str] = field(default_factory=list)
 
 
@@ -39,6 +42,7 @@ async def get_model_info(model: str, api_key: str) -> Optional[ModelInfo]:
 
     try:
         import aiohttp
+
         url = "https://openrouter.ai/api/v1/models"
         headers = {"Authorization": f"Bearer {api_key}"} if api_key else {}
 
@@ -57,9 +61,12 @@ async def get_model_info(model: str, api_key: str) -> Optional[ModelInfo]:
 
                             info = ModelInfo(
                                 context_length=int(ctx_len),
-                                max_completion_tokens=top_provider.get("max_completion_tokens"),
+                                max_completion_tokens=top_provider.get(
+                                    "max_completion_tokens"
+                                ),
                                 supports_reasoning="reasoning" in supported,
-                                supports_include_reasoning="include_reasoning" in supported,
+                                supports_include_reasoning="include_reasoning"
+                                in supported,
                                 supported_parameters=supported,
                             )
                             _model_info_cache[model] = info

@@ -305,7 +305,9 @@ class AmongUs:
             {
                 "timestep": entry["timestep"],
                 "phase": entry["phase"],
-                "player": entry["player"].name if hasattr(entry.get("player"), "name") else str(entry.get("player")),
+                "player": entry["player"].name
+                if hasattr(entry.get("player"), "name")
+                else str(entry.get("player")),
                 "action": str(entry["action"]),
             }
             for entry in self.activity_log
@@ -448,9 +450,7 @@ class AmongUs:
         action = await agent.choose_action(self.timestep)
         observation_location = ""
         if action.name == "ViewMonitor":
-            result = agent.choose_observation_location(
-                self.map.ship_map.nodes
-            )
+            result = agent.choose_observation_location(self.map.ship_map.nodes)
             if asyncio.iscoroutine(result):
                 observation_location = await result
             else:
