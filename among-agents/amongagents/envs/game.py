@@ -443,10 +443,10 @@ class AmongUs:
     async def task_phase_step(self):
         # Display any pending system announcement at the start of task phase
         if self.pending_system_announcement:
-            # Send to all alive players as a system message
+            # Send to all players as a system message
             for player in self.players:
-                if player.is_alive:
-                    player.receive(self.pending_system_announcement, info_type="action")
+                # if player.is_alive:
+                player.receive(self.pending_system_announcement, info_type="action")
             print(self.pending_system_announcement)
             self.pending_system_announcement = None
 
@@ -593,7 +593,13 @@ class AmongUs:
         if eliminated_player:
             eliminated_player.is_alive = False
             eliminated_player.reported_death = True
-            system_announcement += f"{eliminated_player.name} was ejected!\n"
+
+            # Put the player's color into the announcement
+            ejection_text = f"{eliminated_player.name} ({eliminated_player.color}) was ejected!"
+            system_announcement += f"{ejection_text}\n"
+
+            if self.UI and hasattr(self.UI, "show_ejected_player"):
+                self.UI.show_ejected_player(ejection_text)
         else:
             system_announcement += "No one was ejected.\n"
 

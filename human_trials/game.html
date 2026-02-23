@@ -462,12 +462,21 @@
             <button id="startGameBtn" onclick="startNewGame()">Start New Game</button>
              <!-- Add options for different game sizes later if needed -->
         </div>
-
+        
         <div class="game-screen" id="gameScreen">
             <h1>Game <span id="gameId"></span></h1>
-            <div id="spectatorFeed" class="section" style="display: none; border: 2px solid var(--accent-color); background: rgba(204, 120, 92, 0.1);">
-              <h2 style="color: var(--accent-color);">Spectator Mode</h2>
-              <div id="aiThoughts" style="font-family: 'Courier New', monospace; font-size: 0.9em; white-space: pre-wrap;"></div>
+            <div id="spectatorFeed" class="section"
+                style="display: none; border: 2px solid var(--accent-color); background: rgba(204, 120, 92, 0.1);">
+                <h2 style="color: var(--accent-color);">Spectator Mode</h2>
+                <div id="aiThoughts" style="font-family: 'Courier New', monospace; font-size: 0.9em; white-space: pre-wrap;">
+                </div>
+            </div>
+        
+            <div id="ejectionAnnouncement"
+                style="display:none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: rgba(0, 0, 0, 0.9); border: 4px solid var(--error-color); padding: 40px; border-radius: 20px; text-align: center; z-index: 10000; width: 80%; max-width: 600px; box-shadow: 0 0 50px rgba(241, 77, 67, 0.6);">
+                <h2 id="ejectionText"
+                    style="color: #fff; font-family: 'Segoe UI', sans-serif; font-size: 1.5em; margin: 0; text-transform: uppercase; letter-spacing: 3px;">
+                </h2>
             </div>
 
             <div class="status-bar">
@@ -891,6 +900,38 @@
           if (!checkRequiredElements()) {
               return;
           }
+          // ----------- Ejection Message Popup Logic -----------
+          const ejectionBox = document.getElementById('ejectionAnnouncement');
+          const ejectionWords = document.getElementById('ejectionText');
+
+          const player_info = state.player_info || '';
+          const player_info_lc = player_info.toLowerCase();
+
+          const isEjected = player_info_lc.includes("was ejected") || 
+          player_info_lc.includes("voted out") ||
+          player_info_lc.includes("no one was ejected");
+
+          if (isEjected && ejectionBox.style.display !== "block") {
+            ejectionBox.style.display = "block";
+
+            const infoLines = player_info.split('\n');
+            const results = infoLines.find((line) => {
+                const l = line.toLowerCase();
+                return l.includes("was ejected") || 
+                l.includes("voted out") || 
+                l.includes("no one was ejected") ||
+                l.includes("voting results are in");;
+            }) ||  "Voting results are in.";
+
+            ejectionWords.textContent = results;
+
+            // Close box after 6 seconds
+            setTimeout(() => {
+                ejectionBox.style.display = "none";
+            }, 6000);
+          }
+          // --------- End of Ejection Message Logic ---------
+;
           if (state.waiting_for_monitor_room && state.monitor_rooms) {
             if (!waitingForMonitorRoom) {
               waitingForMonitorRoom = true;
