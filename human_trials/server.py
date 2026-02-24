@@ -269,7 +269,6 @@ async def get_game_state(game_id: int):
         if human_agent in game.agents:
             human_state = human_agent.get_current_state_for_web()
             state["player_info"] = human_state.get("player_info", "")
-
     if game.current_phase == "meeting":
         # Everyone is moved to Cafeteria in meeting_phase(), but you probably want "alive attendees"
         alive = [p.name for p in game.players if getattr(p, "is_alive", False)]

@@ -570,6 +570,9 @@
         let humanPlayerInfo = null;
         let waitingForMonitorRoom = false;
 
+        // Flag to prevent ejection popup retriggering after initial display
+        let lastEjectedPlayer = null;
+
 
         // Add error checking for DOM elements
         function checkRequiredElements() {
@@ -911,9 +914,7 @@
           player_info_lc.includes("voted out") ||
           player_info_lc.includes("no one was ejected");
 
-          if (isEjected && ejectionBox.style.display !== "block") {
-            ejectionBox.style.display = "block";
-
+          if (isEjected) {
             const infoLines = player_info.split('\n');
             const results = infoLines.find((line) => {
                 const l = line.toLowerCase();
@@ -921,15 +922,22 @@
                 l.includes("voted out") || 
                 l.includes("no one was ejected") ||
                 l.includes("voting results are in");;
-            }) ||  "Voting results are in.";
+            });
 
-            ejectionWords.textContent = results;
+            // Show once and only show the popup if we have new ejection results to display
+            if (results && results !== lastEjectedPlayer) {
+                lastEjectedPlayer = results; // Locks message to only trigger and display once
+                ejectionWords.textContent = results;
+                ejectionBox.style.display = "block";
+            }
 
-            // Close box after 6 seconds
+            // Close box after 5 seconds
             setTimeout(() => {
                 ejectionBox.style.display = "none";
-            }, 6000);
-          }
+            }, 5000);
+          } else {
+            lastEjectedPlayer = null; // Reset the flag when the message finally leaves the server's text buffer
+        }
           // --------- End of Ejection Message Logic ---------
 ;
           if (state.waiting_for_monitor_room && state.monitor_rooms) {
