@@ -263,6 +263,9 @@ async def get_game_state(game_id: int):
         ),  # Add max_timesteps from game config
     }
 
+    # Always send ejection annoucement regardless if player is alive or spectating, so the front-end can decide whether to show it in the banner or not based on if it's the human's turn and if they're alive
+    state["ejection_announcement"] = game.pending_system_announcement or ""
+
     # For Ejection Popup for front-end catching vote tallys and ejection results
     if human_player_result:
         human_agent, _ = human_player_result
