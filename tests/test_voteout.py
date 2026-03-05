@@ -632,6 +632,104 @@ class TestEdgeCases:
         assert game.pending_system_announcement is not None
         assert len(game.pending_system_announcement) > 0
 
+#============================================================
+# 9. Ejection announcement content (drives frontend banner)
+# ============================================================
+class TestEjectionAnnouncement:
+    def test_ejection_announcement_says_was_ejected(self):
+        players = make_players(3, 1)
+        game = FakeGame(players)
+        target = players[0]
+
+        build_votes(game, target, ["Player 2", "Player 3", "Player 4"])
+        game.voteout()
+
+        assert "was ejected" in game.pending_system_announcement
+
+    def test_no_ejection_announcement_says_no_one(self):
+        players = make_players(3, 1)
+        game = FakeGame(players)
+
+        game.vote_info_one_round = {"Player 1": "SKIP", "Player 2": "SKIP"}
+        game.voteout()
+
+        assert "No one was ejected" in game.pending_system_announcement
+
+    def test_tie_announcement_says_no_one(self):
+        players = make_players(3, 1)
+        game = FakeGame(players)
+
+        game.votes[players[0]] = 2
+        game.votes[players[1]] = 2
+        game.vote_info_one_round = {
+            "Player 3": players[0].name,
+            "Player 4": players[0].name,
+            "Player 1": players[1].name,
+            "Player 2": players[1].name,
+        }
+        game.voteout()
+
+        assert "No one was ejected" in game.pending_system_announcement
+
+    def test_announcement_contains_player_name(self):
+        players = make_players(3, 1)
+        game = FakeGame(players)
+        target = players[2]
+
+        build_votes(game, target, ["Player 1", "Player 4"])
+        game.voteout()
+
+        assert target.name in game.pending_system_announcement
+
+    def test_announcement_contains_player_color(self):
+        players = make_players(3, 1)
+        game = FakeGame(players)
+        target = players[0]  # color = "red"
+
+        build_votes(game, target, ["Player 2", "Player 3", "Player 4"])
+        game.voteout()
+
+        assert f"({target.color})" in game.pending_system_announcement
+
+    def test_announcement_not_none_after_any_vote(self):
+        """Frontend relies on this field existing — it should never be None after voteout."""
+        scenarios = [
+            {"skip": True},
+            {"tie": True},
+            {"eject": True},
+        ]
+        for scenario in scenarios:
+            players = make_players(3, 1)
+            game = FakeGame(players)
+
+            if scenario.get("skip"):
+                game.vote_info_one_round = {"Player 1": "SKIP"}
+            elif scenario.get("tie"):
+                game.votes[players[0]] = 2
+                game.votes[players[1]] = 2
+                game.vote_info_one_round = {
+                    "Player 3": players[0].name,
+                    "Player 4": players[0].name,
+                    "Player 1": players[1].name,
+                    "Player 2": players[1].name,
+                }
+            else:
+                build_votes(game, players[0], ["Player 2", "Player 3", "Player 4"])
+
+            game.voteout()
+            assert game.pending_system_announcement is not None, \
+                f"Announcement was None for scenario: {scenario}"
+
+    def test_announcement_is_string(self):
+        """Frontend calls .includes() on this — must be a string."""
+        players = make_players(3, 1)
+        game = FakeGame(players)
+
+        build_votes(game, players[0], ["Player 2", "Player 3", "Player 4"])
+        game.voteout()
+
+        assert isinstance(game.pending_system_announcement, str)
+
 
 if __name__ == "__main__":
     sys.exit(pytest.main([__file__, "-v"]))
