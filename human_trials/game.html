@@ -896,9 +896,7 @@
         let waitingForMonitorRoom = false;
 
         // Flag to prevent ejection popup retriggering after initial display
-        let lastEjectedPlayer = null;
-        let ejectionShowTime = 0; // ejection message display timestamp for auto-hide logic
-
+        let ejectionShown = false; 
 
         // Add error checking for DOM elements
         function checkRequiredElements() {
@@ -1232,14 +1230,16 @@
             // ----------- Ejection Message Popup Logic ----------- 
             const ejectionBox = document.getElementById('ejectionAnnouncement');
             const ejectionWords = document.getElementById('ejectionText');
-            const player_info = state.player_info || '';
+            const player_info = state.ejection_annoucement || state.player_info || ''; // state annoucement regardless state 
             const player_info_lc = player_info.toLowerCase();
 
             const isEjected = player_info_lc.includes("was ejected") ||
                 player_info_lc.includes("voted out") ||
                 player_info_lc.includes("no one was ejected");
 
-            if (isEjected) {
+            if (isEjected && !ejectionShown) {
+                ejectionShown = true; // Set the flag to prevent retriggering until we reset it
+
                 const infoLines = player_info.split('\n');
                 const results = infoLines.find((line) => {
                     const l = line.toLowerCase();
@@ -1250,10 +1250,7 @@
                 });
 
                 // Show once and only show the popup if we have new ejection results to display
-                if (results && results !== lastEjectedPlayer) {
-                    lastEjectedPlayer = results; // Locks message to only trigger and display once
-                    ejectionScreenDisplay = Date.now(); // Timestamp for when the ejection message was displayed (for auto-hide timing if desired)
-
+                if (results) {
                     const noneEjected = results.toLowerCase().includes("no one was ejected");
                     ejectionWords.textContent = results; // Set the text of the ejection results
 
@@ -1273,15 +1270,11 @@
                     setTimeout(() => {
                         // If not in ejection state and banner is showing, hide it
                         ejectionBox.style.display = "none";
-                        lastEjectedPlayer = null; // Reset the last ejected player after hiding
                     }, 5000);
                 }
-            } else {
-                // If not in ejection state and banner is showing, hide it
-                if (lastEjectedPlayer && (Date.now() - ejectionScreenDisplay > 5000)) {
-                    ejectionBox.style.display = "none"; // Hide the box if we're not in an ejection state
-                    lastEjectedPlayer = null; // Reset the last ejected player when we're no longer in an ejection state
-                }
+            } 
+            if (!isEjected) {
+                ejectionShown = false; // Reset the flag when we're no longer in an ejection state so it can trigger again on the next ejection
             }
              // --------- End of Ejection Message Logic ---------
             if (state.waiting_for_monitor_room && state.monitor_rooms) {
