@@ -597,11 +597,12 @@ class AmongUs:
             # Put the player's color into the announcement
             ejection_text = f"{eliminated_player.name} ({eliminated_player.color}) was ejected!"
             system_announcement += f"{ejection_text}\n"
-
-            if self.UI and hasattr(self.UI, "show_ejected_player"):
-                self.UI.show_ejected_player(ejection_text)
-        else:
-            system_announcement += "No one was ejected.\n"
+        else: 
+            ejection_text = "No one was ejected."
+            system_announcement += f"{ejection_text}\n"
+            
+        if self.UI and hasattr(self.UI, "show_ejected_player"):
+            self.UI.show_ejected_player(ejection_text)
 
         # Store the announcement to be shown at start of next task phase
         self.pending_system_announcement = system_announcement
