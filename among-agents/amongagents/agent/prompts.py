@@ -136,7 +136,8 @@ except through VIEW MONITOR in Security.
 # Role Prompts
 # =============================================================================
 
-IMPOSTOR_PROMPT = """
+IMPOSTOR_PROMPT = (
+    """
 You are {name}. You are an Impostor on the spaceship Skeld.
 There are {num_players} players, {num_impostors} Impostor(s).
 
@@ -144,7 +145,9 @@ There are {num_players} players, {num_impostors} Impostor(s).
 
 OBJECTIVE: Eliminate Crewmates until Impostors equal or outnumber Crewmates, before all tasks are completed.
 
-""" + GAME_END_CONDITIONS + """
+"""
+    + GAME_END_CONDITIONS
+    + """
 GAME PHASES:
 - Task Phase: Move around, perform fake tasks, and KILL isolated Crewmates. You can VENT to travel quickly between connected vent locations.
 - Meeting Phase: Discuss (SPEAK), then VOTE to eject a player or SKIP VOTE. Deceive others and redirect suspicion.
@@ -154,22 +157,32 @@ IMPOSTOR ABILITIES (only you can do these):
 - VENT: Travel instantly between connected vent locations
 - COMPLETE FAKE TASK: Pretend to do tasks (doesn't actually complete them)
 
-""" + SHARED_ABILITIES + """
+"""
+    + SHARED_ABILITIES
+    + """
 IMPORTANT:
 - WITNESSES can see your kills and report them! Kill only when isolated.
 - Voted-out players are EJECTED and do not leave behind a body. Only Impostor KILLS leave dead bodies that can be discovered and reported.
 
-""" + MAP_CONFIG + "\n" + CONNECTION_INFO + """
+"""
+    + MAP_CONFIG
+    + "\n"
+    + CONNECTION_INFO
+    + """
 Note: Only Impostors can KILL and VENT.
 """
+)
 
-CREWMATE_PROMPT = """
+CREWMATE_PROMPT = (
+    """
 You are {name}. You are a Crewmate on the spaceship Skeld.
 There are {num_players} players, {num_impostors} Impostor(s).
 
 OBJECTIVE: Complete all tasks OR identify and eject all Impostors before they eliminate enough Crewmates.
 
-""" + GAME_END_CONDITIONS + """
+"""
+    + GAME_END_CONDITIONS
+    + """
 ## IMPORTANT ##
 - Impostors KILL Crewmates in the same room ({kill_cooldown}-timestep cooldown between kills). If Impostors equal or outnumber Crewmates, you lose!
 - Impostors can VENT between non-adjacent rooms. If you see someone vent, they are an Impostor!
@@ -182,10 +195,28 @@ GAME PHASES:
 CREWMATE ABILITY (only Crewmates can do this):
 - COMPLETE TASK: Do your assigned tasks to help the crew win
 
-""" + SHARED_ABILITIES + """
-""" + MAP_CONFIG + "\n" + CONNECTION_INFO + """
+"""
+    + SHARED_ABILITIES
+    + """
+"""
+    + MAP_CONFIG
+    + "\n"
+    + CONNECTION_INFO
+    + """
 Note: Only Impostors can KILL and VENT. If you see either, they are definitely an Impostor!
 """
+)
+
+# =============================================================================
+# Base Prompt Aliases (for composition by other modules)
+# =============================================================================
+# The original IMPOSTOR_PROMPT / CREWMATE_PROMPT contain only role-specific
+# content and do NOT include output format instructions.  Output format is
+# appended separately (e.g. IMPOSTOR_EXAMPLE in LLMAgent, or JSON_OUTPUT_FORMAT
+# in LongContextAgent).  These _BASE aliases make that intention explicit.
+
+IMPOSTOR_PROMPT_BASE = IMPOSTOR_PROMPT
+CREWMATE_PROMPT_BASE = CREWMATE_PROMPT
 
 # =============================================================================
 # Strategy Tips (included in original mode, excluded in neutral mode)

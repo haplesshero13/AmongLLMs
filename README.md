@@ -43,6 +43,18 @@ Run a single game with the UI enabled:
 uv run main.py --num_games 1 --display_ui True
 ```
 
+Run a game using long-context agents (multi-turn conversation format, keeps full history):
+
+```bash
+uv run main.py --num_games 1 --long_context
+```
+
+Run a game using short-context agents (JSON output + memory-based context, no full history):
+
+```bash
+uv run main.py --num_games 1 --short_context
+```
+
 Run 10 games with free models (using Llama or GPT-based open-source models):
 
 ```bash
@@ -109,6 +121,19 @@ In `human_trials/config.py`, the `assignment_mode` key in `agent_config` control
 > **Note:** When using `unique` mode, ensure you provide enough models in the `IMPOSTOR_LLM_CHOICES` and `CREWMATE_LLM_CHOICES` lists to cover all AI agents (e.g., 2 impostors and 4-5 crewmates depending on game size).
 
 The interface provides a real-time view of the game state, allows you to make moves, participate in meetings, and vote on suspected impostors just like the AI agents.
+
+## Testing
+
+```bash
+# Run all unit tests (skips integration tests by default)
+uv run pytest
+
+# Run integration tests (requires OPENROUTER_API_KEY)
+uv run pytest -m integration
+
+# Run all tests including integration
+uv run pytest -m ""
+```
 
 ## Deception ELO
 

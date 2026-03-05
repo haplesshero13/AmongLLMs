@@ -24,6 +24,7 @@ human_action_futures: Dict[int, asyncio.Future] = {}
 human_monitor_futures = {}
 human_monitor_rooms = {}
 
+
 class Agent:
     def __init__(self, player):
         self.player = player
@@ -433,7 +434,9 @@ class LLMAgent(Agent):
             if action.name == "CALL MEETING":
                 # Only match "REPORT BODY" if this action is a report
                 if hasattr(action, "is_report") and action.is_report:
-                    if re.search(r"REPORT\s+(?:DEAD\s+)?BODY", output_action, re.IGNORECASE):
+                    if re.search(
+                        r"REPORT\s+(?:DEAD\s+)?BODY", output_action, re.IGNORECASE
+                    ):
                         return action, memory, summarization, None
                 # Only match "CALL MEETING" if this action is NOT a report (button press)
                 elif hasattr(action, "is_report") and not action.is_report:
@@ -441,8 +444,11 @@ class LLMAgent(Agent):
                         return action, memory, summarization, None
                 # Fallback for legacy/unknown cases
                 else:
-                    if re.search(r"CALL\s+MEETING", output_action, re.IGNORECASE) or \
-                       re.search(r"REPORT\s+(?:DEAD\s+)?BODY", output_action, re.IGNORECASE):
+                    if re.search(
+                        r"CALL\s+MEETING", output_action, re.IGNORECASE
+                    ) or re.search(
+                        r"REPORT\s+(?:DEAD\s+)?BODY", output_action, re.IGNORECASE
+                    ):
                         return action, memory, summarization, None
 
             # Handle VOTE action specially - look for "VOTE Player X"
@@ -933,7 +939,9 @@ class HumanAgent(Agent):
                 try:
                     index = int(input())
                     if index < 0 or index >= len(map_list):
-                        print(f"Invalid input. Please enter a number between 0 and {len(map_list) - 1}.")
+                        print(
+                            f"Invalid input. Please enter a number between 0 and {len(map_list) - 1}."
+                        )
                     else:
                         return map_list[index]
                 except:
