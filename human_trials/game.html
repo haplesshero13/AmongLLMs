@@ -1027,7 +1027,7 @@
 
             // Flag to prevent ejection popup retriggering after initial display
             let ejectionShown = false;
-
+            
             //  Map room positions as % of image width (x) and height (y)
             // Places the marker over the correct room on the static Skeld map. 
             const MAP_ROOM_POSITIONS = {
@@ -1392,6 +1392,7 @@
                 const aiThoughts = document.getElementById("aiThoughts");
 
                 if (isSpectating) {
+                    wasAlive = false; // reset for next time we enter spectator mode, allows the death announcement to trigger once per death.
                     spectatorFeed.style.display = "block";
                     humanActionArea.style.display = "none"; // Never show buttons to a ghost
 
