@@ -72,7 +72,7 @@ room_data = {
     },
     "Security": {
         "tasks": ["Accept Diverted Power", "Fix Wiring"],
-        "vent": [],
+        "vent": ["Electrical", "Medbay"],
         "special_actions": ["Security Cameras"],
         "players": [],
     },
@@ -84,7 +84,7 @@ room_data = {
     },
     "Upper Engine": {
         "tasks": ["Accept Diverted Power", "Align Engine Output", "Fuel Engines"],
-        "vent": ["Reactor"],
+        "vent": ["Reactor", "Lower Engine"],
         "special_actions": [],
         "players": [],
     },
@@ -96,37 +96,49 @@ room_data = {
     },
 }
 
-# Since we're defining a simple undirected graph, we don't need to specify directions for connections.
+# Undirected graph representation of the map, including vents and regular connections.
+# Each connection is represented as a tuple (room1, room2).
 # Defining the connections (edges) between rooms manually as per the images.
 vent_connections = [
-    ("Reactor", "Lower Engine"),
+    # Left group: Upper Engine <-> Reactor <-> Lower Engine
     ("Upper Engine", "Reactor"),
+    ("Reactor", "Lower Engine"),
+    # Middle group: Security <-> Electrical <-> Medbay (triangle) 
     ("Electrical", "Security"),
-    ("Upper Engine", "Lower Engine"),
     ("Electrical", "Medbay"),
-    ("Navigation", "Shields"),
     ("Medbay", "Security"),
+    # Right group: Weapons <-> Navigation <-> Shields
+    ("Navigation", "Shields"),
     ("Navigation", "Weapons"),
+    # Top: Cafeteria <-> Admin
     ("Admin", "Cafeteria"),
 ]
-
+#  Undirected graph — each tuple represents a two-way corridor.
+# FIX #1: Added ("Cafeteria", "Storage") — hallway south from Cafeteria.
+# FIX #2: Removed duplicate ("Medbay", "Cafeteria") — same as ("Cafeteria", "Medbay").
 connections = [
+    # Cafeteria 
     ("Cafeteria", "Weapons"),
     ("Cafeteria", "Admin"),
     ("Cafeteria", "Upper Engine"),
     ("Cafeteria", "Medbay"),
+    ("Cafeteria", "Storage"),
+    # Right side cluster
     ("Weapons", "Navigation"),
     ("Weapons", "O2"),
     ("Navigation", "Shields"),
     ("O2", "Shields"),
-    ("O2", "Admin"),
+    ("O2", "Admin"), 
+    # Bottom right 
     ("Shields", "Communications"),
     ("Shields", "Storage"),
     ("Communications", "Storage"),
+    # Center 
     ("Storage", "Admin"),
     ("Storage", "Electrical"),
     ("Storage", "Lower Engine"),
     ("Admin", "Electrical"),
+    # Left side 
     ("Electrical", "Lower Engine"),
     ("Lower Engine", "Security"),
     ("Lower Engine", "Reactor"),
@@ -135,29 +147,13 @@ connections = [
     ("Security", "Upper Engine"),
     ("Reactor", "Upper Engine"),
     ("Upper Engine", "Medbay"),
-    ("Medbay", "Cafeteria"),
 ]
 
 map_coords = {
     "Cafeteria": {
-        "coords": (
-            405,
-            50,
-            447,
-            7,
-            582,
-            7,
-            647,
-            70,
-            647,
-            195,
-            589,
-            250,
-            458,
-            250,
-            405,
-            198,
-        ),
+        "coords": (405, 50, 447, 7, 582,
+            7, 647, 70, 647, 195, 589, 250, 458, 250, 405, 198,
+            ),
     },
     "Weapons": {
         "coords": (705, 107, 797, 107, 797, 163, 726, 163, 705, 147),
