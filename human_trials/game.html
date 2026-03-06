@@ -1230,7 +1230,7 @@
             // ----------- Ejection Message Popup Logic ----------- 
             const ejectionBox = document.getElementById('ejectionAnnouncement');
             const ejectionWords = document.getElementById('ejectionText');
-            const player_info = state.ejection_annoucement || state.player_info || ''; // state annoucement regardless state 
+            const player_info = state.ejection_announcement || state.player_info || '';// state announcement regardless state 
             const player_info_lc = player_info.toLowerCase();
 
             const isEjected = player_info_lc.includes("was ejected") ||
