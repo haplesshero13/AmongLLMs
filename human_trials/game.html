@@ -1,1525 +1,1741 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Among Us: A Sandbox for Agentic Deception</title>
     <style>
-        :root {
-            --primary-color: #6DA5F2;
-            --secondary-color: #D4A27F;
-            --background-dark: #191919;
-            --background-medium: #262625;
-            --background-light: #40403E;
-            --text-light: #E5E4DF;
-            --text-dark: #666663;
-            --accent-color: #CC785C;
-            --error-color: #F14D43;
-            --success-color: #4CAF50;
+      :root {
+        --primary-color: #6da5f2;
+        --secondary-color: #d4a27f;
+        --background-dark: #191919;
+        --background-medium: #262625;
+        --background-light: #40403e;
+        --text-light: #e5e4df;
+        --text-dark: #666663;
+        --accent-color: #cc785c;
+        --error-color: #f14d43;
+        --success-color: #4caf50;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: var(--background-dark);
+        color: var(--text-light);
+        line-height: 1.6;
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      /* Decorative background elements */
+      body::before,
+      body::after {
+        content: "";
+        position: fixed;
+        top: 0;
+        width: 300px;
+        height: 100vh;
+        background-size: contain;
+        background-repeat: no-repeat;
+        opacity: 0.15;
+        z-index: -1;
+        pointer-events: none;
+      }
+
+      body::before {
+        left: 0;
+        background-image: url("assets/amongus_char_1.png");
+        background-position: left center;
+      }
+
+      body::after {
+        right: 0;
+        background-image: url("assets/amongus_char_2.png");
+        background-position: right center;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 20px auto;
+        background-color: var(--background-medium);
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        position: relative;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .home-screen {
+        text-align: center;
+        padding: 40px 0;
+        position: relative;
+      }
+
+      .name-input-container {
+        margin: 30px auto;
+        max-width: 400px;
+        position: relative;
+      }
+
+      .name-input-container label {
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: var(--secondary-color);
+        font-size: 1.2em;
+        display: block;
+      }
+
+      .name-input-container input {
+        padding: 12px 20px;
+        border-radius: 8px;
+        border: 2px solid var(--text-dark);
+        background-color: var(--background-light);
+        color: var(--text-light);
+        width: 100%;
+        text-align: center;
+        font-size: 1.1em;
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+      }
+
+      .name-input-container input:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 15px rgba(109, 165, 242, 0.3);
+      }
+
+      h1 {
+        text-align: center;
+        font-size: 3em;
+        color: var(--accent-color);
+        margin-bottom: 30px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        position: relative;
+        padding-bottom: 15px;
+      }
+
+      h1::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 200px;
+        height: 3px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--accent-color),
+          transparent
+        );
+      }
+
+      button {
+        background: linear-gradient(135deg, var(--primary-color), #5a8fd0);
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        font-size: 1.1em;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: bold;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      button:active {
+        transform: translateY(1px);
+      }
+
+      button:disabled {
+        background: var(--background-light);
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+
+      .status-bar {
+        background: linear-gradient(
+          135deg,
+          var(--background-light),
+          var(--background-medium)
+        );
+        padding: 20px;
+        border-radius: 12px;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .status-bar span {
+        margin: 5px 15px;
+        font-weight: bold;
+        color: var(--text-light);
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+      }
+
+      #gameStatus {
+        color: var(--secondary-color);
+      }
+
+      .section {
+        background-color: var(--background-light);
+        padding: 25px;
+        border-radius: 12px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        word-break: break-word;
+      }
+
+      .map-section {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 400px;
+        background-color: var(--background-medium);
+        border-radius: 12px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .map-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all 0.5s ease-in-out;
+        overflow: hidden;
+        padding: 20px;
+        max-height: 500px;
+      }
+
+      .map-container.hidden {
+        max-height: 0;
+        padding: 0;
+      }
+
+      .map-image {
+        max-width: 80%;
+        height: auto;
+        object-fit: contain;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .map-toggle {
+        margin-bottom: 15px;
+        background: linear-gradient(
+          135deg,
+          var(--background-light),
+          var(--background-medium)
+        );
+        color: var(--text-light);
+        border: 1px solid var(--text-dark);
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        font-weight: bold;
+        transition: all 0.3s ease;
+      }
+
+      .map-toggle:hover {
+        background: linear-gradient(
+          135deg,
+          var(--background-medium),
+          var(--background-light)
+        );
+      }
+
+      .human-action-area {
+        margin-top: 30px;
+        padding: 30px;
+        background: linear-gradient(
+          135deg,
+          var(--background-medium),
+          var(--background-light)
+        );
+        border-radius: 12px;
+        border: 2px solid var(--secondary-color);
+        box-shadow: 0 0 30px rgba(212, 162, 127, 0.2);
+        animation: pulse 2s infinite;
+      }
+
+      .human-action-area.active {
+        border: 2px solid var(--secondary-color);
+        box-shadow: 0 0 40px rgba(212, 162, 127, 0.4);
+        animation: pulse 1s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 0 30px rgba(212, 162, 127, 0.2);
         }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--background-dark);
-            color: var(--text-light);
-            line-height: 1.6;
-            min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
+        50% {
+          box-shadow: 0 0 50px rgba(212, 162, 127, 0.4);
         }
 
-        /* Decorative background elements */
-        body::before,
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            width: 300px;
-            height: 100vh;
-            background-size: contain;
-            background-repeat: no-repeat;
-            opacity: 0.15;
-            z-index: -1;
-            pointer-events: none;
+        100% {
+          box-shadow: 0 0 30px rgba(212, 162, 127, 0.2);
         }
+      }
 
-        body::before {
-            left: 0;
-            background-image: url('assets/amongus_char_1.png');
-            background-position: left center;
-        }
+      .action-options label {
+        display: block;
+        margin-bottom: 15px;
+        padding: 15px;
+        background-color: var(--background-medium);
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 1px solid var(--text-dark);
+      }
 
-        body::after {
-            right: 0;
-            background-image: url('assets/amongus_char_2.png');
-            background-position: right center;
-        }
+      .action-options label:hover {
+        background-color: var(--background-light);
+        transform: translateX(5px);
+      }
 
+      #speakMessage {
+        width: 100%;
+        padding: 15px;
+        margin-top: 15px;
+        border: 2px solid var(--text-dark);
+        background-color: var(--background-dark);
+        color: var(--text-light);
+        border-radius: 8px;
+        font-size: 1em;
+        transition: all 0.3s ease;
+      }
+
+      #speakMessage:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 15px rgba(109, 165, 242, 0.3);
+      }
+
+      .memory-thinking-section {
+        margin-top: 30px;
+        padding: 20px;
+        background: linear-gradient(
+          135deg,
+          var(--background-medium),
+          var(--background-light)
+        );
+        border-radius: 12px;
+        border-left: 4px solid var(--secondary-color);
+      }
+
+      .memory-field textarea,
+      .thinking-field textarea {
+        width: 100%;
+        padding: 15px;
+        border: 2px solid var(--text-dark);
+        background-color: var(--background-dark);
+        color: var(--text-light);
+        border-radius: 8px;
+        min-height: 100px;
+        resize: vertical;
+        font-family: "Segoe UI", sans-serif;
+        transition: all 0.3s ease;
+      }
+
+      .memory-field textarea:focus,
+      .thinking-field textarea:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 15px rgba(109, 165, 242, 0.3);
+      }
+
+      .loading {
+        text-align: center;
+        margin: 20px 0;
+        padding: 20px;
+        border-radius: 8px;
+        background: linear-gradient(
+          135deg,
+          var(--background-medium),
+          var(--background-light)
+        );
+        color: var(--text-light);
+        font-weight: bold;
+      }
+
+      .error {
+        background: linear-gradient(
+          135deg,
+          rgba(241, 77, 67, 0.2),
+          rgba(241, 77, 67, 0.1)
+        );
+        color: var(--error-color);
+        padding: 15px;
+        border-radius: 8px;
+        margin: 20px 0;
+        text-align: center;
+        font-weight: bold;
+        display: none;
+        border: 1px solid var(--error-color);
+      }
+
+      #gameResult {
+        text-align: center;
+        margin-top: 30px;
+        padding: 20px;
+        background: linear-gradient(
+          135deg,
+          var(--background-medium),
+          var(--background-light)
+        );
+        border-radius: 12px;
+        display: none;
+        font-size: 1.2em;
+        font-weight: bold;
+        color: var(--text-light);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
         .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            background-color: var(--background-medium);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            position: relative;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .home-screen {
-            text-align: center;
-            padding: 40px 0;
-            position: relative;
-        }
-
-        .name-input-container {
-            margin: 30px auto;
-            max-width: 400px;
-            position: relative;
-        }
-
-        .name-input-container label {
-            margin-bottom: 10px;
-            font-weight: bold;
-            color: var(--secondary-color);
-            font-size: 1.2em;
-            display: block;
-        }
-
-        .name-input-container input {
-            padding: 12px 20px;
-            border-radius: 8px;
-            border: 2px solid var(--text-dark);
-            background-color: var(--background-light);
-            color: var(--text-light);
-            width: 100%;
-            text-align: center;
-            font-size: 1.1em;
-            transition: all 0.3s ease;
-            box-sizing: border-box;
-        }
-
-        .name-input-container input:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 15px rgba(109, 165, 242, 0.3);
-        }
-
-        h1 {
-            text-align: center;
-            font-size: 3em;
-            color: var(--accent-color);
-            margin-bottom: 30px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            position: relative;
-            padding-bottom: 15px;
-        }
-
-        h1::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 200px;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
-        }
-
-        button {
-            background: linear-gradient(135deg, var(--primary-color), #5a8fd0);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            font-size: 1.1em;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        button:active {
-            transform: translateY(1px);
-        }
-
-        button:disabled {
-            background: var(--background-light);
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
+          margin: 10px;
+          padding: 20px;
         }
 
         .status-bar {
-            background: linear-gradient(135deg, var(--background-light), var(--background-medium));
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+          flex-direction: column;
+          align-items: flex-start;
         }
 
-        .status-bar span {
-            margin: 5px 15px;
-            font-weight: bold;
-            color: var(--text-light);
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        h1 {
+          font-size: 2em;
         }
 
-        #gameStatus {
-            color: var(--secondary-color);
+        button {
+          width: 100%;
+          margin: 5px 0;
         }
+      }
 
-        .section {
-            background-color: var(--background-light);
-            padding: 25px;
-            border-radius: 12px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            overflow-wrap: break-word;
-            word-wrap: break-word;
-            word-break: break-word;
-        }
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 10px;
+      }
 
-        .map-section {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 400px;
-            background-color: var(--background-medium);
-            border-radius: 12px;
-            overflow: hidden;
-            position: relative;
-        }
+      ::-webkit-scrollbar-track {
+        background: var(--background-dark);
+      }
 
-        .map-container {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.5s ease-in-out;
-            overflow: hidden;
-            padding: 20px;
-            max-height: 500px;
-        }
+      ::-webkit-scrollbar-thumb {
+        background: var(--background-light);
+        border-radius: 5px;
+      }
 
-        .map-container.hidden {
-            max-height: 0;
-            padding: 0;
-        }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--text-dark);
+      }
 
-        .map-image {
-            max-width: 80%;
-            height: auto;
-            object-fit: contain;
-            border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        }
+      .map-toggle-icon {
+        margin-left: 5px;
+        transition: transform 0.3s;
+      }
 
-        .map-toggle {
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, var(--background-light), var(--background-medium));
-            color: var(--text-light);
-            border: 1px solid var(--text-dark);
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
+      .map-toggle-icon.hidden {
+        transform: rotate(180deg);
+      }
 
-        .map-toggle:hover {
-            background: linear-gradient(135deg, var(--background-medium), var(--background-light));
-        }
+      /* Fix text overflow for all relevant containers */
+      .container,
+      .section,
+      .status-bar,
+      .game-layout,
+      .human-action-area,
+      .human-player-info,
+      .memory-thinking-section,
+      #gameStatus,
+      #phaseInfo,
+      #stepInfo,
+      #currentPlayerInfo,
+      #humanPlayerName,
+      pre,
+      #humanPlayerInfo {
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        word-break: break-word;
+        hyphens: auto;
+      }
 
-        .human-action-area {
-            margin-top: 30px;
-            padding: 30px;
-            background: linear-gradient(135deg, var(--background-medium), var(--background-light));
-            border-radius: 12px;
-            border: 2px solid var(--secondary-color);
-            box-shadow: 0 0 30px rgba(212, 162, 127, 0.2);
-            animation: pulse 2s infinite;
-        }
+      /* Specifically fix pre elements to prevent horizontal overflow */
+      pre {
+        white-space: pre-wrap;
+        max-width: 100%;
+      }
 
-        .human-action-area.active {
-            border: 2px solid var(--secondary-color);
-            box-shadow: 0 0 40px rgba(212, 162, 127, 0.4);
-            animation: pulse 1s infinite;
-        }
+      .human-player-info pre {
+        white-space: pre-wrap;
+        font-family: "Segoe UI", sans-serif;
+        font-size: 1em;
+        max-width: 100%;
+      }
 
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 0 30px rgba(212, 162, 127, 0.2);
-            }
+      .game-screen {
+        display: none;
+      }
 
-            50% {
-                box-shadow: 0 0 50px rgba(212, 162, 127, 0.4);
-            }
+      /* Player rulebook styling */
+      :root {
+        --primary-color: #6da5f2;
+        --secondary-color: #d4a27f;
+        --background-dark: #191919;
+        --background-medium: #262625;
+        --background-light: #40403e;
+        --text-light: #e5e4df;
+        --text-dark: #666663;
+        --accent-color: #cc785c;
+        --error-color: #f14d43;
+        --success-color: #4caf50;
+      }
 
-            100% {
-                box-shadow: 0 0 30px rgba(212, 162, 127, 0.2);
-            }
-        }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: var(--background-dark);
+        color: var(--text-light);
+        line-height: 1.7;
+      }
 
-        .action-options label {
-            display: block;
-            margin-bottom: 15px;
-            padding: 15px;
-            background-color: var(--background-medium);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid var(--text-dark);
-        }
+      .rules-wrapper {
+        max-width: 720px;
+        margin: 30px auto;
+        padding: 0 20px;
+      }
 
-        .action-options label:hover {
-            background-color: var(--background-light);
-            transform: translateX(5px);
-        }
+      /* ---- Overview ---- */
+      .rules-overview {
+        text-align: center;
+        margin-bottom: 28px;
+        color: var(--text-dark);
+        font-size: 0.95em;
+      }
 
-        #speakMessage {
-            width: 100%;
-            padding: 15px;
-            margin-top: 15px;
-            border: 2px solid var(--text-dark);
-            background-color: var(--background-dark);
-            color: var(--text-light);
-            border-radius: 8px;
-            font-size: 1em;
-            transition: all 0.3s ease;
-        }
+      /* ---- Card ---- */
+      .rules-card {
+        background-color: var(--background-medium);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        padding: 24px 28px;
+        margin-bottom: 18px;
+      }
 
-        #speakMessage:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 15px rgba(109, 165, 242, 0.3);
-        }
+      .rules-card h3 {
+        margin: 0 0 14px 0;
+        font-size: 1.15em;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
 
-        .memory-thinking-section {
-            margin-top: 30px;
-            padding: 20px;
-            background: linear-gradient(135deg, var(--background-medium), var(--background-light));
-            border-radius: 12px;
-            border-left: 4px solid var(--secondary-color);
-        }
+      .rules-card h3 .icon {
+        font-size: 1.2em;
+      }
 
-        .memory-field textarea,
-        .thinking-field textarea {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid var(--text-dark);
-            background-color: var(--background-dark);
-            color: var(--text-light);
-            border-radius: 8px;
-            min-height: 100px;
-            resize: vertical;
-            font-family: 'Segoe UI', sans-serif;
-            transition: all 0.3s ease;
-        }
+      /* color-code card headers */
+      .card-roles h3 {
+        color: var(--secondary-color);
+      }
 
-        .memory-field textarea:focus,
-        .thinking-field textarea:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 15px rgba(109, 165, 242, 0.3);
-        }
+      .card-task h3 {
+        color: var(--primary-color);
+      }
 
-        .loading {
-            text-align: center;
-            margin: 20px 0;
-            padding: 20px;
-            border-radius: 8px;
-            background: linear-gradient(135deg, var(--background-medium), var(--background-light));
-            color: var(--text-light);
-            font-weight: bold;
-        }
+      .card-meeting h3 {
+        color: var(--accent-color);
+      }
 
-        .error {
-            background: linear-gradient(135deg, rgba(241, 77, 67, 0.2), rgba(241, 77, 67, 0.1));
-            color: var(--error-color);
-            padding: 15px;
-            border-radius: 8px;
-            margin: 20px 0;
-            text-align: center;
-            font-weight: bold;
-            display: none;
-            border: 1px solid var(--error-color);
-        }
+      /* ---- Win-condition mini-table ---- */
+      .win-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        font-size: 0.92em;
+      }
 
-        #gameResult {
-            text-align: center;
-            margin-top: 30px;
-            padding: 20px;
-            background: linear-gradient(135deg, var(--background-medium), var(--background-light));
-            border-radius: 12px;
-            display: none;
-            font-size: 1.2em;
-            font-weight: bold;
-            color: var(--text-light);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
+      .win-table th,
+      .win-table td {
+        padding: 8px 12px;
+        text-align: left;
+        border-bottom: 1px solid var(--background-light);
+      }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .container {
-                margin: 10px;
-                padding: 20px;
-            }
+      .win-table th {
+        color: var(--text-dark);
+        font-weight: 600;
+        font-size: 0.85em;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
 
-            .status-bar {
-                flex-direction: column;
-                align-items: flex-start;
-            }
+      .win-table .crew {
+        color: var(--success-color);
+        font-weight: 600;
+      }
 
-            h1 {
-                font-size: 2em;
-            }
+      .win-table .imp {
+        color: var(--error-color);
+        font-weight: 600;
+      }
 
-            button {
-                width: 100%;
-                margin: 5px 0;
-            }
-        }
+      /* ---- Ability columns ---- */
+      .ability-columns {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-top: 12px;
+      }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--background-dark);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--background-light);
-            border-radius: 5px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--text-dark);
-        }
-
-        .map-toggle-icon {
-            margin-left: 5px;
-            transition: transform 0.3s;
-        }
-
-        .map-toggle-icon.hidden {
-            transform: rotate(180deg);
-        }
-
-        /* Fix text overflow for all relevant containers */
-        .container,
-        .section,
-        .status-bar,
-        .game-layout,
-        .human-action-area,
-        .human-player-info,
-        .memory-thinking-section,
-        #gameStatus,
-        #phaseInfo,
-        #stepInfo,
-        #currentPlayerInfo,
-        #humanPlayerName,
-        pre,
-        #humanPlayerInfo {
-            overflow-wrap: break-word;
-            word-wrap: break-word;
-            word-break: break-word;
-            hyphens: auto;
-        }
-
-        /* Specifically fix pre elements to prevent horizontal overflow */
-        pre {
-            white-space: pre-wrap;
-            max-width: 100%;
-        }
-
-        .human-player-info pre {
-            white-space: pre-wrap;
-            font-family: 'Segoe UI', sans-serif;
-            font-size: 1em;
-            max-width: 100%;
-        }
-
-        .game-screen {
-            display: none;
-        }
-
-        /* Player rulebook styling */
-        :root {
-            --primary-color: #6DA5F2;
-            --secondary-color: #D4A27F;
-            --background-dark: #191919;
-            --background-medium: #262625;
-            --background-light: #40403E;
-            --text-light: #E5E4DF;
-            --text-dark: #666663;
-            --accent-color: #CC785C;
-            --error-color: #F14D43;
-            --success-color: #4CAF50;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--background-dark);
-            color: var(--text-light);
-            line-height: 1.7;
-        }
-
-        .rules-wrapper {
-            max-width: 720px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-
-        /* ---- Overview ---- */
-        .rules-overview {
-            text-align: center;
-            margin-bottom: 28px;
-            color: var(--text-dark);
-            font-size: 0.95em;
-        }
-
-        /* ---- Card ---- */
-        .rules-card {
-            background-color: var(--background-medium);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            padding: 24px 28px;
-            margin-bottom: 18px;
-        }
-
-        .rules-card h3 {
-            margin: 0 0 14px 0;
-            font-size: 1.15em;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .rules-card h3 .icon {
-            font-size: 1.2em;
-        }
-
-        /* color-code card headers */
-        .card-roles h3 {
-            color: var(--secondary-color);
-        }
-
-        .card-task h3 {
-            color: var(--primary-color);
-        }
-
-        .card-meeting h3 {
-            color: var(--accent-color);
-        }
-
-        /* ---- Win-condition mini-table ---- */
-        .win-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-            font-size: 0.92em;
-        }
-
-        .win-table th,
-        .win-table td {
-            padding: 8px 12px;
-            text-align: left;
-            border-bottom: 1px solid var(--background-light);
-        }
-
-        .win-table th {
-            color: var(--text-dark);
-            font-weight: 600;
-            font-size: 0.85em;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .win-table .crew {
-            color: var(--success-color);
-            font-weight: 600;
-        }
-
-        .win-table .imp {
-            color: var(--error-color);
-            font-weight: 600;
-        }
-
-        /* ---- Ability columns ---- */
+      @media (max-width: 540px) {
         .ability-columns {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-top: 12px;
+          grid-template-columns: 1fr;
         }
+      }
 
-        @media (max-width: 540px) {
-            .ability-columns {
-                grid-template-columns: 1fr;
-            }
-        }
+      .ability-group {
+        background: var(--background-light);
+        border-radius: 8px;
+        padding: 14px 16px;
+      }
 
-        .ability-group {
-            background: var(--background-light);
-            border-radius: 8px;
-            padding: 14px 16px;
-        }
+      .ability-group h4 {
+        margin: 0 0 8px 0;
+        font-size: 0.85em;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        color: var(--text-dark);
+      }
 
-        .ability-group h4 {
-            margin: 0 0 8px 0;
-            font-size: 0.85em;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-            color: var(--text-dark);
-        }
+      .ability-group ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
 
-        .ability-group ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
+      .ability-group ul li {
+        padding: 4px 0;
+        font-size: 0.93em;
+      }
 
-        .ability-group ul li {
-            padding: 4px 0;
-            font-size: 0.93em;
-        }
+      .ability-group ul li strong {
+        color: var(--secondary-color);
+      }
 
-        .ability-group ul li strong {
-            color: var(--secondary-color);
-        }
+      /* Impostor-only styling */
+      .ability-group.imp-group h4 {
+        color: var(--error-color);
+      }
 
-        /* Impostor-only styling */
-        .ability-group.imp-group h4 {
-            color: var(--error-color);
-        }
+      .ability-group.imp-group ul li strong {
+        color: var(--error-color);
+      }
 
-        .ability-group.imp-group ul li strong {
-            color: var(--error-color);
-        }
+      /* Crewmate-only styling */
+      .ability-group.crew-group h4 {
+        color: var(--success-color);
+      }
 
-        /* Crewmate-only styling */
-        .ability-group.crew-group h4 {
-            color: var(--success-color);
-        }
+      .ability-group.crew-group ul li strong {
+        color: var(--success-color);
+      }
 
-        .ability-group.crew-group ul li strong {
-            color: var(--success-color);
-        }
+      /* ---- Key details / notes ---- */
+      .key-details {
+        margin-top: 14px;
+        padding: 12px 16px;
+        background: rgba(255, 255, 255, 0.03);
+        border-left: 3px solid var(--accent-color);
+        border-radius: 0 8px 8px 0;
+        font-size: 0.9em;
+        color: var(--text-light);
+        line-height: 1.8;
+      }
 
-        /* ---- Key details / notes ---- */
-        .key-details {
-            margin-top: 14px;
-            padding: 12px 16px;
-            background: rgba(255, 255, 255, 0.03);
-            border-left: 3px solid var(--accent-color);
-            border-radius: 0 8px 8px 0;
-            font-size: 0.9em;
-            color: var(--text-light);
-            line-height: 1.8;
-        }
+      .key-details span.warn {
+        color: var(--error-color);
+        font-weight: 600;
+      }
 
-        .key-details span.warn {
-            color: var(--error-color);
-            font-weight: 600;
-        }
+      /* ---- Meeting bullets ---- */
+      .meeting-list {
+        margin: 10px 0 0 0;
+        padding: 0;
+        list-style: none;
+      }
 
-        /* ---- Meeting bullets ---- */
-        .meeting-list {
-            margin: 10px 0 0 0;
-            padding: 0;
-            list-style: none;
-        }
+      .meeting-list li {
+        padding: 5px 0;
+        font-size: 0.93em;
+        position: relative;
+        padding-left: 18px;
+      }
 
-        .meeting-list li {
-            padding: 5px 0;
-            font-size: 0.93em;
-            position: relative;
-            padding-left: 18px;
-        }
-
-        .meeting-list li::before {
-            content: '•';
-            position: absolute;
-            left: 0;
-            color: var(--accent-color);
-            font-weight: bold;
-        }
+      .meeting-list li::before {
+        content: "•";
+        position: absolute;
+        left: 0;
+        color: var(--accent-color);
+        font-weight: bold;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="container">
-        <div class="home-screen" id="homeScreen">
-            <h1>Among Us: Agentic Deception</h1>
-            <p> Start a new game with a human player.</p>
-            <div class="name-input-container">
-                <label for="playerNameInput">Your Name:</label>
-                <input type="text" id="playerNameInput" value="Victor" placeholder="Enter your name">
+      <div class="home-screen" id="homeScreen">
+        <h1>Among Us: Agentic Deception</h1>
+        <p>Start a new game with a human player.</p>
+        <div class="name-input-container">
+          <label for="playerNameInput">Your Name:</label>
+          <input
+            type="text"
+            id="playerNameInput"
+            value="Victor"
+            placeholder="Enter your name"
+          />
+        </div>
+        <button id="startGameBtn" onclick="startNewGame()">
+          Start New Game
+        </button>
+        <!-- Add options for different game sizes later if needed -->
+
+        <!-- Player rulebook for game -->
+        <div class="rules-wrapper">
+          <h2>Player Rulebook</h2>
+          <p class="rules-overview" style="color: var(--text-light)">
+            You are a Crewmate — or secret Impostor — aboard the spaceship
+            <strong>Skeld</strong>.<br />
+            The game alternates between <strong>Task Phases</strong> and
+            <strong>Meeting Phases</strong> in a turn-based format.
+          </p>
+
+          <!-- ROLES & WIN CONDITIONS -->
+          <div class="rules-card card-roles">
+            <h3><span class="icon">👥</span> Roles &amp; Win Conditions</h3>
+            <p style="margin: 0 0 4px 0">
+              <strong style="color: var(--success-color)">Crewmates</strong> —
+              Complete all tasks or identify and eject every Impostor.
+            </p>
+            <p style="margin: 0">
+              <strong style="color: var(--error-color)">Impostors</strong> —
+              Eliminate Crewmates until Impostors equal or outnumber them.
+            </p>
+
+            <table class="win-table">
+              <thead>
+                <tr>
+                  <th>Winner</th>
+                  <th>Condition</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="crew">Crewmates</td>
+                  <td>All Impostors ejected <em>or</em> all tasks completed</td>
+                </tr>
+                <tr>
+                  <td class="imp">Impostors</td>
+                  <td>
+                    Impostors outnumber Crewmates <em>or</em> turn 50 reached
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- TASK PHASE -->
+          <div class="rules-card card-task">
+            <h3><span class="icon">⚙️</span> Task Phase</h3>
+
+            <div class="ability-group" style="margin-bottom: 14px">
+              <h4 style="color: var(--primary-color)">Everyone</h4>
+              <ul>
+                <li><strong>Move</strong> — travel to an adjacent room</li>
+                <li>
+                  <strong>Report Body</strong> — report a dead body in your room
+                  (starts a meeting)
+                </li>
+                <li>
+                  <strong>Call Meeting</strong> — press the emergency button
+                  (Cafeteria only)
+                </li>
+                <li>
+                  <strong>View Monitor</strong> — watch security cameras
+                  (Security only)
+                </li>
+              </ul>
             </div>
-            <button id="startGameBtn" onclick="startNewGame()">Start New Game</button>
-            <!-- Add options for different game sizes later if needed -->
 
-            <!-- Player rulebook for game -->
-            <div class="rules-wrapper">
-                <h2> Player Rulebook </h2>
-                <p class="rules-overview" style="color: var(--text-light);">
-                    You are a Crewmate — or secret Impostor — aboard the spaceship <strong>Skeld</strong>.<br>
-                    The game alternates between <strong>Task Phases</strong> and <strong>Meeting Phases</strong> in a
-                    turn-based
-                    format.
-                </p>
-
-                <!-- ROLES & WIN CONDITIONS -->
-                <div class="rules-card card-roles">
-                    <h3><span class="icon">👥</span> Roles &amp; Win Conditions</h3>
-                    <p style="margin:0 0 4px 0;"><strong style="color:var(--success-color)">Crewmates</strong> —
-                        Complete all tasks
-                        or identify and eject every Impostor.</p>
-                    <p style="margin:0;"><strong style="color:var(--error-color)">Impostors</strong> — Eliminate
-                        Crewmates until
-                        Impostors equal or outnumber them.</p>
-
-                    <table class="win-table">
-                        <thead>
-                            <tr>
-                                <th>Winner</th>
-                                <th>Condition</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="crew">Crewmates</td>
-                                <td>All Impostors ejected <em>or</em> all tasks completed</td>
-                            </tr>
-                            <tr>
-                                <td class="imp">Impostors</td>
-                                <td>Impostors outnumber Crewmates <em>or</em> turn 50 reached</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- TASK PHASE -->
-                <div class="rules-card card-task">
-                    <h3><span class="icon">⚙️</span> Task Phase</h3>
-
-                    <div class="ability-group" style="margin-bottom:14px;">
-                        <h4 style="color: var(--primary-color);">Everyone</h4>
-                        <ul>
-                            <li><strong>Move</strong> — travel to an adjacent room</li>
-                            <li><strong>Report Body</strong> — report a dead body in your room (starts a meeting)</li>
-                            <li><strong>Call Meeting</strong> — press the emergency button (Cafeteria only)</li>
-                            <li><strong>View Monitor</strong> — watch security cameras (Security only)</li>
-                        </ul>
-                    </div>
-
-                    <div class="ability-columns">
-                        <div class="ability-group crew-group">
-                            <h4>Crewmates Only</h4>
-                            <ul>
-                                <li><strong>Complete Task</strong> — do assigned tasks to help the crew win</li>
-                            </ul>
-                        </div>
-                        <div class="ability-group imp-group">
-                            <h4>Impostors Only</h4>
-                            <ul>
-                                <li><strong>Kill</strong> — eliminate a Crewmate in your room</li>
-                                <li><strong>Vent</strong> — instant travel between vent locations</li>
-                                <li><strong>Fake Task</strong> — look busy (doesn't count)</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="key-details">
-                        You can only observe events in your current room (unless using cameras).<br>
-                        <span class="warn">Witnesses will see kills</span> — Impostors should kill only when
-                        isolated.<br>
-                        Only Impostor kills leave a dead body. Ejected players do not.
-                    </div>
-                </div>
-
-                <!-- MEETING PHASE -->
-                <div class="rules-card card-meeting">
-                    <h3><span class="icon">🗳️</span> Meeting Phase</h3>
-                    <p style="margin:0 0 6px 0;">3 discussion rounds followed by 1 voting round.</p>
-                    <ul class="meeting-list">
-                        <li><strong>Discussion</strong> — living players take turns speaking: share observations,
-                            accuse, or defend.
-                        </li>
-                        <li><strong>Voting</strong> — vote to eject someone or skip. A tied vote means no one is
-                            ejected.</li>
-                        <li>Votes are revealed after everyone has cast theirs.</li>
-                        <li>All dead bodies on the map are cleared when a meeting begins.</li>
-                    </ul>
-                </div>
+            <div class="ability-columns">
+              <div class="ability-group crew-group">
+                <h4>Crewmates Only</h4>
+                <ul>
+                  <li>
+                    <strong>Complete Task</strong> — do assigned tasks to help
+                    the crew win
+                  </li>
+                </ul>
+              </div>
+              <div class="ability-group imp-group">
+                <h4>Impostors Only</h4>
+                <ul>
+                  <li>
+                    <strong>Kill</strong> — eliminate a Crewmate in your room
+                  </li>
+                  <li>
+                    <strong>Vent</strong> — instant travel between vent
+                    locations
+                  </li>
+                  <li>
+                    <strong>Fake Task</strong> — look busy (doesn't count)
+                  </li>
+                </ul>
+              </div>
             </div>
+
+            <div class="key-details">
+              You can only observe events in your current room (unless using
+              cameras).<br />
+              <span class="warn">Witnesses will see kills</span> — Impostors
+              should kill only when isolated.<br />
+              Only Impostor kills leave a dead body. Ejected players do not.
+            </div>
+          </div>
+
+          <!-- MEETING PHASE -->
+          <div class="rules-card card-meeting">
+            <h3><span class="icon">🗳️</span> Meeting Phase</h3>
+            <p style="margin: 0 0 6px 0">
+              3 discussion rounds followed by 1 voting round.
+            </p>
+            <ul class="meeting-list">
+              <li>
+                <strong>Discussion</strong> — living players take turns
+                speaking: share observations, accuse, or defend.
+              </li>
+              <li>
+                <strong>Voting</strong> — vote to eject someone or skip. A tied
+                vote means no one is ejected.
+              </li>
+              <li>Votes are revealed after everyone has cast theirs.</li>
+              <li>
+                All dead bodies on the map are cleared when a meeting begins.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- Game for Spectator Screen Mode -->
+      <div class="game-screen" id="gameScreen">
+        <h1>Game <span id="gameId"></span></h1>
+        <div
+          id="spectatorFeed"
+          class="section"
+          style="
+            display: none;
+            border: 2px solid var(--accent-color);
+            background: rgba(204, 120, 92, 0.1);
+          "
+        >
+          <h2 style="color: var(--accent-color)">Spectator Mode</h2>
+          <div
+            id="aiThoughts"
+            style="
+              font-family: &quot;Courier New&quot;, monospace;
+              font-size: 0.9em;
+              white-space: pre-wrap;
+            "
+          ></div>
+        </div>
+        
+        <!-- Ejection Announcement Box Styling (called within renderGameState()) -->
+        <div
+          id="ejectionAnnouncement"
+          class="section"
+          style="
+            display: none;
+            text-align: center;
+            padding: 18px 24px;
+            margin-bottom: 25px;
+            border-width: 2px;
+            border-style: solid;
+          "
+        >
+          <h2
+            id="ejectionText"
+            style="
+              color: var(--text-light);
+              font-family: &quot;Segoe UI&quot;, sans-serif;
+              font-size: 1.25em;
+              margin: 0;
+              text-transform: uppercase;
+              letter-spacing: 2px;
+              font-weight: bold;
+            "
+          ></h2>
         </div>
 
-        <div class="game-screen" id="gameScreen">
-            <h1>Game <span id="gameId"></span></h1>
-            <div id="spectatorFeed" class="section"
-                style="display: none; border: 2px solid var(--accent-color); background: rgba(204, 120, 92, 0.1);">
-                <h2 style="color: var(--accent-color);">Spectator Mode</h2>
-                <div id="aiThoughts"
-                    style="font-family: 'Courier New', monospace; font-size: 0.9em; white-space: pre-wrap;">
-                </div>
-            </div>
-            <!-- Ejection Announcement Box Styling (called within renderGameState()) -->
-            <div id="ejectionAnnouncement" class="section"
-                style="display:none; text-align: center; padding: 18px 24px; margin-bottom: 25px; border-width: 2px; border-style: solid;">
-                <h2 id="ejectionText"
-                    style="color: var(--text-light); font-family: 'Segoe UI', sans-serif; font-size: 1.25em; margin: 0; text-transform: uppercase; letter-spacing: 2px; font-weight: bold;">
-                </h2>
-            </div>
-
-            <div class="status-bar">
-                <span>Game Status: <strong id="gameStatus">Loading...</strong></span>
-                <span>Current Phase: <strong id="phaseInfo">...</strong></span>
-                <span>Step: <strong id="stepInfo">0/50</strong></span>
-                <span>Turn: <strong id="currentPlayerInfo">...</strong></span>
-                <span>Your Name: <strong id="humanPlayerName">...</strong></span>
-                <span id="teammateSpan" style="display:none;">Teammate: <strong id="teammateInfo"
-                        style="color: #F14D43;"></strong></span>
-            </div>
-            <div id="meetingBanner" class="section" style="display:none; border: 2px solid var(--secondary-color);">
-                <h3 style="margin-top:0; color: var(--secondary-color);">🗣️ Meeting</h3>
-                <div id="meetingPeople"></div>
-            </div>
-
-            <div class="game-layout">
-                <div class="section map-section">
-                    <button class="map-toggle" id="mapToggle">
-                        <span id="mapToggleText">Hide Map</span>
-                        <span class="map-toggle-icon" id="mapToggleIcon">▼</span>
-                    </button>
-                    <div class="map-container" id="mapContainer">
-                        <img src="assets/skeld.png" alt="The Skeld Map" class="map-image">
-                    </div>
-                </div>
-            </div>
-
-            <div class="section human-action-section" id="humanActionArea" style="display: none;">
-                <h2>Your Turn! Choose an Action:</h2>
-                <div id="humanPlayerInfo" class="human-player-info"></div>
-                <div class="action-options" id="actionOptions"></div>
-                <textarea id="speakMessage" placeholder="Enter your message here..."></textarea>
-
-                <div class="memory-thinking-section">
-                    <h3>Optional: Add Your Thoughts</h3>
-                    <div class="memory-field">
-                        <label for="condensedMemory">Scratchpad:</label>
-                        <textarea id="condensedMemory"
-                            placeholder="Keep track of your observations and thoughts..."></textarea>
-                    </div>
-                    <div class="thinking-field">
-                        <label for="thinkingProcess">Thinking Process:</label>
-                        <textarea id="thinkingProcess" placeholder="Describe your reasoning and strategy..."></textarea>
-                    </div>
-                </div>
-
-                <button id="submitActionBtn" onclick="submitAction()">Submit Action</button>
-            </div>
-
-            <div class="loading" id="loadingIndicator">Loading game state...</div>
-            <div class="error" id="errorDisplay"></div>
-            <div id="gameResult"></div>
-
+        <!-- Status Bar -->
+        <div class="status-bar">
+          <span>Game Status: <strong id="gameStatus">Loading...</strong></span>
+          <span>Current Phase: <strong id="phaseInfo">...</strong></span>
+          <span>Step: <strong id="stepInfo">0/50</strong></span>
+          <span>Turn: <strong id="currentPlayerInfo">...</strong></span>
+          <span>Your Name: <strong id="humanPlayerName">...</strong></span></span></span>
+          <span>📍Your Location: <strong id="currentLocation" style="color: var(--secondary-color);">...</strong></span>
+          <span id="teammateSpan" style="display:none;"></span>
+          <span id="teammateSpan" 
+          style="display: none">Teammate: <strong id="teammateInfo" style="color: #f14d43"></strong
+          ></span>
         </div>
+        <div
+          id="meetingBanner"
+          class="section"
+          style="display: none; border: 2px solid var(--secondary-color)"
+        >
+          <h3 style="margin-top: 0; color: var(--secondary-color)">
+            🗣️ Meeting
+          </h3>
+          <div id="meetingPeople"></div>
+        </div>
+
+        <!-- Game Layout with Skeld Spaceship Map-->
+        <div class="game-layout">
+          <div class="section map-section">
+            <button class="map-toggle" id="mapToggle">
+              <span id="mapToggleText">Hide Map</span>
+              <span class="map-toggle-icon" id="mapToggleIcon">▼</span>
+            </button>
+            <div class="map-container" id="mapContainer">
+              <img
+                src="assets/skeld.png"
+                alt="The Skeld Map"
+                class="map-image"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Human Action Section to track observations and thought process  -->
+        <div
+          class="section human-action-section"
+          id="humanActionArea"
+          style="display: none"
+        >
+          <h2>Your Turn! Choose an Action:</h2>
+          <div id="humanPlayerInfo" class="human-player-info"></div>
+          <div class="action-options" id="actionOptions"></div>
+          <textarea
+            id="speakMessage"
+            placeholder="Enter your message here..."
+          ></textarea>
+          <!-- Memory and Thinking Sections -->
+          <div class="memory-thinking-section">
+            <h3>Optional: Add Your Thoughts</h3>
+            <div class="memory-field">
+              <label for="condensedMemory">Scratchpad:</label>
+              <textarea
+                id="condensedMemory"
+                placeholder="Keep track of your observations and thoughts..."
+              ></textarea>
+            </div>
+            <div class="thinking-field">
+              <label for="thinkingProcess">Thinking Process:</label>
+              <textarea
+                id="thinkingProcess"
+                placeholder="Describe your reasoning and strategy..."
+              ></textarea>
+            </div>
+          </div>
+
+          <button id="submitActionBtn" onclick="submitAction()">
+            Submit Action
+          </button>
+        </div>
+        <!-- Game Result Display -->
+        <div class="loading" id="loadingIndicator">Loading game state...</div>
+        <div class="error" id="errorDisplay"></div>
+        <div id="gameResult"></div>
+      </div>
     </div>
 
     <script>
-        let currentGameId = null;
-        let gameStateInterval = null;
-        let lastGameState = null;  // Store the last valid game state
-        let lastSeenSpectatorId = -1;
-        const API_BASE_URL = `http://${window.location.hostname}:${window.location.port}/api`;
+      let currentGameId = null;
+      let gameStateInterval = null;
+      let lastGameState = null; // Store the last valid game state
+      let lastSeenSpectatorId = -1;
+      const API_BASE_URL = `http://${window.location.hostname}:${window.location.port}/api`;
 
-        const homeScreen = document.getElementById('homeScreen');
-        const gameScreen = document.getElementById('gameScreen');
-        const gameIdDisplay = document.getElementById('gameId');
-        const gameStatusDisplay = document.getElementById('gameStatus');
-        const phaseInfoDisplay = document.getElementById('phaseInfo');
-        const humanPlayerNameDisplay = document.getElementById('humanPlayerName');
-        const playerNameInput = document.getElementById('playerNameInput');
-        const humanActionArea = document.getElementById('humanActionArea');
-        const humanPlayerInfoDiv = document.getElementById('humanPlayerInfo');
-        const actionOptionsDiv = document.getElementById('actionOptions');
-        const speakMessageInput = document.getElementById('speakMessage');
-        const submitActionBtn = document.getElementById('submitActionBtn');
-        const loadingIndicator = document.getElementById('loadingIndicator');
-        const errorDisplay = document.getElementById('errorDisplay');
-        const gameResultDiv = document.getElementById('gameResult');
-        const startGameBtn = document.getElementById('startGameBtn');
-        const mapToggle = document.getElementById('mapToggle');
-        const mapToggleText = document.getElementById('mapToggleText');
-        const mapToggleIcon = document.getElementById('mapToggleIcon');
-        const mapContainer = document.getElementById('mapContainer');
+      const homeScreen = document.getElementById("homeScreen");
+      const gameScreen = document.getElementById("gameScreen");
+      const gameIdDisplay = document.getElementById("gameId");
+      const gameStatusDisplay = document.getElementById("gameStatus");
+      const phaseInfoDisplay = document.getElementById("phaseInfo");
+      const humanPlayerNameDisplay = document.getElementById("humanPlayerName");
+      const playerNameInput = document.getElementById("playerNameInput");
+      const humanActionArea = document.getElementById("humanActionArea");
+      const humanPlayerInfoDiv = document.getElementById("humanPlayerInfo");
+      const actionOptionsDiv = document.getElementById("actionOptions");
+      const speakMessageInput = document.getElementById("speakMessage");
+      const submitActionBtn = document.getElementById("submitActionBtn");
+      const loadingIndicator = document.getElementById("loadingIndicator");
+      const errorDisplay = document.getElementById("errorDisplay");
+      const gameResultDiv = document.getElementById("gameResult");
+      const startGameBtn = document.getElementById("startGameBtn");
+      const mapToggle = document.getElementById("mapToggle");
+      const mapToggleText = document.getElementById("mapToggleText");
+      const mapToggleIcon = document.getElementById("mapToggleIcon");
+      const mapContainer = document.getElementById("mapContainer");
 
-        // Flag to track if we're waiting for human input
-        let waitingForHumanInput = false;
-        // Flag to track map visibility
-        let mapVisible = true;
-        // Flag to track if the game has started
-        let gameStarted = false;
-        // Store human player information
-        let humanPlayerInfo = null;
-        let waitingForMonitorRoom = false;
+      // Flag to track if we're waiting for human input
+      let waitingForHumanInput = false;
+      // Flag to track map visibility
+      let mapVisible = true;
+      // Flag to track if the game has started
+      let gameStarted = false;
+      // Store human player information
+      let humanPlayerInfo = null;
+      let waitingForMonitorRoom = false;
 
-        // Flag to prevent ejection popup retriggering after initial display
-        let ejectionShown = false; 
+      // Flag to prevent ejection popup retriggering after initial display
+      let ejectionShown = false;
 
-        // Add error checking for DOM elements
-        function checkRequiredElements() {
-            const requiredElements = {
-                homeScreen,
-                gameScreen,
-                gameIdDisplay,
-                gameStatusDisplay,
-                phaseInfoDisplay,
-                humanPlayerNameDisplay,
-                playerNameInput,
-                humanActionArea,
-                humanPlayerInfoDiv,
-                actionOptionsDiv,
-                speakMessageInput,
-                submitActionBtn,
-                loadingIndicator,
-                errorDisplay,
-                gameResultDiv,
-                startGameBtn,
-                mapToggle,
-                mapToggleText,
-                mapToggleIcon,
-                mapContainer
-            };
+      // Add error checking for DOM elements
+      function checkRequiredElements() {
+        const requiredElements = {
+          homeScreen,
+          gameScreen,
+          gameIdDisplay,
+          gameStatusDisplay,
+          phaseInfoDisplay,
+          humanPlayerNameDisplay,
+          playerNameInput,
+          humanActionArea,
+          humanPlayerInfoDiv,
+          actionOptionsDiv,
+          speakMessageInput,
+          submitActionBtn,
+          loadingIndicator,
+          errorDisplay,
+          gameResultDiv,
+          startGameBtn,
+          mapToggle,
+          mapToggleText,
+          mapToggleIcon,
+          mapContainer,
+        };
 
-            const missingElements = Object.entries(requiredElements)
-                .filter(([_, element]) => element === null)
-                .map(([name]) => name);
+        const missingElements = Object.entries(requiredElements)
+          .filter(([_, element]) => element === null)
+          .map(([name]) => name);
 
-            if (missingElements.length > 0) {
-                console.error('Missing required DOM elements:', missingElements);
-                showError(`Critical Error: Missing required elements: ${missingElements.join(', ')}`);
-                return false;
-            }
-            return true;
+        if (missingElements.length > 0) {
+          console.error("Missing required DOM elements:", missingElements);
+          showError(
+            `Critical Error: Missing required elements: ${missingElements.join(", ")}`,
+          );
+          return false;
+        }
+        return true;
+      }
+
+      function renderMeetingBanner(state) {
+        const banner = document.getElementById("meetingBanner");
+        const peopleDiv = document.getElementById("meetingPeople");
+        if (!banner || !peopleDiv) return;
+
+        const isMeeting =
+          (state.current_phase || "").toLowerCase() === "meeting";
+
+        if (!isMeeting) {
+          banner.style.display = "none";
+          peopleDiv.innerHTML = "";
+          return;
         }
 
-        function renderMeetingBanner(state) {
-            const banner = document.getElementById("meetingBanner");
-            const peopleDiv = document.getElementById("meetingPeople");
-            if (!banner || !peopleDiv) return;
+        const attendees = Array.isArray(state.meeting_attendees)
+          ? state.meeting_attendees
+          : [];
+        const dead = Array.isArray(state.meeting_dead)
+          ? state.meeting_dead
+          : [];
 
-            const isMeeting = (state.current_phase || "").toLowerCase() === "meeting";
+        const attendeesHtml = attendees.length
+          ? attendees
+              .map(
+                (n) =>
+                  `<span style="padding:2px 8px; border:1px solid #333; border-radius:999px; margin:2px; display:inline-block;">${escapeHtml(n)}</span>`,
+              )
+              .join("")
+          : `<span style="color: var(--text-dark)">No attendee data.</span>`;
 
-            if (!isMeeting) {
-                banner.style.display = "none";
-                peopleDiv.innerHTML = "";
-                return;
-            }
-
-            const attendees = Array.isArray(state.meeting_attendees) ? state.meeting_attendees : [];
-            const dead = Array.isArray(state.meeting_dead) ? state.meeting_dead : [];
-
-            const attendeesHtml = attendees.length
-                ? attendees.map(n => `<span style="padding:2px 8px; border:1px solid #333; border-radius:999px; margin:2px; display:inline-block;">${escapeHtml(n)}</span>`).join("")
-                : `<span style="color: var(--text-dark)">No attendee data.</span>`;
-
-            const deadHtml = dead.length
-                ? `<div style="margin-top:10px; color: var(--text-dark); font-size:0.95em;">
+        const deadHtml = dead.length
+          ? `<div style="margin-top:10px; color: var(--text-dark); font-size:0.95em;">
          <strong>Dead:</strong> ${dead.map(escapeHtml).join(", ")}
        </div>`
-                : "";
+          : "";
 
-            peopleDiv.innerHTML = `
+        peopleDiv.innerHTML = `
     <div><strong>Attendees:</strong></div>
     <div style="margin-top:8px;">${attendeesHtml}</div>
     ${deadHtml}
   `;
 
-            banner.style.display = "block";
+        banner.style.display = "block";
+      }
+
+      async function startNewGame() {
+        startGameBtn.disabled = true;
+        startGameBtn.textContent = "Starting...";
+        showLoading("Creating game instance...");
+        hideError();
+
+        try {
+          // 1. Create the game instance
+          const startResponse = await fetch(`${API_BASE_URL}/start_game`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              game_config: "SEVEN_MEMBER_GAME", // 7 players with 2 impostors
+              include_human: true,
+              // Add other config options if needed
+            }),
+          });
+
+          if (!startResponse.ok) {
+            const errorData = await startResponse.json();
+            throw new Error(
+              `Failed to create game: ${errorData.error || startResponse.statusText}`,
+            );
+          }
+
+          const gameData = await startResponse.json();
+          currentGameId = gameData.game_id;
+          console.log("Game created:", gameData);
+          gameIdDisplay.textContent = currentGameId;
+
+          // 2. Start the game running in the background
+          showLoading("Starting game engine...");
+          const runResponse = await fetch(
+            `${API_BASE_URL}/run_game/${currentGameId}`,
+            {
+              method: "POST",
+            },
+          );
+
+          if (!runResponse.ok) {
+            const errorData = await runResponse.json();
+            throw new Error(
+              `Failed to start game execution: ${errorData.error || runResponse.statusText}`,
+            );
+          }
+
+          console.log("Game run initiated");
+
+          // 3. Switch UI and start polling for state
+          homeScreen.style.display = "none";
+          gameScreen.style.display = "block";
+
+          // Set the game started flag to true
+          gameStarted = true;
+
+          // Get the human player information right after starting the game
+          await getHumanPlayerInfo();
+
+          // Set the player name in the status bar
+          updateHumanPlayerDisplay();
+
+          startGameStatePolling();
+          hideLoading();
+        } catch (error) {
+          console.error("Error starting game:", error);
+          showError(`Error: ${error.message}`);
+          startGameBtn.disabled = false;
+          startGameBtn.textContent = "Start New Game";
+          hideLoading();
         }
+      }
 
+      function startGameStatePolling() {
+        if (gameStateInterval) clearInterval(gameStateInterval);
+        // Poll more frequently to ensure updates are seen
+        gameStateInterval = setInterval(updateGameState, 1000);
+        updateGameState(); // Initial immediate update
+      }
 
-        async function startNewGame() {
-            startGameBtn.disabled = true;
-            startGameBtn.textContent = 'Starting...';
-            showLoading('Creating game instance...');
-            hideError();
-
-            try {
-                // 1. Create the game instance
-                const startResponse = await fetch(`${API_BASE_URL}/start_game`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        game_config: "SEVEN_MEMBER_GAME", // 7 players with 2 impostors
-                        include_human: true,
-                        // Add other config options if needed
-                    })
-                });
-
-                if (!startResponse.ok) {
-                    const errorData = await startResponse.json();
-                    throw new Error(`Failed to create game: ${errorData.error || startResponse.statusText}`);
-                }
-
-                const gameData = await startResponse.json();
-                currentGameId = gameData.game_id;
-                console.log("Game created:", gameData);
-                gameIdDisplay.textContent = currentGameId;
-
-                // 2. Start the game running in the background
-                showLoading('Starting game engine...');
-                const runResponse = await fetch(`${API_BASE_URL}/run_game/${currentGameId}`, {
-                    method: 'POST'
-                });
-
-                if (!runResponse.ok) {
-                    const errorData = await runResponse.json();
-                    throw new Error(`Failed to start game execution: ${errorData.error || runResponse.statusText}`);
-                }
-
-                console.log("Game run initiated");
-
-                // 3. Switch UI and start polling for state
-                homeScreen.style.display = 'none';
-                gameScreen.style.display = 'block';
-
-                // Set the game started flag to true
-                gameStarted = true;
-
-                // Get the human player information right after starting the game
-                await getHumanPlayerInfo();
-
-                // Set the player name in the status bar
-                updateHumanPlayerDisplay();
-
-                startGameStatePolling();
-                hideLoading();
-
-            } catch (error) {
-                console.error("Error starting game:", error);
-                showError(`Error: ${error.message}`);
-                startGameBtn.disabled = false;
-                startGameBtn.textContent = 'Start New Game';
-                hideLoading();
-            }
+      function stopGameStatePolling() {
+        if (gameStateInterval) {
+          clearInterval(gameStateInterval);
+          gameStateInterval = null;
+          console.log("Polling stopped while waiting for human input");
         }
+      }
 
-        function startGameStatePolling() {
-            if (gameStateInterval) clearInterval(gameStateInterval);
-            // Poll more frequently to ensure updates are seen
-            gameStateInterval = setInterval(updateGameState, 1000);
-            updateGameState(); // Initial immediate update
+      function resumeGameStatePolling() {
+        if (!gameStateInterval && gameStarted) {
+          console.log("Resuming polling after human action");
+          startGameStatePolling();
         }
+      }
 
-        function stopGameStatePolling() {
-            if (gameStateInterval) {
-                clearInterval(gameStateInterval);
-                gameStateInterval = null;
-                console.log("Polling stopped while waiting for human input");
-            }
-        }
+      function updateSpectatorLog(state) {
+        let logSection = document.getElementById("spectator-log");
 
-        function resumeGameStatePolling() {
-            if (!gameStateInterval && gameStarted) {
-                console.log("Resuming polling after human action");
-                startGameStatePolling();
-            }
-        }
-
-        function updateSpectatorLog(state) {
-            let logSection = document.getElementById('spectator-log');
-
-            // Create the UI element if it doesn't exist
-            if (!logSection) {
-                logSection = document.createElement('div');
-                logSection.id = 'spectator-log';
-                logSection.className = 'section';
-                logSection.innerHTML = `
+        // Create the UI element if it doesn't exist
+        if (!logSection) {
+          logSection = document.createElement("div");
+          logSection.id = "spectator-log";
+          logSection.className = "section";
+          logSection.innerHTML = `
       <h3 style="color: var(--accent-color);">📡 Spectator Feed (Live)</h3>
       <div id="log-content" style="font-family: monospace; max-height: 260px; overflow-y: auto;"></div>
     `;
-                document.querySelector('.game-layout').prepend(logSection);
-            }
+          document.querySelector(".game-layout").prepend(logSection);
+        }
 
-            const logContent = document.getElementById('log-content');
-            if (!logContent) return;
+        const logContent = document.getElementById("log-content");
+        if (!logContent) return;
 
-            // ----------------------------
-            // Preferred: backend provides a rolling feed
-            // state.spectator_feed = [{ id, timestep, player, action, phase, round }, ...]
-            // ----------------------------
-            if (Array.isArray(state.spectator_feed) && state.spectator_feed.length > 0) {
-                // append new events only (iterate oldest->newest so the newest ends up on top after prepend)
-                const newEvents = state.spectator_feed
-                    .filter(evt => typeof evt.id === "number" && evt.id > lastSeenSpectatorId)
-                    .sort((a, b) => a.id - b.id);
+        // ----------------------------
+        // Preferred: backend provides a rolling feed
+        // state.spectator_feed = [{ id, timestep, player, action, phase, round }, ...]
+        // ----------------------------
+        if (
+          Array.isArray(state.spectator_feed) &&
+          state.spectator_feed.length > 0
+        ) {
+          // append new events only (iterate oldest->newest so the newest ends up on top after prepend)
+          const newEvents = state.spectator_feed
+            .filter(
+              (evt) =>
+                typeof evt.id === "number" && evt.id > lastSeenSpectatorId,
+            )
+            .sort((a, b) => a.id - b.id);
 
-                for (const evt of newEvents) {
-                    const entry = document.createElement('div');
-                    entry.style.padding = "6px 0";
-                    entry.style.borderBottom = "1px solid #333";
-
-                    const who = evt.player || state.current_player || "Unknown";
-                    const action = evt.action || "—";
-                    const meta = (evt.phase || evt.timestep !== undefined)
-                        ? ` <span style="color: var(--text-dark);">(${evt.phase ?? "?"}, t=${evt.timestep ?? "?"})</span>`
-                        : "";
-
-                    entry.innerHTML = `<span style="color: var(--primary-color)">[${who}]</span> ${action}${meta}`;
-                    logContent.prepend(entry);
-
-                    lastSeenSpectatorId = evt.id;
-                }
-
-                return; // done
-            }
-
-            // ----------------------------
-            // Fallback: backend only provides last_agent_action + current_player (+ timestep)
-            // ----------------------------
-            const who = state.current_player || "Unknown";
-            const action = state.last_agent_action;
-
-            if (!action) return;
-
-            // Strong de-dupe key: action text alone is NOT enough (MOVE repeats)
-            const key = `${state.timestep ?? "?"}|${who}|${action}`;
-
-            if (key === lastActionKey) return;
-            lastActionKey = key;
-
-            const entry = document.createElement('div');
+          for (const evt of newEvents) {
+            const entry = document.createElement("div");
             entry.style.padding = "6px 0";
             entry.style.borderBottom = "1px solid #333";
-            entry.innerHTML = `<span style="color: var(--primary-color)">[${who}]</span> ${action}
-    <span style="color: var(--text-dark);">(t=${state.timestep ?? "?"})</span>`;
+
+            const who = evt.player || state.current_player || "Unknown";
+            const action = evt.action || "—";
+            const meta =
+              evt.phase || evt.timestep !== undefined
+                ? ` <span style="color: var(--text-dark);">(${evt.phase ?? "?"}, t=${evt.timestep ?? "?"})</span>`
+                : "";
+
+            entry.innerHTML = `<span style="color: var(--primary-color)">[${who}]</span> ${action}${meta}`;
             logContent.prepend(entry);
+
+            lastSeenSpectatorId = evt.id;
+          }
+
+          return; // done
         }
 
-        async function updateGameState() {
-            // Skip polling if game hasn't started yet
-            if (!gameStarted || !currentGameId) return;
+        // ----------------------------
+        // Fallback: backend only provides last_agent_action + current_player (+ timestep)
+        // ----------------------------
+        const who = state.current_player || "Unknown";
+        const action = state.last_agent_action;
 
-            // Skip polling if we're waiting for human input
-            if (waitingForHumanInput) {
-                console.log("Skipping poll while waiting for human input");
-                return;
-            }
+        if (!action) return;
 
-            hideError(); // Clear previous errors on successful fetch attempt
+        // Strong de-dupe key: action text alone is NOT enough (MOVE repeats)
+        const key = `${state.timestep ?? "?"}|${who}|${action}`;
 
-            try {
-                const response = await fetch(`${API_BASE_URL}/game/${currentGameId}/state`);
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    // Stop polling on critical errors like 404
-                    if (response.status === 404 && gameStateInterval) {
-                        clearInterval(gameStateInterval);
-                        gameStateInterval = null;
-                        showError(`Game ${currentGameId} not found on server. Polling stopped.`);
-                    } else {
-                        throw new Error(`Failed to fetch game state: ${errorData.error || response.statusText}`);
-                    }
-                    hideLoading();
-                    return;
-                }
+        if (key === lastActionKey) return;
+        lastActionKey = key;
 
-                const gameState = await response.json();
-                console.log("Received game state:", gameState);
+        const entry = document.createElement("div");
+        entry.style.padding = "6px 0";
+        entry.style.borderBottom = "1px solid #333";
+        entry.innerHTML = `<span style="color: var(--primary-color)">[${who}]</span> ${action}
+    <span style="color: var(--text-dark);">(t=${state.timestep ?? "?"})</span>`;
+        logContent.prepend(entry);
+      }
 
-                if (gameState.is_spectating) {
-                    // 1. Ensure we don't block the loop waiting for human input
-                    waitingForHumanInput = false;
+      async function updateGameState() {
+        // Skip polling if game hasn't started yet
+        if (!gameStarted || !currentGameId) return;
 
-                    // 2. Hide the action UI
-                    if (humanActionArea) humanActionArea.style.display = 'none';
-
-                    // 3. Update the Spectator Log
-                    updateSpectatorLog(gameState);
-                }
-
-                // Save the last game state
-                lastGameState = gameState;
-
-                // Debug information for human turn
-                if (gameState.is_human_turn) {
-                    console.log("Human turn detected in updateGameState");
-                    console.log("Human player name:", gameState.player_name);
-                    console.log("Available actions:", gameState.available_actions);
-
-                    // Stop polling when it's the human's turn (as requested)
-                    waitingForHumanInput = true;
-                    stopGameStatePolling();
-                }
-
-                renderGameState(gameState, gameState.is_spectating);
-                hideLoading();
-
-                // Stop polling if game is completed or errored
-                // if (gameState.status) {
-
-                if (['completed', 'error', 'cancelled'].includes(gameState.status)) {
-                    if (gameStateInterval) clearInterval(gameStateInterval);
-                    gameStateInterval = null;
-                    console.log(`Game ${gameState.status}. Polling stopped.`);
-                    displayGameResult(gameState);
-                }
-
-            } catch (error) {
-                console.error("Error updating game state:", error);
-                // Avoid showing error if it was just a 404 handled above
-                if (!error.message.includes('not found')) {
-                    showError(`Update Error: ${error.message}`);
-                }
-                hideLoading();
-                // Consider stopping polling on persistent errors
-            }
+        // Skip polling if we're waiting for human input
+        if (waitingForHumanInput) {
+          console.log("Skipping poll while waiting for human input");
+          return;
         }
 
-        function renderGameState(state, isSpectating = false) {
-            const spectatorFeed = document.getElementById('spectatorFeed');
-            const aiThoughts = document.getElementById('aiThoughts');
+        hideError(); // Clear previous errors on successful fetch attempt
 
-            if (isSpectating) {
-                spectatorFeed.style.display = 'block';
-                humanActionArea.style.display = 'none'; // Never show buttons to a ghost
-
-                // If the current player is an AI and has thinking data in the state
-                if (state.current_player_thinking) {
-                    aiThoughts.innerHTML = `<strong>${state.current_player} is thinking:</strong>\n${state.current_player_thinking}`;
-                }
+        try {
+          const response = await fetch(
+            `${API_BASE_URL}/game/${currentGameId}/state`,
+          );
+          if (!response.ok) {
+            const errorData = await response.json();
+            // Stop polling on critical errors like 404
+            if (response.status === 404 && gameStateInterval) {
+              clearInterval(gameStateInterval);
+              gameStateInterval = null;
+              showError(
+                `Game ${currentGameId} not found on server. Polling stopped.`,
+              );
             } else {
-                spectatorFeed.style.display = 'none';
-            }
-            if (!checkRequiredElements()) {
-                return;
-            }
-            // ----------- Ejection Message Popup Logic ----------- 
-            const ejectionBox = document.getElementById('ejectionAnnouncement');
-            const ejectionWords = document.getElementById('ejectionText');
-            const player_info = state.ejection_announcement || state.player_info || '';// state announcement regardless state 
-            const player_info_lc = player_info.toLowerCase();
-
-            const isEjected = player_info_lc.includes("was ejected") ||
-                player_info_lc.includes("voted out") ||
-                player_info_lc.includes("no one was ejected");
-
-            if (isEjected && !ejectionShown) {
-                ejectionShown = true; // Set the flag to prevent retriggering until we reset it
-
-                const infoLines = player_info.split('\n');
-                const results = infoLines.find((line) => {
-                    const l = line.toLowerCase();
-                    return l.includes("was ejected") ||
-                        l.includes("voted out") ||
-                        l.includes("no one was ejected") ||
-                        l.includes("voting results are in");;
-                });
-
-                // Show once and only show the popup if we have new ejection results to display
-                if (results) {
-                    const noneEjected = results.toLowerCase().includes("no one was ejected");
-                    ejectionWords.textContent = results; // Set the text of the ejection results
-
-                    // Style the box background color based on if player's ejection statuss
-                    if (noneEjected) {
-                        // If no one was ejected, use BLUE Background color to indicate this outcome
-                        ejectionBox.style.backgroundColor = "rgba(67, 67, 241, 0.9)"; // Blue for no ejection
-                        ejectionBox.style.borderColor = "var(--primary-color)";
-                    } else {
-                        // Player is ejected, use RED background color to indicate this outcome                
-                        ejectionBox.style.backgroundColor = "rgba(241, 67, 67, 0.9)";
-                        ejectionBox.style.borderColor = "var(--error-color)";
-                    }
-                    ejectionBox.style.display = "block";
-
-                    // Force-hide after 5 seconds regardless of game state or spectator mode
-                    setTimeout(() => {
-                        // If not in ejection state and banner is showing, hide it
-                        ejectionBox.style.display = "none";
-                    }, 5000);
-                }
-            } 
-            if (!isEjected) {
-                ejectionShown = false; // Reset the flag when we're no longer in an ejection state so it can trigger again on the next ejection
-            }
-             // --------- End of Ejection Message Logic ---------
-            if (state.waiting_for_monitor_room && state.monitor_rooms) {
-                if (!waitingForMonitorRoom) {
-                    waitingForMonitorRoom = true;
-                    showMonitorRoomSelection(state.monitor_rooms);
-                }
-                hideLoading();
-                return;  // Don't render normal game state while selecting room
-            } else {
-                waitingForMonitorRoom = false;
-            }
-
-
-            gameStatusDisplay.textContent = state.status;
-            phaseInfoDisplay.textContent = state.current_phase || 'N/A';
-            renderMeetingBanner(state);
-
-            // Display current step and player
-            const stepInfo = document.getElementById('stepInfo');
-            if (stepInfo) {
-                const currentStep = state.timestep || 0;
-                const maxSteps = state.max_timesteps || 50;
-                stepInfo.textContent = `${currentStep}/${maxSteps}`;
-            }
-
-            /*
-                * Turn indicator: shows "Your Turn - Player N (color)" in green
-                * when it's the human's turn, or "Other players..." in blue
-                * when AI agents are acting. Hides specific AI player names
-                * so the human only sees when it's their turn vs. waiting.
-            */
-            const currentPlayerInfo = document.getElementById('currentPlayerInfo');
-            if (currentPlayerInfo) {
-                if (state.is_human_turn) {
-                    const name = humanPlayerInfo ? humanPlayerInfo.player_name : '';
-                    const color = humanPlayerInfo ? humanPlayerInfo.color : '';
-                    currentPlayerInfo.innerHTML = `<span style="color: var(--success-color);">Your Turn - ${name}${color ? ' (' + color + ')' : ''}</span>`; // styles green signaling human player's turn
-                } else {
-                    currentPlayerInfo.innerHTML = `<span style="color: var(--primary-color);">Other players...</span>`; // styles default color when it's not human player's turn
-                }
-            }
-
-            // Use the stored human player info instead of trying to extract it from the state
-            // We only update this if we don't already have the human player info
-            if (!humanPlayerInfo) {
-                console.log("No human player info stored - will try to get it");
-                getHumanPlayerInfo();
-            } else {
-                updateHumanPlayerDisplay();
-            }
-
-            // Maintain map visibility state during updates
-            updateMapVisibility();
-
-            // Handle Human Turn
-            if (state.is_human_turn || (state.available_actions && state.available_actions.length > 0)) {
-                console.log("Human turn detected or actions available. State:", state);
-                // We don't update the human player name display here anymore
-                if (humanPlayerInfoDiv) {
-                    humanPlayerInfoDiv.innerHTML = `<pre>${state.player_info || 'No info available.'}</pre>`;
-                }
-                if (actionOptionsDiv) {
-                    actionOptionsDiv.innerHTML = '';
-                }
-                if (speakMessageInput) {
-                    speakMessageInput.style.display = 'none';
-                    speakMessageInput.value = '';
-                }
-
-                // Reset the memory and thinking process fields
-                const condensedMemoryField = document.getElementById('condensedMemory');
-                const thinkingProcessField = document.getElementById('thinkingProcess');
-
-                // Update the scratchpad with the value from the state if available
-                if (condensedMemoryField && state.condensed_memory !== undefined) {
-                    condensedMemoryField.value = state.condensed_memory;
-                }
-
-                // Only reset the thinking process field, not the scratchpad
-                if (thinkingProcessField) {
-                    thinkingProcessField.value = '';
-                }
-
-                if (state.available_actions && state.available_actions.length > 0) {
-                    console.log("Available actions:", state.available_actions);
-                    state.available_actions.forEach((action, index) => {
-                        const label = document.createElement('label');
-                        const radio = document.createElement('input');
-                        radio.type = 'radio';
-                        radio.name = 'humanAction';
-                        radio.value = index;
-                        radio.id = `action_${index}`;
-
-                        const actionName = action.name;
-                        const requiresMessage = action.requires_message;
-
-                        if (typeof actionName !== 'string' || typeof requiresMessage !== 'boolean') {
-                            console.error("Invalid action structure received from backend:", action);
-                            return;
-                        }
-
-                        radio.dataset.requiresMessage = requiresMessage;
-                        radio.addEventListener('change', handleActionSelection);
-
-                        label.appendChild(radio);
-                        label.appendChild(document.createTextNode(` ${actionName}`));
-                        label.htmlFor = `action_${index}`;
-                        actionOptionsDiv.appendChild(label);
-                    });
-                    if (submitActionBtn) {
-                        submitActionBtn.disabled = true;
-                    }
-                } else {
-                    console.log("No actions available in state:", state);
-                    if (actionOptionsDiv) {
-                        actionOptionsDiv.innerHTML = '<p>No actions available currently.</p>';
-                    }
-                    if (submitActionBtn) {
-                        submitActionBtn.disabled = true;
-                    }
-                }
-
-                // Force display the human action area
-                if (humanActionArea) {
-                    humanActionArea.style.display = 'block';
-                    // Add a class to make it more visible
-                    humanActionArea.classList.add('active');
-
-                    // Scroll to the human action area
-                    setTimeout(() => {
-                        humanActionArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }, 500);
-                }
-            } else {
-                if (humanActionArea) {
-                    humanActionArea.style.display = 'none';
-                    // Remove the active class
-                    humanActionArea.classList.remove('active');
-                }
-            }
-        }
-
-        function handleActionSelection(event) {
-            const selectedRadio = event.target;
-            const requiresMessage = selectedRadio.dataset.requiresMessage === 'true';
-            if (requiresMessage) {
-                speakMessageInput.style.display = 'block';
-                submitActionBtn.disabled = !speakMessageInput.value.trim(); // Enable only if message is non-empty
-            } else {
-                speakMessageInput.style.display = 'none';
-                submitActionBtn.disabled = false; // Enable immediately for non-speak actions
-            }
-        }
-
-        // Add listener for speak message input to enable/disable button
-        speakMessageInput.addEventListener('input', () => {
-            const selectedRadio = document.querySelector('input[name="humanAction"]:checked');
-            if (selectedRadio && selectedRadio.dataset.requiresMessage === 'true') {
-                submitActionBtn.disabled = !speakMessageInput.value.trim();
-            }
-        });
-
-        async function submitAction() {
-            const selectedRadio = document.querySelector('input[name="humanAction"]:checked');
-            if (!selectedRadio) {
-                showError("Please select an action.");
-                return;
-            }
-
-            const actionIndex = parseInt(selectedRadio.value);
-            const requiresMessage = selectedRadio.dataset.requiresMessage === 'true';
-            let message = null;
-
-            if (requiresMessage) {
-                message = speakMessageInput.value.trim();
-                if (!message) {
-                    showError("Please enter a message for the SPEAK action.");
-                    return;
-                }
-            }
-
-            // Get the values from the new fields
-            const condensedMemory = document.getElementById('condensedMemory').value.trim();
-            const thinkingProcess = document.getElementById('thinkingProcess').value.trim();
-
-            const actionData = {
-                action_index: actionIndex,
-                message: message,
-                condensed_memory: condensedMemory,
-                thinking_process: thinkingProcess
-            };
-
-            console.log("Submitting action:", actionData);
-            showLoading('Submitting action...');
-            submitActionBtn.disabled = true; // Disable while submitting
-            hideError();
-
-            try {
-                // Submit the action directly without checking game state again
-                const response = await fetch(`${API_BASE_URL}/game/${currentGameId}/action`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(actionData)
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.detail || response.statusText);
-                }
-
-                console.log("Action submitted successfully");
-                humanActionArea.style.display = 'none'; // Hide action area after submission
-
-                // Reset the waiting flag and resume polling
-                waitingForHumanInput = false;
-                resumeGameStatePolling();
-
-            } catch (error) {
-                console.error("Error submitting action:", error);
-                showError(`Submit Error: ${error.message}`);
-                submitActionBtn.disabled = false; // Re-enable on error
+              throw new Error(
+                `Failed to fetch game state: ${errorData.error || response.statusText}`,
+              );
             }
             hideLoading();
+            return;
+          }
+
+          const gameState = await response.json();
+          console.log("Received game state:", gameState);
+
+          if (gameState.is_spectating) {
+            // 1. Ensure we don't block the loop waiting for human input
+            waitingForHumanInput = false;
+
+            // 2. Hide the action UI
+            if (humanActionArea) humanActionArea.style.display = "none";
+
+            // 3. Update the Spectator Log
+            updateSpectatorLog(gameState);
+          }
+
+          // Save the last game state
+          lastGameState = gameState;
+
+          // Debug information for human turn
+          if (gameState.is_human_turn) {
+            console.log("Human turn detected in updateGameState");
+            console.log("Human player name:", gameState.player_name);
+            console.log("Available actions:", gameState.available_actions);
+
+            // Stop polling when it's the human's turn (as requested)
+            waitingForHumanInput = true;
+            stopGameStatePolling();
+          }
+
+          renderGameState(gameState, gameState.is_spectating);
+          hideLoading();
+
+          // Stop polling if game is completed or errored
+          // if (gameState.status) {
+
+          if (["completed", "error", "cancelled"].includes(gameState.status)) {
+            if (gameStateInterval) clearInterval(gameStateInterval);
+            gameStateInterval = null;
+            console.log(`Game ${gameState.status}. Polling stopped.`);
+            displayGameResult(gameState);
+          }
+        } catch (error) {
+          console.error("Error updating game state:", error);
+          // Avoid showing error if it was just a 404 handled above
+          if (!error.message.includes("not found")) {
+            showError(`Update Error: ${error.message}`);
+          }
+          hideLoading();
+          // Consider stopping polling on persistent errors
+        }
+      }
+
+      function renderGameState(state, isSpectating = false) {
+        const spectatorFeed = document.getElementById("spectatorFeed");
+        const aiThoughts = document.getElementById("aiThoughts");
+
+        if (isSpectating) {
+          spectatorFeed.style.display = "block";
+          humanActionArea.style.display = "none"; // Never show buttons to a ghost
+
+          // If the current player is an AI and has thinking data in the state
+          if (state.current_player_thinking) {
+            aiThoughts.innerHTML = `<strong>${state.current_player} is thinking:</strong>\n${state.current_player_thinking}`;
+          }
+        } else {
+          spectatorFeed.style.display = "none";
+        }
+        if (!checkRequiredElements()) {
+          return;
+        }
+        // ----------- Ejection Message Popup Logic -----------
+        const ejectionBox = document.getElementById("ejectionAnnouncement");
+        const ejectionWords = document.getElementById("ejectionText");
+        const player_info =
+          state.ejection_announcement || state.player_info || ""; // state announcement regardless state
+        const player_info_lc = player_info.toLowerCase();
+
+        const isEjected =
+          player_info_lc.includes("was ejected") ||
+          player_info_lc.includes("voted out") ||
+          player_info_lc.includes("no one was ejected");
+
+        if (isEjected && !ejectionShown) {
+          ejectionShown = true; // Set the flag to prevent retriggering until we reset it
+
+          const infoLines = player_info.split("\n");
+          const results = infoLines.find((line) => {
+            const l = line.toLowerCase();
+            return (
+              l.includes("was ejected") ||
+              l.includes("voted out") ||
+              l.includes("no one was ejected") ||
+              l.includes("voting results are in")
+            );
+          });
+
+          // Show once and only show the popup if we have new ejection results to display
+          if (results) {
+            const noneEjected = results
+              .toLowerCase()
+              .includes("no one was ejected");
+            ejectionWords.textContent = results; // Set the text of the ejection results
+
+            // Style the box background color based on if player's ejection statuss
+            if (noneEjected) {
+              // If no one was ejected, use BLUE Background color to indicate this outcome
+              ejectionBox.style.backgroundColor = "rgba(67, 67, 241, 0.9)"; // Blue for no ejection
+              ejectionBox.style.borderColor = "var(--primary-color)";
+            } else {
+              // Player is ejected, use RED background color to indicate this outcome
+              ejectionBox.style.backgroundColor = "rgba(241, 67, 67, 0.9)";
+              ejectionBox.style.borderColor = "var(--error-color)";
+            }
+            ejectionBox.style.display = "block";
+
+            // Force-hide after 5 seconds regardless of game state or spectator mode
+            setTimeout(() => {
+              // If not in ejection state and banner is showing, hide it
+              ejectionBox.style.display = "none";
+            }, 5000);
+          }
+        }
+        if (!isEjected) {
+          ejectionShown = false; // Reset the flag when we're no longer in an ejection state so it can trigger again on the next ejection
+        }
+        // --------- End of Ejection Message Logic ---------
+        if (state.waiting_for_monitor_room && state.monitor_rooms) {
+          if (!waitingForMonitorRoom) {
+            waitingForMonitorRoom = true;
+            showMonitorRoomSelection(state.monitor_rooms);
+          }
+          hideLoading();
+          return; // Don't render normal game state while selecting room
+        } else {
+          waitingForMonitorRoom = false;
         }
 
-        function displayGameResult(state) {
-            let resultMessage = '';
+        gameStatusDisplay.textContent = state.status;
+        phaseInfoDisplay.textContent = state.current_phase || "N/A";
+        renderMeetingBanner(state);
 
-            if (state.error_message) {
-                resultMessage = `<div style="color: var(--error-color);">
+        // Update human player name and location in the status bar
+        const locationDisplay = document.getElementById("currentLocation");
+        if (locationDisplay) {
+            if (state.is_spectating) {
+                locationDisplay.textContent = 'Spectating';
+                locationDisplay.style.color = 'var(--accent-color)';
+            } else {
+                locationDisplay.textContent = state.current_location || 'Unknown';
+                locationDisplay.style.color = '';
+            }
+        }
+
+        // Display current step and player
+        const stepInfo = document.getElementById("stepInfo");
+        if (stepInfo) {
+          const currentStep = state.timestep || 0;
+          const maxSteps = state.max_timesteps || 50;
+          stepInfo.textContent = `${currentStep}/${maxSteps}`;
+        }
+
+        /*
+         * Turn indicator: shows "Your Turn - Player N (color)" in green
+         * when it's the human's turn, or "Other players..." in blue
+         * when AI agents are acting. Hides specific AI player names
+         * so the human only sees when it's their turn vs. waiting.
+         */
+        const currentPlayerInfo = document.getElementById("currentPlayerInfo");
+        if (currentPlayerInfo) {
+          if (state.is_human_turn) {
+            const name = humanPlayerInfo ? humanPlayerInfo.player_name : "";
+            const color = humanPlayerInfo ? humanPlayerInfo.color : "";
+            currentPlayerInfo.innerHTML = `<span style="color: var(--success-color);">Your Turn - ${name}${color ? " (" + color + ")" : ""}</span>`; // styles green signaling human player's turn
+          } else {
+            currentPlayerInfo.innerHTML = `<span style="color: var(--primary-color);">Other players...</span>`; // styles default color when it's not human player's turn
+          }
+        }
+
+        // Use the stored human player info instead of trying to extract it from the state
+        // We only update this if we don't already have the human player info
+        if (!humanPlayerInfo) {
+          console.log("No human player info stored - will try to get it");
+          getHumanPlayerInfo();
+        } else {
+          updateHumanPlayerDisplay();
+        }
+
+        // Maintain map visibility state during updates
+        updateMapVisibility();
+
+        // Handle Human Turn
+        if (
+          state.is_human_turn ||
+          (state.available_actions && state.available_actions.length > 0)
+        ) {
+          console.log(
+            "Human turn detected or actions available. State:",
+            state,
+          );
+          // We don't update the human player name display here anymore
+          if (humanPlayerInfoDiv) {
+            humanPlayerInfoDiv.innerHTML = `<pre>${state.player_info || "No info available."}</pre>`;
+          }
+          if (actionOptionsDiv) {
+            actionOptionsDiv.innerHTML = "";
+          }
+          if (speakMessageInput) {
+            speakMessageInput.style.display = "none";
+            speakMessageInput.value = "";
+          }
+
+          // Reset the memory and thinking process fields
+          const condensedMemoryField =
+            document.getElementById("condensedMemory");
+          const thinkingProcessField =
+            document.getElementById("thinkingProcess");
+
+          // Update the scratchpad with the value from the state if available
+          if (condensedMemoryField && state.condensed_memory !== undefined) {
+            condensedMemoryField.value = state.condensed_memory;
+          }
+
+          // Only reset the thinking process field, not the scratchpad
+          if (thinkingProcessField) {
+            thinkingProcessField.value = "";
+          }
+
+          if (state.available_actions && state.available_actions.length > 0) {
+            console.log("Available actions:", state.available_actions);
+            state.available_actions.forEach((action, index) => {
+              const label = document.createElement("label");
+              const radio = document.createElement("input");
+              radio.type = "radio";
+              radio.name = "humanAction";
+              radio.value = index;
+              radio.id = `action_${index}`;
+
+              const actionName = action.name;
+              const requiresMessage = action.requires_message;
+
+              if (
+                typeof actionName !== "string" ||
+                typeof requiresMessage !== "boolean"
+              ) {
+                console.error(
+                  "Invalid action structure received from backend:",
+                  action,
+                );
+                return;
+              }
+
+              radio.dataset.requiresMessage = requiresMessage;
+              radio.addEventListener("change", handleActionSelection);
+
+              label.appendChild(radio);
+              label.appendChild(document.createTextNode(` ${actionName}`));
+              label.htmlFor = `action_${index}`;
+              actionOptionsDiv.appendChild(label);
+            });
+            if (submitActionBtn) {
+              submitActionBtn.disabled = true;
+            }
+          } else {
+            console.log("No actions available in state:", state);
+            if (actionOptionsDiv) {
+              actionOptionsDiv.innerHTML =
+                "<p>No actions available currently.</p>";
+            }
+            if (submitActionBtn) {
+              submitActionBtn.disabled = true;
+            }
+          }
+
+          // Force display the human action area
+          if (humanActionArea) {
+            humanActionArea.style.display = "block";
+            // Add a class to make it more visible
+            humanActionArea.classList.add("active");
+
+            // Scroll to the human action area
+            setTimeout(() => {
+              humanActionArea.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+              });
+            }, 500);
+          }
+        } else {
+          if (humanActionArea) {
+            humanActionArea.style.display = "none";
+            // Remove the active class
+            humanActionArea.classList.remove("active");
+          }
+        }
+      }
+
+      function handleActionSelection(event) {
+        const selectedRadio = event.target;
+        const requiresMessage =
+          selectedRadio.dataset.requiresMessage === "true";
+        if (requiresMessage) {
+          speakMessageInput.style.display = "block";
+          submitActionBtn.disabled = !speakMessageInput.value.trim(); // Enable only if message is non-empty
+        } else {
+          speakMessageInput.style.display = "none";
+          submitActionBtn.disabled = false; // Enable immediately for non-speak actions
+        }
+      }
+
+      // Add listener for speak message input to enable/disable button
+      speakMessageInput.addEventListener("input", () => {
+        const selectedRadio = document.querySelector(
+          'input[name="humanAction"]:checked',
+        );
+        if (selectedRadio && selectedRadio.dataset.requiresMessage === "true") {
+          submitActionBtn.disabled = !speakMessageInput.value.trim();
+        }
+      });
+
+      async function submitAction() {
+        const selectedRadio = document.querySelector(
+          'input[name="humanAction"]:checked',
+        );
+        if (!selectedRadio) {
+          showError("Please select an action.");
+          return;
+        }
+
+        const actionIndex = parseInt(selectedRadio.value);
+        const requiresMessage =
+          selectedRadio.dataset.requiresMessage === "true";
+        let message = null;
+
+        if (requiresMessage) {
+          message = speakMessageInput.value.trim();
+          if (!message) {
+            showError("Please enter a message for the SPEAK action.");
+            return;
+          }
+        }
+
+        // Get the values from the new fields
+        const condensedMemory = document
+          .getElementById("condensedMemory")
+          .value.trim();
+        const thinkingProcess = document
+          .getElementById("thinkingProcess")
+          .value.trim();
+
+        const actionData = {
+          action_index: actionIndex,
+          message: message,
+          condensed_memory: condensedMemory,
+          thinking_process: thinkingProcess,
+        };
+
+        console.log("Submitting action:", actionData);
+        showLoading("Submitting action...");
+        submitActionBtn.disabled = true; // Disable while submitting
+        hideError();
+
+        try {
+          // Submit the action directly without checking game state again
+          const response = await fetch(
+            `${API_BASE_URL}/game/${currentGameId}/action`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(actionData),
+            },
+          );
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.detail || response.statusText);
+          }
+
+          console.log("Action submitted successfully");
+          humanActionArea.style.display = "none"; // Hide action area after submission
+
+          // Reset the waiting flag and resume polling
+          waitingForHumanInput = false;
+          resumeGameStatePolling();
+        } catch (error) {
+          console.error("Error submitting action:", error);
+          showError(`Submit Error: ${error.message}`);
+          submitActionBtn.disabled = false; // Re-enable on error
+        }
+        hideLoading();
+      }
+
+      function displayGameResult(state) {
+        let resultMessage = "";
+
+        if (state.error_message) {
+          resultMessage = `<div style="color: var(--error-color);">
                     <h2>❌ Game Error</h2>
                     <p>Error: ${state.error_message}</p>
                 </div>`;
-            } else if (state.results) {
-                // Format the results nicely
-                const key = `Game ${currentGameId}`;
-                const winner = state.results?.[key]?.game_outcome?.winner ?? "Unknown";
-                const reason = state.results?.[key]?.game_outcome?.reason ?? "N/A";
+        } else if (state.results) {
+          // Format the results nicely
+          const key = `Game ${currentGameId}`;
+          const winner =
+            state.results?.[key]?.game_outcome?.winner ?? "Unknown";
+          const reason = state.results?.[key]?.game_outcome?.reason ?? "N/A";
 
-                // Determine if human won
-                let winnerColor = winner.toLowerCase().includes('impostor') ? 'var(--error-color)' : 'var(--success-color)';
-                let winnerEmoji = winner.toLowerCase().includes('impostor') ? '🔪' : '✅';
+          // Determine if human won
+          let winnerColor = winner.toLowerCase().includes("impostor")
+            ? "var(--error-color)"
+            : "var(--success-color)";
+          let winnerEmoji = winner.toLowerCase().includes("impostor")
+            ? "🔪"
+            : "✅";
 
-                resultMessage = `<div style="border: 3px solid ${winnerColor}; padding: 30px; border-radius: 15px;">
+          resultMessage = `<div style="border: 3px solid ${winnerColor}; padding: 30px; border-radius: 15px;">
                     <h2 style="font-size: 2em; margin: 0 0 20px 0; color: ${winnerColor};">
                         ${winnerEmoji} GAME OVER! ${winnerEmoji}
                     </h2>
@@ -1530,188 +1746,199 @@
                         ${reason}
                     </div>`;
 
-                // Add additional game statistics if available
-                if (state.results.total_timesteps) {
-                    resultMessage += `<div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--text-dark);">
+          // Add additional game statistics if available
+          if (state.results.total_timesteps) {
+            resultMessage += `<div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--text-dark);">
                         <div><strong>Total Timesteps:</strong> ${state.results.total_timesteps}</div>`;
-                }
+          }
 
-                if (state.results.impostors && state.results.impostors.length > 0) {
-                    resultMessage += `<div><strong>Impostors:</strong> ${state.results.impostors.join(', ')}</div>`;
-                }
+          if (state.results.impostors && state.results.impostors.length > 0) {
+            resultMessage += `<div><strong>Impostors:</strong> ${state.results.impostors.join(", ")}</div>`;
+          }
 
-                if (state.results.total_timesteps) {
-                    resultMessage += `</div>`;
-                }
+          if (state.results.total_timesteps) {
+            resultMessage += `</div>`;
+          }
 
-                resultMessage += `<div style="margin-top: 30px;">
+          resultMessage += `<div style="margin-top: 30px;">
                     <button onclick="location.reload()" style="padding: 15px 30px; font-size: 1.1em; background-color: var(--primary-color); border: none; border-radius: 8px; color: white; cursor: pointer;">
                         Play Again
                     </button>
                 </div></div>`;
-            } else {
-                resultMessage = `<div style="color: var(--accent-color);">
+        } else {
+          resultMessage = `<div style="color: var(--accent-color);">
                     <h2>Game ${state.status.toUpperCase()}</h2>
                     <p>The game has ended.</p>
                     <button onclick="location.reload()" style="padding: 15px 30px; margin-top: 20px; font-size: 1.1em; background-color: var(--primary-color); border: none; border-radius: 8px; color: white; cursor: pointer;">
                         Play Again
                     </button>
                 </div>`;
-            }
-
-            gameResultDiv.innerHTML = resultMessage;
-            gameResultDiv.style.display = 'block';
-
-            // Hide other game elements when game is over
-            if (gameScreen) {
-                const actionElements = gameScreen.querySelectorAll('.action-section, .available-actions');
-                actionElements.forEach(el => el.style.display = 'none');
-            }
         }
 
-        function showLoading(message = 'Loading...') {
-            loadingIndicator.textContent = message;
-            loadingIndicator.style.display = 'block';
+        gameResultDiv.innerHTML = resultMessage;
+        gameResultDiv.style.display = "block";
+
+        // Hide other game elements when game is over
+        if (gameScreen) {
+          const actionElements = gameScreen.querySelectorAll(
+            ".action-section, .available-actions",
+          );
+          actionElements.forEach((el) => (el.style.display = "none"));
         }
+      }
 
-        function hideLoading() {
-            loadingIndicator.style.display = 'none';
-        }
+      function showLoading(message = "Loading...") {
+        loadingIndicator.textContent = message;
+        loadingIndicator.style.display = "block";
+      }
 
-        function showError(message) {
-            errorDisplay.textContent = message;
-            errorDisplay.style.display = 'block';
-        }
+      function hideLoading() {
+        loadingIndicator.style.display = "none";
+      }
 
-        function hideError() {
-            errorDisplay.style.display = 'none';
-        }
+      function showError(message) {
+        errorDisplay.textContent = message;
+        errorDisplay.style.display = "block";
+      }
 
-        // Initial setup
-        document.addEventListener('DOMContentLoaded', () => {
-            // Any setup needed when the page loads
-            console.log("Among Us Web UI Initialized");
+      function hideError() {
+        errorDisplay.style.display = "none";
+      }
 
-            // Set up map toggle functionality
-            mapToggle.addEventListener('click', () => {
-                mapVisible = !mapVisible;
-                updateMapVisibility();
-            });
+      // Initial setup
+      document.addEventListener("DOMContentLoaded", () => {
+        // Any setup needed when the page loads
+        console.log("Among Us Web UI Initialized");
+
+        // Set up map toggle functionality
+        mapToggle.addEventListener("click", () => {
+          mapVisible = !mapVisible;
+          updateMapVisibility();
         });
+      });
 
-        // Function to update map visibility
-        function updateMapVisibility() {
-            if (mapVisible) {
-                mapContainer.classList.remove('hidden');
-                mapToggleText.textContent = 'Hide Map';
-                mapToggleIcon.classList.remove('hidden');
-            } else {
-                mapContainer.classList.add('hidden');
-                mapToggleText.textContent = 'Show Map';
-                mapToggleIcon.classList.add('hidden');
-            }
+      // Function to update map visibility
+      function updateMapVisibility() {
+        if (mapVisible) {
+          mapContainer.classList.remove("hidden");
+          mapToggleText.textContent = "Hide Map";
+          mapToggleIcon.classList.remove("hidden");
+        } else {
+          mapContainer.classList.add("hidden");
+          mapToggleText.textContent = "Show Map";
+          mapToggleIcon.classList.add("hidden");
         }
+      }
 
-        // Function to get human player information
-        async function getHumanPlayerInfo() {
-            if (!currentGameId) return;
+      // Function to get human player information
+      async function getHumanPlayerInfo() {
+        if (!currentGameId) return;
 
-            try {
-                const response = await fetch(`${API_BASE_URL}/game/${currentGameId}/human_info`);
-                if (response.ok) {
-                    const info = await response.json();
-                    humanPlayerInfo = info;
-                    console.log("Received human player info:", humanPlayerInfo);
-                    updateHumanPlayerDisplay();
-                }
-            } catch (error) {
-                console.error("Error fetching human player info:", error);
-                // Don't show error to user - just log it
-            }
+        try {
+          const response = await fetch(
+            `${API_BASE_URL}/game/${currentGameId}/human_info`,
+          );
+          if (response.ok) {
+            const info = await response.json();
+            humanPlayerInfo = info;
+            console.log("Received human player info:", humanPlayerInfo);
+            updateHumanPlayerDisplay();
+          }
+        } catch (error) {
+          console.error("Error fetching human player info:", error);
+          // Don't show error to user - just log it
         }
+      }
 
-        // Function to update the human player display
-        function updateHumanPlayerDisplay() {
-            if (!humanPlayerNameDisplay) return;
+      // Function to update the human player display
+      function updateHumanPlayerDisplay() {
+        if (!humanPlayerNameDisplay) return;
 
-            const playerName = playerNameInput.value || 'Victor';
+        const playerName = playerNameInput.value || "Victor";
 
-            if (humanPlayerInfo) {
-                console.log("Using human player info:", humanPlayerInfo);
+        if (humanPlayerInfo) {
+          console.log("Using human player info:", humanPlayerInfo);
 
-                // Extract player number from the player_name field
-                let playerNumber = '';
-                if (humanPlayerInfo.player_name) {
-                    const nameMatch = humanPlayerInfo.player_name.match(/Player\s*(\d+)/i);
-                    if (nameMatch && nameMatch.length >= 2) {
-                        playerNumber = nameMatch[1];
-                    }
-                }
+          // Extract player number from the player_name field
+          let playerNumber = "";
+          if (humanPlayerInfo.player_name) {
+            const nameMatch =
+              humanPlayerInfo.player_name.match(/Player\s*(\d+)/i);
+            if (nameMatch && nameMatch.length >= 2) {
+              playerNumber = nameMatch[1];
+            }
+          }
 
-                // Get color and identity directly from the fields
-                const playerColor = humanPlayerInfo.player_color || '';
-                const playerIdentity = humanPlayerInfo.player_identity || '';
+          // Get color and identity directly from the fields
+          const playerColor = humanPlayerInfo.player_color || "";
+          const playerIdentity = humanPlayerInfo.player_identity || "";
 
-                // Color code the identity
-                let identityText = playerIdentity;
-                let identityColor = 'var(--text-light)';
-                if (playerIdentity.toLowerCase() === 'impostor') {
-                    identityColor = 'var(--error-color)';
-                    identityText = '🔪 ' + playerIdentity;
-                } else if (playerIdentity.toLowerCase() === 'crewmate') {
-                    identityColor = 'var(--success-color)';
-                    identityText = '✅ ' + playerIdentity;
-                }
+          // Color code the identity
+          let identityText = playerIdentity;
+          let identityColor = "var(--text-light)";
+          if (playerIdentity.toLowerCase() === "impostor") {
+            identityColor = "var(--error-color)";
+            identityText = "🔪 " + playerIdentity;
+          } else if (playerIdentity.toLowerCase() === "crewmate") {
+            identityColor = "var(--success-color)";
+            identityText = "✅ " + playerIdentity;
+          }
 
-                let teammateHtml = '';
-                if (humanPlayerInfo.teammates && humanPlayerInfo.teammates.length > 0) {
-                    // Join teammate names and style them red
-                    const names = humanPlayerInfo.teammates.join(", ");
-                    teammateHtml = ` | <span style="color: red; font-size: 0.9em;">Partner: ${names}</span>`;
-                }
+          let teammateHtml = "";
+          if (
+            humanPlayerInfo.teammates &&
+            humanPlayerInfo.teammates.length > 0
+          ) {
+            // Join teammate names and style them red
+            const names = humanPlayerInfo.teammates.join(", ");
+            teammateHtml = ` | <span style="color: red; font-size: 0.9em;">Partner: ${names}</span>`;
+          }
 
-                if (playerNumber && playerColor) {
-                    humanPlayerNameDisplay.innerHTML = `
+          if (playerNumber && playerColor) {
+            humanPlayerNameDisplay.innerHTML = `
                 ${playerName} (Player ${playerNumber}: ${playerColor})
                 <span style="color: ${identityColor}; font-weight: bold;">${identityText}</span>
                 ${teammateHtml}
             `;
-                } else {
-                    humanPlayerNameDisplay.textContent = playerName;
-                }
-            } else {
-                humanPlayerNameDisplay.textContent = playerName;
-            }
+          } else {
+            humanPlayerNameDisplay.textContent = playerName;
+          }
+        } else {
+          humanPlayerNameDisplay.textContent = playerName;
         }
+      }
 
-        function showMonitorRoomSelection(rooms) {
-            // Show the human action area with room buttons
-            humanActionArea.style.display = 'block';
-            humanActionArea.classList.add('active');
+      function showMonitorRoomSelection(rooms) {
+        // Show the human action area with room buttons
+        humanActionArea.style.display = "block";
+        humanActionArea.classList.add("active");
 
-            // Update the heading
-            const heading = humanActionArea.querySelector('h2');
-            if (heading) heading.textContent = '📹 Select a Room to Monitor:';
+        // Update the heading
+        const heading = humanActionArea.querySelector("h2");
+        if (heading) heading.textContent = "📹 Select a Room to Monitor:";
 
-            // Hide elements not needed for room selection
-            if (humanPlayerInfoDiv) humanPlayerInfoDiv.innerHTML = '';
-            speakMessageInput.style.display = 'none';
-            submitActionBtn.style.display = 'none';
+        // Hide elements not needed for room selection
+        if (humanPlayerInfoDiv) humanPlayerInfoDiv.innerHTML = "";
+        speakMessageInput.style.display = "none";
+        submitActionBtn.style.display = "none";
 
-            // Hide memory/thinking section during room selection
-            const memorySection = humanActionArea.querySelector('.memory-thinking-section');
-            if (memorySection) memorySection.style.display = 'none';
+        // Hide memory/thinking section during room selection
+        const memorySection = humanActionArea.querySelector(
+          ".memory-thinking-section",
+        );
+        if (memorySection) memorySection.style.display = "none";
 
-            // Build room button grid
-            actionOptionsDiv.innerHTML = '';
+        // Build room button grid
+        actionOptionsDiv.innerHTML = "";
 
-            const roomGrid = document.createElement('div');
-            roomGrid.style.cssText = 'display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; padding: 10px 0;';
+        const roomGrid = document.createElement("div");
+        roomGrid.style.cssText =
+          "display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; padding: 10px 0;";
 
-            rooms.forEach(room => {
-                const btn = document.createElement('button');
-                btn.textContent = room;
-                btn.style.cssText = `
+        rooms.forEach((room) => {
+          const btn = document.createElement("button");
+          btn.textContent = room;
+          btn.style.cssText = `
             background: linear-gradient(135deg, var(--background-medium), var(--background-light));
             color: var(--text-light);
             border: 2px solid var(--text-dark);
@@ -1724,75 +1951,82 @@
             text-transform: none;
             letter-spacing: 0;
         `;
-                btn.addEventListener('mouseenter', () => {
-                    btn.style.borderColor = 'var(--primary-color)';
-                    btn.style.background = 'linear-gradient(135deg, var(--primary-color), #5a8fd0)';
-                });
-                btn.addEventListener('mouseleave', () => {
-                    btn.style.borderColor = 'var(--text-dark)';
-                    btn.style.background = 'linear-gradient(135deg, var(--background-medium), var(--background-light))';
-                });
-                btn.addEventListener('click', () => submitMonitorRoom(room));
-                roomGrid.appendChild(btn);
-            });
+          btn.addEventListener("mouseenter", () => {
+            btn.style.borderColor = "var(--primary-color)";
+            btn.style.background =
+              "linear-gradient(135deg, var(--primary-color), #5a8fd0)";
+          });
+          btn.addEventListener("mouseleave", () => {
+            btn.style.borderColor = "var(--text-dark)";
+            btn.style.background =
+              "linear-gradient(135deg, var(--background-medium), var(--background-light))";
+          });
+          btn.addEventListener("click", () => submitMonitorRoom(room));
+          roomGrid.appendChild(btn);
+        });
 
-            actionOptionsDiv.appendChild(roomGrid);
+        actionOptionsDiv.appendChild(roomGrid);
 
-            // Scroll to it
-            setTimeout(() => {
-                humanActionArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 300);
+        // Scroll to it
+        setTimeout(() => {
+          humanActionArea.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+        }, 300);
+      }
+
+      async function submitMonitorRoom(roomName) {
+        try {
+          showLoading(`Checking camera feed for ${roomName}...`);
+
+          // Disable all room buttons to prevent double-click
+          const buttons = actionOptionsDiv.querySelectorAll("button");
+          buttons.forEach((btn) => {
+            btn.disabled = true;
+            btn.style.opacity = "0.5";
+            btn.style.cursor = "not-allowed";
+          });
+
+          const response = await fetch(
+            `${API_BASE_URL}/game/${currentGameId}/monitor_room`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ room: roomName }),
+            },
+          );
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.detail || response.statusText);
+          }
+
+          const data = await response.json();
+          console.log("Monitor result:", data);
+
+          // Display the monitor result
+          if (data.monitor_result) {
+            displayMonitorResult(roomName, data.monitor_result);
+          } else {
+            displayMonitorResult(roomName, "No data received from camera.");
+          }
+
+          hideLoading();
+
+          // Auto-resume after 4 seconds so the player can read the result
+          setTimeout(() => {
+            resetAfterMonitor();
+          }, 12000);
+        } catch (error) {
+          console.error("Error submitting monitor room:", error);
+          showError(`Monitor Error: ${error.message}`);
+          hideLoading();
         }
+      }
 
-        async function submitMonitorRoom(roomName) {
-            try {
-                showLoading(`Checking camera feed for ${roomName}...`);
-
-                // Disable all room buttons to prevent double-click
-                const buttons = actionOptionsDiv.querySelectorAll('button');
-                buttons.forEach(btn => {
-                    btn.disabled = true;
-                    btn.style.opacity = '0.5';
-                    btn.style.cursor = 'not-allowed';
-                });
-
-                const response = await fetch(`${API_BASE_URL}/game/${currentGameId}/monitor_room`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ room: roomName })
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.detail || response.statusText);
-                }
-
-                const data = await response.json();
-                console.log("Monitor result:", data);
-
-                // Display the monitor result
-                if (data.monitor_result) {
-                    displayMonitorResult(roomName, data.monitor_result);
-                } else {
-                    displayMonitorResult(roomName, "No data received from camera.");
-                }
-
-                hideLoading();
-
-                // Auto-resume after 4 seconds so the player can read the result
-                setTimeout(() => {
-                    resetAfterMonitor();
-                }, 12000);
-
-            } catch (error) {
-                console.error("Error submitting monitor room:", error);
-                showError(`Monitor Error: ${error.message}`);
-                hideLoading();
-            }
-        }
-
-        function displayMonitorResult(roomName, result) {
-            actionOptionsDiv.innerHTML = `
+      function displayMonitorResult(roomName, result) {
+        actionOptionsDiv.innerHTML = `
         <div style="
             background: linear-gradient(135deg, #1a2a1a, #0a1a0a);
             border: 2px solid #0f0;
@@ -1826,32 +2060,32 @@
             </p>
         </div>
     `;
-        }
+      }
 
-        function resetAfterMonitor() {
-            waitingForMonitorRoom = false;
-            humanActionArea.style.display = 'none';
-            humanActionArea.classList.remove('active');
+      function resetAfterMonitor() {
+        waitingForMonitorRoom = false;
+        humanActionArea.style.display = "none";
+        humanActionArea.classList.remove("active");
 
-            // Restore hidden elements for next turn
-            submitActionBtn.style.display = 'block';
-            const memorySection = humanActionArea.querySelector('.memory-thinking-section');
-            if (memorySection) memorySection.style.display = 'block';
-            const heading = humanActionArea.querySelector('h2');
-            if (heading) heading.textContent = 'Your Turn! Choose an Action:';
+        // Restore hidden elements for next turn
+        submitActionBtn.style.display = "block";
+        const memorySection = humanActionArea.querySelector(
+          ".memory-thinking-section",
+        );
+        if (memorySection) memorySection.style.display = "block";
+        const heading = humanActionArea.querySelector("h2");
+        if (heading) heading.textContent = "Your Turn! Choose an Action:";
 
-            // Resume game
-            waitingForHumanInput = false;
-            resumeGameStatePolling();
-        }
+        // Resume game
+        waitingForHumanInput = false;
+        resumeGameStatePolling();
+      }
 
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
+      function escapeHtml(text) {
+        const div = document.createElement("div");
+        div.textContent = text;
+        return div.innerHTML;
+      }
     </script>
-</body>
-
+  </body>
 </html>
