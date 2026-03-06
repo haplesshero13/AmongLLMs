@@ -266,15 +266,15 @@ async def get_game_state(game_id: int):
     # Always send ejection annoucement regardless if player is alive or spectating, so the front-end can decide whether to show it in the banner or not based on if it's the human's turn and if they're alive
     state["ejection_announcement"] = game.pending_system_announcement or ""
 
-    # Status bar 
+    # =========== Begin Status Bar ============  
     # Always send human player's current location for the status bar, even if they're spectating, so the front-end can decide whether to show it based on if it's the human's turn and if they're alive
     if human_player_result:
         human_agent, _ = human_player_result
         state["current_location"] = human_agent.player.location
     else:
         state["current_location"] = ""
-    # End for status bar
-
+    # =========== End status bar ============ 
+    
     # For Ejection Popup for front-end catching vote tallys and ejection results
     if human_player_result:
         human_agent, _ = human_player_result
