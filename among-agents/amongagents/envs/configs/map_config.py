@@ -128,7 +128,8 @@ connections = [
     ("Weapons", "O2"),
     ("Navigation", "Shields"),
     ("O2", "Shields"),
-    ("O2", "Admin"), 
+    ("O2", "Navigation"),
+    ("Shields", "Weapons"), 
     # Bottom right 
     ("Shields", "Communications"),
     ("Shields", "Storage"),
@@ -137,7 +138,7 @@ connections = [
     ("Storage", "Admin"),
     ("Storage", "Electrical"),
     ("Storage", "Lower Engine"),
-    ("Admin", "Electrical"),
+    # ("Admin", "Electrical"),
     # Left side 
     ("Electrical", "Lower Engine"),
     ("Lower Engine", "Security"),
@@ -151,9 +152,7 @@ connections = [
 
 map_coords = {
     "Cafeteria": {
-        "coords": (405, 50, 447, 7, 582,
-            7, 647, 70, 647, 195, 589, 250, 458, 250, 405, 198,
-            ),
+        "coords": (405, 50, 447, 7, 582, 7, 647, 70, 647, 195, 589, 250, 458, 250, 405, 198,),
     },
     "Weapons": {
         "coords": (705, 107, 797, 107, 797, 163, 726, 163, 705, 147),
