@@ -1,10 +1,15 @@
-"""Calculate OpenSkill ratings from a flat-file summary.json experiment log.
+"""Calculate OpenSkill ratings from experiment logs.
+
+Supports two formats:
+1. Old JSONL format: Each line is a game entry with "Game N" as key
+2. New single-JSON format: One JSON object with all games, each with game_outcome
 
 Replays all games chronologically using the meta-agent approach for symmetric
 team-level rating updates despite asymmetric team sizes.
 
 Usage:
     uv run calculate_ratings.py expt-logs/2026-02-11_exp_5/summary.json
+    uv run calculate_ratings.py expt-logs/2026-02-21_exp_3/summary.json
 """
 
 import json
@@ -13,6 +18,7 @@ import os
 import sys
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Iterator
 
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
@@ -166,21 +172,65 @@ def scale(mu: float) -> int:
     return round(mu * 100)
 
 
-def load_games(filepath: str) -> list[dict]:
-    """Load games from JSONL summary file, sorted by game number."""
-    games = []
+def detect_format(filepath: str) -> str:
+    """Detect whether the file is JSONL (old) or single JSON (new) format."""
     with open(filepath) as f:
-        for line in f:
-            line = line.strip()
-            if not line:
+        first_char = f.read(1)
+        if first_char == "{":
+            # Could be single JSON object or JSONL starting with {
+            f.seek(0)
+            content = f.read()
+            # Try to parse as single JSON
+            try:
+                data = json.loads(content)
+                if isinstance(data, dict):
+                    # Check if it looks like the new format (has game_outcome)
+                    for key, val in data.items():
+                        if key.startswith("Game ") and isinstance(val, dict):
+                            if "game_outcome" in val:
+                                return "new"
+                    # Old JSONL format but first line parsed as dict
+                    return "jsonl"
+            except json.JSONDecodeError:
+                pass
+    return "jsonl"
+
+
+def load_games(filepath: str) -> list[dict]:
+    """Load games from summary file, supporting both old JSONL and new single-JSON formats.
+
+    Old format: JSONL where each line is {"Game N": {...}}
+    New format: Single JSON object {"Game 1": {..., "game_outcome": {...}}, "Game 2": ...}
+    """
+    fmt = detect_format(filepath)
+    games = []
+
+    if fmt == "new":
+        # New format: single JSON object with all games
+        with open(filepath) as f:
+            data = json.load(f)
+        for game_id, game_data in data.items():
+            if not game_id.startswith("Game "):
                 continue
-            entry = json.loads(line)
-            for game_id, game_data in entry.items():
-                # Extract game number for sorting
-                num = int(game_id.split()[-1])
-                game_data["_game_id"] = game_id
-                game_data["_game_num"] = num
-                games.append(game_data)
+            num = int(game_id.split()[-1])
+            game_data["_game_id"] = game_id
+            game_data["_game_num"] = num
+            games.append(game_data)
+    else:
+        # Old format: JSONL
+        with open(filepath) as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                entry = json.loads(line)
+                for game_id, game_data in entry.items():
+                    # Extract game number for sorting
+                    num = int(game_id.split()[-1])
+                    game_data["_game_id"] = game_id
+                    game_data["_game_num"] = num
+                    games.append(game_data)
+
     games.sort(key=lambda g: g["_game_num"])
     return games
 
@@ -239,6 +289,33 @@ def build_ranked_data(ratings: dict[str, ModelRating]) -> list[dict]:
 # =============================================================================
 
 
+def get_winner(game: dict) -> str | None:
+    """Extract winner from game data, supporting both old and new formats.
+
+    Old format: game["winner"] is 1 (impostors) or 0 (crewmates)
+    New format: game["game_outcome"]["winner"] is "Impostors" or "Crewmates"
+
+    Returns:
+        "Impostors" or "Crewmates" or None if not found
+    """
+    # Old format: winner field directly on game
+    if "winner" in game:
+        w = game["winner"]
+        if w == 1:
+            return "Impostors"
+        elif w == 0:
+            return "Crewmates"
+        return w  # Already a string
+
+    # New format: game_outcome.winner
+    if "game_outcome" in game:
+        outcome = game["game_outcome"]
+        if isinstance(outcome, dict) and "winner" in outcome:
+            return outcome["winner"]
+
+    return None
+
+
 def replay_with_history(
     games: list[dict],
 ) -> tuple[dict[str, ModelRating], dict[str, list[tuple[int, float]]]]:
@@ -249,12 +326,12 @@ def replay_with_history(
     history: dict[str, list[tuple[int, float]]] = {}
 
     for game in games:
-        winner = game.get("winner")
+        winner = get_winner(game)
         if winner is None:
             continue
 
         game_num = game["_game_num"]
-        impostors_won = winner == 1
+        impostors_won = winner == "Impostors"
         impostors, crewmates = extract_players(game)
         if not impostors or not crewmates:
             continue
