@@ -58,3 +58,4 @@ markers = [
     "integration: marks tests that require external API calls (e.g., OpenRouter)",
 ]
 asyncio_default_fixture_loop_scope = "function"
+pythonpath = ["."]

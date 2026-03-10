@@ -1,13 +1,24 @@
-"""Tests for compute_meta_agent_update in calculate_ratings.
+"""Tests for calculate_ratings.
 
 Verifies that the meta-agent approach produces symmetric team-level deltas
 regardless of team size, and that variance-weighted redistribution works
 correctly when players have different sigma values.
+
+Also tests file format detection for JSONL vs single-JSON formats.
 """
+
+import json
+import tempfile
 
 import pytest
 
-from calculate_ratings import compute_meta_agent_update, DEFAULT_MU, DEFAULT_SIGMA
+from calculate_ratings import (
+    compute_meta_agent_update,
+    detect_format,
+    load_games,
+    DEFAULT_MU,
+    DEFAULT_SIGMA,
+)
 
 
 def test_symmetric_teams_produce_symmetric_deltas():
@@ -111,3 +122,54 @@ def test_variance_weighted_redistribution():
         f"Delta ratio ({delta_ratio:.2f}) should match variance ratio "
         f"({variance_ratio:.2f})"
     )
+
+
+# =============================================================================
+# Format detection tests
+# =============================================================================
+
+SAMPLE_NEW_FORMAT = {
+    "Game 1": {
+        "game_outcome": {"winner": "Impostors"},
+        "Player 1": {"identity": "Impostor", "model": "a/model-a", "name": "Alice"},
+        "Player 2": {"identity": "Crewmate", "model": "b/model-b", "name": "Bob"},
+    },
+}
+
+
+def _write_json(tmp_path, data, prefix=""):
+    """Write JSON data to a temp file, optionally with leading whitespace."""
+    path = tmp_path / "summary.json"
+    path.write_text(prefix + json.dumps(data, indent=2))
+    return str(path)
+
+
+def test_detect_format_new_format_with_leading_whitespace(tmp_path):
+    """A valid new-format JSON file starting with whitespace must be detected as 'new'.
+
+    Bug: detect_format reads only the first character; if it's whitespace instead
+    of '{', the file is misclassified as JSONL, and load_games crashes on
+    pretty-printed lines.
+    """
+    path = _write_json(tmp_path, SAMPLE_NEW_FORMAT, prefix="\n")
+    assert detect_format(path) == "new"
+
+
+def test_detect_format_new_format_with_leading_spaces(tmp_path):
+    """Leading spaces should not break format detection."""
+    path = _write_json(tmp_path, SAMPLE_NEW_FORMAT, prefix="   ")
+    assert detect_format(path) == "new"
+
+
+def test_load_games_with_leading_whitespace(tmp_path):
+    """load_games must successfully parse new-format JSON with leading whitespace."""
+    path = _write_json(tmp_path, SAMPLE_NEW_FORMAT, prefix="\n  ")
+    games = load_games(path)
+    assert len(games) == 1
+    assert games[0]["_game_id"] == "Game 1"
+
+
+def test_detect_format_new_format_no_whitespace(tmp_path):
+    """Baseline: new-format without leading whitespace still works."""
+    path = _write_json(tmp_path, SAMPLE_NEW_FORMAT)
+    assert detect_format(path) == "new"
