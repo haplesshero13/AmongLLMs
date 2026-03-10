@@ -175,24 +175,19 @@ def scale(mu: float) -> int:
 def detect_format(filepath: str) -> str:
     """Detect whether the file is JSONL (old) or single JSON (new) format."""
     with open(filepath) as f:
-        first_char = f.read(1)
-        if first_char == "{":
-            # Could be single JSON object or JSONL starting with {
-            f.seek(0)
-            content = f.read()
-            # Try to parse as single JSON
-            try:
-                data = json.loads(content)
-                if isinstance(data, dict):
-                    # Check if it looks like the new format (has game_outcome)
-                    for key, val in data.items():
-                        if key.startswith("Game ") and isinstance(val, dict):
-                            if "game_outcome" in val:
-                                return "new"
-                    # Old JSONL format but first line parsed as dict
-                    return "jsonl"
-            except json.JSONDecodeError:
-                pass
+        content = f.read()
+    stripped = content.lstrip()
+    if stripped and stripped[0] == "{":
+        try:
+            data = json.loads(stripped)
+            if isinstance(data, dict):
+                for key, val in data.items():
+                    if key.startswith("Game ") and isinstance(val, dict):
+                        if "game_outcome" in val:
+                            return "new"
+                return "jsonl"
+        except json.JSONDecodeError:
+            pass
     return "jsonl"
 
 
