@@ -295,20 +295,6 @@
             }
         }
 
-        @keyframes markerPulse {
-            0% {
-                box-shadow: 0 0 10px rgba(204, 120, 92, 0.4);
-            }
-
-            50% {
-                box-shadow: 0 0 25px rgba(204, 120, 92, 0.8);
-            }
-
-            100% {
-                box-shadow: 0 0 10px rgba(204, 120, 92, 0.4);
-            }
-        }
-
         .action-options label {
             display: block;
             margin-bottom: 15px;
@@ -719,10 +705,6 @@
                 <label for="playerNameInput">Your Name:</label>
                 <input type="text" id="playerNameInput" value="Victor" placeholder="Enter your name" />
             </div>
-            <button id="startGameBtn" onclick="startNewGame()">
-                Start New Game
-            </button>
-            <!-- Add options for different game sizes later if needed -->
 
             <!-- Player rulebook for game -->
             <div class="rules-wrapper">
@@ -849,7 +831,13 @@
                     </ul>
                 </div>
             </div>
+            
+            <!-- Start Game Button -->
+            <button id="startGameBtn" onclick="startNewGame()">
+                Start New Game
+            </button>
         </div>
+        
         <!-- Game for Spectator Screen Mode -->
         <div class="game-screen" id="gameScreen">
             <h1>Game <span id="gameId"></span></h1>
@@ -934,23 +922,6 @@
                     <div class="map-container" id="mapContainer">
                         <div style="position: relative; display: inline-block;">
                             <img src="assets/skeld.png" alt="The Skeld Map" class="map-image" />
-                             <!-- Map location marke: absolute-positioned over the map image.
-                            transform: translate(-50%, -50%) centers it on the coordinate-->
-                            <div id="mapLocationMarker" style="
-                            position: absolute;
-                            padding: 4px 10px;
-                            background: rgba(204, 120, 92, 0.9);
-                            color: white;
-                            border-radius: 12px;
-                            font-size: 0.75em;
-                            font-weight: bold;
-                            pointer-events: none;
-                            display: none;
-                            transform: translate(-50%, -50%);
-                            border: 2px solid white;
-                            box-shadow: 0 0 15px rgba(204, 120, 92, 0.6);
-                            animation: markerPulse 2s infinite;
-                        ">📍 YOU</div>
                         </div>
                     </div>
                 </div>
@@ -1027,34 +998,7 @@
 
             // Flag to prevent ejection popup retriggering after initial display
             let ejectionShown = false;
-            
-            //  Map room positions as % of image width (x) and height (y)
-            // Places the marker over the correct room on the static Skeld map. 
-            const MAP_ROOM_POSITIONS = {
-                "Cafeteria": { x: 52, y: 24 },
-                "Weapons": { x: 74.2, y: 23.6 },
-                "Navigation": { x: 92.3, y: 47.5 },
-                "O2": { x: 67.8, y: 43.2 },
-                "Shields": { x: 75.2, y: 75.1 },
-                "Communications": { x: 65, y: 75 },
-                "Storage": { x: 49.9, y: 78.8 },
-                "Admin": { x: 64.1, y: 60.5 },
-                "Electrical": { x: 37, y: 68.7 },
-                "Lower Engine": { x: 16.8, y: 76 },
-                "Security": { x: 26.6, y: 50.3 },
-                "Reactor": { x: 8, y: 47.5 },
-                "Upper Engine": { x: 16.8, y: 25.4 },
-                "Medbay": { x: 36.5, y: 41.1 },
-
-                /* Debugging - get coordinate's of each place on map:
-                    document.querySelector('.map-image').addEventListener('click', function(e) {
-                    const rect = this.getBoundingClientRect();
-                    const x = ((e.clientX - rect.left) / rect.width * 100).toFixed(1);
-                    const y = ((e.clientY - rect.top) / rect.height * 100).toFixed(1);
-                    console.log(`{ x: ${x}, y: ${y} }`);
-                });
-                */
-            };
+            let wasAliveBeforeSpectating = true; // Tracks if the human player was alive before entering spectator mode
 
             // Add error checking for DOM elements
             function checkRequiredElements() {
@@ -1399,10 +1343,9 @@
             function renderGameState(state, isSpectating = false) {
                 const spectatorFeed = document.getElementById("spectatorFeed");
                 const aiThoughts = document.getElementById("aiThoughts");
-
+                // Spectator mode
                 if (isSpectating) {
-                    wasAlive = false; // reset for next time we enter spectator mode, allows the death announcement to trigger once per death.
-                    spectatorFeed.style.display = "block";
+                    wasAliveBeforeSpectating = false;  
                     humanActionArea.style.display = "none"; // Never show buttons to a ghost
 
                     // If the current player is an AI and has thinking data in the state
@@ -1496,18 +1439,6 @@
                         locationDisplay.textContent = state.current_location || "Unknown";
                         locationDisplay.style.color = "";
                     }
-                }
-                // Position map marker at the player's current room
-                // Uses percentage-based coordinates so the marker pointer scales with the image
-                const marker = document.getElementById('mapLocationMarker');
-                const roomName = state.current_location || '';
-                if (marker && MAP_ROOM_POSITIONS[roomName] && !state.is_spectating) {
-                    const pos = MAP_ROOM_POSITIONS[roomName];
-                    marker.style.left = pos.x + '%'; // % from left edge of map
-                    marker.style.top = pos.y + '%'; // % from top edge of map
-                    marker.style.display = 'block';
-                } else if (marker) {
-                    marker.style.display = 'none'; // hide marker when spectating or no room. 
                 }
 
                 // Display current step and player
