@@ -26,12 +26,15 @@ def upload_logs_to_drive(logs_path: str, bucket_name: str = None):
     client = get_storage_client()
     bucket = client.bucket(bucket_name)
 
+    # Use the folder name as the GCS prefix to create a folder in the bucket
+    folder_name = os.path.basename(os.path.normpath(logs_path))
+
     # Walk subdirectories recursively, mirroring folder structure in GCS
     for dirpath, dirnames, filenames in os.walk(logs_path):
         for filename in filenames:
             filepath = os.path.join(dirpath, filename)
-            # Use relative path as the GCS object name to preserve folder structure
             rel_path = os.path.relpath(filepath, logs_path)
-            blob = bucket.blob(rel_path)
+            gcs_path = f"{folder_name}/{rel_path}"
+            blob = bucket.blob(gcs_path)
             blob.upload_from_filename(filepath)
-            print(f"[GCS] Uploaded {rel_path}")
+            print(f"[GCS] Uploaded {gcs_path}")
