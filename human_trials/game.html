@@ -840,7 +840,11 @@
         
         <!-- Game for Spectator Screen Mode -->
         <div class="game-screen" id="gameScreen">
-            <h1>Game <span id="gameId"></span></h1>
+            <h1>Game <span id="gameId"></span>
+                <button id="endGameBtn" onclick="endGame()" style="float: right; padding: 8px 18px; font-size: 0.6em; background-color: var(--error-color); border: none; border-radius: 6px; color: white; cursor: pointer;">
+                    End Game
+                </button>
+            </h1>
             <div id="spectatorFeed" class="section" style="
             display: none;
             border: 2px solid var(--accent-color);
@@ -963,7 +967,7 @@
             let gameStateInterval = null;
             let lastGameState = null; // Store the last valid game state
             let lastSeenSpectatorId = -1;
-            const API_BASE_URL = `http://${window.location.hostname}:${window.location.port}/api`;
+            const API_BASE_URL = `${window.location.origin}/api`;
 
             const homeScreen = document.getElementById("homeScreen");
             const gameScreen = document.getElementById("gameScreen");
@@ -1082,6 +1086,19 @@
   `;
 
                 banner.style.display = "block";
+            }
+
+            async function endGame() {
+                if (!currentGameId) return;
+                const btn = document.getElementById("endGameBtn");
+                btn.disabled = true;
+                btn.textContent = "Ending...";
+                try {
+                    await fetch(`${API_BASE_URL}/game/${currentGameId}/end`, { method: "POST" });
+                } catch (e) {
+                    console.error("End game failed:", e);
+                }
+                location.reload();
             }
 
             async function startNewGame() {

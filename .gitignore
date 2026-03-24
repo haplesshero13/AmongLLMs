@@ -197,14 +197,5 @@ CLAUDE.md
 
 .DS_Store
 .ruff_cache
-
-# trio
-AGENTS.md
-trio-agents/
-.codex/
-.opencode/
-.agents/
-.trio/
-HANDOFF.md
-PLAN.md
-REVIEW.md
+2026-03-24-014107-opus-46.txt
+requirements_old.txt

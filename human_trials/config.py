@@ -7,9 +7,12 @@ SESSION_ID = str(uuid.uuid4())[:8]
 
 # Get experiment date and Git commit hash
 DATE = datetime.datetime.now().strftime("%Y-%m-%d")
-COMMIT_HASH = (
+try:
+    COMMIT_HASH = (
     subprocess.check_output(["git", "rev-parse", "HEAD"]).strip().decode("utf-8")
 )
+except (subprocess.CalledProcessError, FileNotFoundError):
+    COMMIT_HASH = "unknown"
 
 # List of available models for 1on1 tournament style
 BIG_LIST_OF_MODELS = [

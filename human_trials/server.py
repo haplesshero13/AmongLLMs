@@ -30,6 +30,7 @@ from dotenv import load_dotenv
 from utils import setup_experiment
 from config import CONFIG, DEFAULT_GAME_ARGS
 from run import RunGames
+from gdrive import upload_logs_to_drive
 
 app = FastAPI(title="Among Us Game Server")
 
@@ -114,6 +115,12 @@ async def run_game_background(game_id: int):
         running_games.add(game_id)  # Add to running games set
         await game.run_game()
         game_info["status"] = "completed"
+        try:
+            logs_path = os.path.join(script_dir, "logs")
+            folder_id = os.environ.get("GCS_BUCKET_NAME")
+            upload_logs_to_drive(logs_path, folder_id)
+        except Exception as e:
+            print(f"[Server] Error uploading logs to Google Drive for game {game_id}: {e}")
         print(f"[Server] Game {game_id} completed successfully.")
         game_info["results"] = (
             game.summary_json if hasattr(game, "summary_json") else {}
@@ -516,6 +523,37 @@ async def submit_monitor_room(game_id: int, request: MonitorRoomRequest):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to submit room: {e}")
+
+
+@app.post("/api/game/{game_id}/end")
+async def end_game(game_id: int):
+    """End a game early, upload logs to Drive, and clean up."""
+    if game_id not in active_games:
+        raise HTTPException(status_code=404, detail="Game not found")
+
+    # Cancel the running game task
+    if game_id in game_tasks and not game_tasks[game_id].done():
+        game_tasks[game_id].cancel()
+
+    # Resolve any pending human futures so the game loop can exit
+    if game_id in human_action_futures and not human_action_futures[game_id].done():
+        human_action_futures[game_id].cancel()
+    if game_id in human_monitor_futures and not human_monitor_futures[game_id].done():
+        human_monitor_futures[game_id].cancel()
+
+    game_info = active_games[game_id]
+    game_info["status"] = "cancelled"
+
+    # Upload logs to Drive
+    try:
+        logs_path = os.path.join(script_dir, "logs")
+        folder_id = os.environ.get("GCS_BUCKET_NAME")
+        upload_logs_to_drive(logs_path, folder_id)
+        print(f"[Server] Logs uploaded to Drive for game {game_id}.")
+    except Exception as e:
+        print(f"[Server] Failed to upload logs for game {game_id}: {e}")
+
+    return {"status": "cancelled", "game_id": game_id}
 
 
 
