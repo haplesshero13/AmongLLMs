@@ -831,13 +831,13 @@
                     </ul>
                 </div>
             </div>
-            
+
             <!-- Start Game Button -->
             <button id="startGameBtn" onclick="startNewGame()">
                 Start New Game
             </button>
         </div>
-        
+
         <!-- Game for Spectator Screen Mode -->
         <div class="game-screen" id="gameScreen">
             <h1>Game <span id="gameId"></span></h1>
@@ -1345,7 +1345,7 @@
                 const aiThoughts = document.getElementById("aiThoughts");
                 // Spectator mode
                 if (isSpectating) {
-                    wasAliveBeforeSpectating = false;  
+                    wasAliveBeforeSpectating = false;
                     humanActionArea.style.display = "none"; // Never show buttons to a ghost
 
                     // If the current player is an AI and has thinking data in the state
