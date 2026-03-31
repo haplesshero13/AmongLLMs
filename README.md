@@ -43,6 +43,20 @@ Run a single game with the UI enabled:
 uv run main.py --num_games 1 --display_ui True
 ```
 
+Run as a human crewmate from the main entrypoint:
+
+```bash
+uv run main.py --num_games 1 --role crewmate --crewmate_llm "meta-llama/llama-3.3-70b-instruct:free" --impostor_llm "meta-llama/llama-3.3-70b-instruct:free"
+```
+
+Run as a human impostor with the map UI enabled:
+
+```bash
+uv run main.py --num_games 1 --display_ui True --role impostor --crewmate_llm "meta-llama/llama-3.3-70b-instruct:free" --impostor_llm "meta-llama/llama-3.3-70b-instruct:free"
+```
+
+`--role` accepts only `impostor` or `crewmate` and enables a human-controlled player in that role.
+
 Run a game using long-context agents (multi-turn conversation format, keeps full history):
 
 ```bash
@@ -60,6 +74,7 @@ Run 10 games with free models (using Llama or GPT-based open-source models):
 ```bash
 uv run main.py --num_games 10 --crewmate_llm "openai/gpt-oss-20b:free" --impostor_llm "meta-llama/llama-3.3-70b-instruct:free"
 ```
+
 Run 20 games with 7 member game on different models (paid models) in an AI vs AI mode:
 
 ```bash
@@ -99,14 +114,14 @@ To run the human trials interface:
 
 To specify which models AI agents use in the human trial interface, modify the `DEFAULT_GAME_ARGS` in `human_trials/config.py`. You can set specific models for both Impostors and Crewmates by updating the `agent_config`.
 
-For example, to use specific OpenRouter models like `meta-llama/llama-3.3-70b-instruct:free` and `openai/gpt-oss-20b:free`, configure them as follows:
+For example, to use specific OpenRouter models like `meta-llama/llama-3.3-70b-instruct:free` and `nvidia/nemotron-3-super-120b-a12b:free`, configure them as follows:
 
 ```AmongLLMs/human_trials/config.py#L35-41
     "agent_config": {
         "Impostor": "LLM",
         "Crewmate": "LLM",
         "IMPOSTOR_LLM_CHOICES": ["meta-llama/llama-3.3-70b-instruct:free"],
-        "CREWMATE_LLM_CHOICES": ["openai/gpt-oss-20b:free"],
+        "CREWMATE_LLM_CHOICES": ["nvidia/nemotron-3-super-120b-a12b:free"],
         "assignment_mode": "unique",  # Use 'unique' to ensure different models per agent
     },
 ```

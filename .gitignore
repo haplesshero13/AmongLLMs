@@ -197,3 +197,14 @@ CLAUDE.md
 
 .DS_Store
 .ruff_cache
+
+# trio
+AGENTS.md
+trio-agents/
+.codex/
+.opencode/
+.agents/
+.trio/
+HANDOFF.md
+PLAN.md
+REVIEW.md

@@ -4,6 +4,7 @@
 #   uv run main.py --num_games 10 --crewmate_llm "openai/gpt-4o" --impostor_llm "anthropic/claude-3.5-sonnet"
 
 import asyncio
+import copy
 import os
 import random
 import sys
@@ -65,9 +66,10 @@ BIG_LIST_OF_MODELS: List[str] = [
     "microsoft/phi-4",
 ]
 
-ARGS = {
+DEFAULT_ARGS = {
     "game_config": SEVEN_MEMBER_GAME,
     "include_human": False,
+    "human_role": None,
     "test": False,
     "personality": False,
     "agent_config": {
@@ -78,6 +80,7 @@ ARGS = {
     },
     "UI": False,
 }
+ARGS = copy.deepcopy(DEFAULT_ARGS)
 
 
 async def multiple_games(experiment_name=None, num_games=1, rate_limit=50):
@@ -110,6 +113,7 @@ async def multiple_games(experiment_name=None, num_games=1, rate_limit=50):
                 game = AmongUs(
                     game_config=ARGS["game_config"],
                     include_human=ARGS["include_human"],
+                    human_role=ARGS.get("human_role"),
                     test=ARGS["test"],
                     personality=ARGS["personality"],
                     agent_config=game_config,
@@ -127,7 +131,20 @@ async def multiple_games(experiment_name=None, num_games=1, rate_limit=50):
     await asyncio.gather(*tasks)
 
 
-if __name__ == "__main__":
+def parse_bool_arg(value):
+    if isinstance(value, bool):
+        return value
+    normalized = value.strip().lower()
+    if normalized in {"true", "1", "yes", "y"}:
+        return True
+    if normalized in {"false", "0", "no", "n"}:
+        return False
+    raise argparse.ArgumentTypeError(
+        "Expected a boolean value (true/false, 1/0, yes/no)."
+    )
+
+
+def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Run an AmongUs experiment.")
     parser.add_argument(
         "--name", type=str, default=None, help="Optional name for the experiment."
@@ -135,7 +152,14 @@ if __name__ == "__main__":
     parser.add_argument(
         "--num_games", type=int, default=2, help="Number of games to run."
     )
-    parser.add_argument("--display_ui", type=bool, default=False, help="Display UI.")
+    parser.add_argument(
+        "--display_ui",
+        type=parse_bool_arg,
+        nargs="?",
+        const=True,
+        default=False,
+        help="Display the map UI (single-game runs only).",
+    )
     parser.add_argument(
         "--crewmate_llm", type=str, default=None, help="Crewmate LLM model."
     )
@@ -174,37 +198,51 @@ if __name__ == "__main__":
         action="store_true",
         help="Use ShortContextAgent (JSON output + memory-based context, no full history).",
     )
-    args = parser.parse_args()
+    parser.add_argument(
+        "--role",
+        type=str,
+        default=None,
+        choices=["impostor", "crewmate"],
+        help="Launch with one human player and request that role (CLI prompts, optionally with --display_ui True).",
+    )
+    return parser
+
+
+def configure_args_from_cli(args: argparse.Namespace) -> dict:
+    configured_args = copy.deepcopy(DEFAULT_ARGS)
 
     # Set game config based on size
     if args.game_size == 5:
-        ARGS["game_config"] = FIVE_MEMBER_GAME
+        configured_args["game_config"] = FIVE_MEMBER_GAME
     else:
-        ARGS["game_config"] = SEVEN_MEMBER_GAME
+        configured_args["game_config"] = SEVEN_MEMBER_GAME
 
-    if args.num_games > 1 or args.display_ui == False:
-        ARGS["UI"] = False
+    configured_args["UI"] = bool(args.display_ui) and args.num_games == 1
 
     # Handle model selection
     if args.models:
         # Parse comma-separated model list
         model_list = [m.strip() for m in args.models.split(",")]
-        ARGS["agent_config"]["CREWMATE_LLM_CHOICES"] = model_list
-        ARGS["agent_config"]["IMPOSTOR_LLM_CHOICES"] = model_list
+        configured_args["agent_config"]["CREWMATE_LLM_CHOICES"] = model_list
+        configured_args["agent_config"]["IMPOSTOR_LLM_CHOICES"] = model_list
     elif args.crewmate_llm or args.impostor_llm:
         # Legacy single-model flags
         if args.crewmate_llm:
-            ARGS["agent_config"]["CREWMATE_LLM_CHOICES"] = [args.crewmate_llm]
+            configured_args["agent_config"]["CREWMATE_LLM_CHOICES"] = [
+                args.crewmate_llm
+            ]
         if args.impostor_llm:
-            ARGS["agent_config"]["IMPOSTOR_LLM_CHOICES"] = [args.impostor_llm]
+            configured_args["agent_config"]["IMPOSTOR_LLM_CHOICES"] = [
+                args.impostor_llm
+            ]
 
     # Set assignment mode
     if args.unique:
-        ARGS["agent_config"]["assignment_mode"] = "unique"
+        configured_args["agent_config"]["assignment_mode"] = "unique"
 
         # Validate: unique mode requires at least as many models as players
-        num_players = ARGS["game_config"]["num_players"]
-        model_list = ARGS["agent_config"]["CREWMATE_LLM_CHOICES"]
+        num_players = configured_args["game_config"]["num_players"]
+        model_list = configured_args["agent_config"]["CREWMATE_LLM_CHOICES"]
         if len(model_list) < num_players:
             print(
                 f"Error: --unique requires at least {num_players} models for a {num_players}-player game."
@@ -212,16 +250,31 @@ if __name__ == "__main__":
             print(f"       You provided {len(model_list)} model(s): {model_list}")
             sys.exit(1)
 
-    ARGS["tournament_style"] = args.tournament_style
+    configured_args["tournament_style"] = args.tournament_style
 
     # Handle agent type selection
     if args.long_context:
-        ARGS["agent_config"]["Impostor"] = "LongContext"
-        ARGS["agent_config"]["Crewmate"] = "LongContext"
+        configured_args["agent_config"]["Impostor"] = "LongContext"
+        configured_args["agent_config"]["Crewmate"] = "LongContext"
         print("Using LongContextAgent")
     elif args.short_context:
-        ARGS["agent_config"]["Impostor"] = "ShortContext"
-        ARGS["agent_config"]["Crewmate"] = "ShortContext"
+        configured_args["agent_config"]["Impostor"] = "ShortContext"
+        configured_args["agent_config"]["Crewmate"] = "ShortContext"
         print("Using ShortContextAgent")
+
+    # Role contract at the entrypoint: choosing a role implies a human-controlled game.
+    if args.role is not None:
+        configured_args["include_human"] = True
+        configured_args["human_role"] = args.role
+        # The main.py human flow is terminal-driven; force CLI human input mode.
+        os.environ["FLASK_ENABLED"] = "False"
+
+    return configured_args
+
+
+if __name__ == "__main__":
+    parser = build_parser()
+    args = parser.parse_args()
+    ARGS = configure_args_from_cli(args)
 
     asyncio.run(multiple_games(experiment_name=args.name, num_games=args.num_games))

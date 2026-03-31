@@ -40,6 +40,7 @@ class AmongUs:
         self,
         game_config=SEVEN_MEMBER_GAME,
         include_human=False,
+        human_role=None,
         test=False,
         personality=False,
         agent_config=IMPOSTOR_LLM,
@@ -63,6 +64,7 @@ class AmongUs:
         """
         self.game_config = game_config
         self.include_human = include_human
+        self.human_role = human_role
         self.is_human_turn = False
         self.human_index = None
         self.test = test
@@ -167,7 +169,24 @@ class AmongUs:
         self.update_map()
 
     def initialize_agents(self):
-        random_idx = np.random.choice(len(self.players))
+        human_idx = None
+        if self.include_human:
+            if self.human_role is None:
+                human_idx = np.random.choice(len(self.players))
+            else:
+                requested_identity = self.human_role.strip().capitalize()
+                matching_indices = [
+                    idx
+                    for idx, player in enumerate(self.players)
+                    if player.identity == requested_identity
+                ]
+                if not matching_indices:
+                    raise ValueError(
+                        f"No player with identity '{requested_identity}' exists in this game."
+                    )
+                # Deterministic assignment: always pick the first matching slot.
+                human_idx = matching_indices[0]
+
         if self.test:
             self.agents = [LLMHumanAgent(player) for player in self.players]
         else:
@@ -238,7 +257,7 @@ class AmongUs:
             }
             self.agents = []
             for i, player in enumerate(self.players):
-                if self.include_human and i == random_idx:
+                if self.include_human and i == human_idx:
                     # Create HumanAgent with game_id set to game_index
                     human_agent = HumanAgent(player, game_index=self.game_index)
                     # Set the game_id attribute to match the game_index
