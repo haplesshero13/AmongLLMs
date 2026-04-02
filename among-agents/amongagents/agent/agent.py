@@ -48,6 +48,7 @@ class LLMAgent(Agent):
         kill_cooldown=0,
         num_impostors=1,
         num_players=7,
+        log_dir=None,
     ):
         super().__init__(player)
         prompt_vars = dict(
@@ -96,10 +97,8 @@ class LLMAgent(Agent):
         self.chat_history = []
         self.tools = tools
         self.script_dir = os.path.dirname(os.path.abspath(__file__))
-        self.log_path = os.getenv("EXPERIMENT_PATH") + "/agent-logs.json"
-        self.compact_log_path = (
-            os.getenv("EXPERIMENT_PATH") + "/agent-logs-compact.json"
-        )
+        self.log_path = os.path.join(log_dir, "agent-logs.json")
+        self.compact_log_path = os.path.join(log_dir, "agent-logs-compact.json")
         self.game_index = game_index
         self.issues = []  # Track all issues (API errors, format errors) for reporting
 
@@ -631,6 +630,7 @@ class HumanAgent(Agent):
         game_index=0,
         agent_config=None,
         list_of_impostors=None,
+        log_dir=None,
     ):
         super().__init__(player)
         self.model = "homosapiens/brain-1.0"
@@ -638,10 +638,8 @@ class HumanAgent(Agent):
         self.game_index = game_index
         self.summarization = "No thought process has been made."
         self.processed_memory = "No memory has been processed."
-        self.log_path = os.getenv("EXPERIMENT_PATH") + "/agent-logs.json"
-        self.compact_log_path = (
-            os.getenv("EXPERIMENT_PATH") + "/agent-logs-compact.json"
-        )
+        self.log_path = os.path.join(log_dir, "agent-logs.json")
+        self.compact_log_path = os.path.join(log_dir, "agent-logs-compact.json")
         self.current_available_actions = []
         self.current_step = 0
         self.max_steps = 50  # Default value, will be updated from game config

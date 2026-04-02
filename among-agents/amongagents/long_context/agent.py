@@ -39,6 +39,7 @@ class LongContextAgent:
         kill_cooldown: int = 0,
         num_impostors: int = 1,
         num_players: int = 7,
+        log_dir=None,
     ):
         self.player = player
         self.game_index = game_index
@@ -72,8 +73,7 @@ class LongContextAgent:
         self.chat_history: list[dict] = []
 
         # Single JSONL log for all players
-        experiment_path = os.getenv("EXPERIMENT_PATH", ".")
-        self.log_path = os.path.join(experiment_path, "agent-logs.jsonl")
+        self.log_path = os.path.join(log_dir, "agent-logs.jsonl")
 
         # Token usage tracking (populated from API response `usage` field)
         self.tokens_cumulative: int = 0

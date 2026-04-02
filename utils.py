@@ -37,12 +37,8 @@ def setup_experiment(experiment_name, LOGS_PATH, DATE, COMMIT_HASH, DEFAULT_ARGS
         experiment_file.write(f"Experiment args: {DEFAULT_ARGS}\n")
         experiment_file.write(f"Path of executable file: {os.path.abspath(__file__)}\n")
         experiment_file.write(f"Experiment index: {next_index}\n")
-
-    os.environ["EXPERIMENT_PATH"] = experiment_path
-    os.environ["STREAMLIT"] = str(DEFAULT_ARGS.get("streamlit", False))
-    os.environ["EXPERIMENT_INDEX"] = str(next_index)
-
-    return experiment_name
+        
+    return experiment_name, experiment_path
 
 
 def load_game_summary(filepath: str) -> "pd.DataFrame":

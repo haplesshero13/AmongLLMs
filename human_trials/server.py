@@ -179,9 +179,8 @@ async def start_game(request: GameStartRequest):
         timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         game_log_dir = os.path.join(script_dir, "logs", f"game_{game_id}_{timestamp}")
         os.makedirs(game_log_dir, exist_ok=True)
-        os.environ["EXPERIMENT_PATH"] = game_log_dir
 
-        game = get_run_games().create_game(game_id=game_id, custom_args=custom_args)
+        game = get_run_games().create_game(game_id=game_id, custom_args=custom_args, log_dir=game_log_dir)
 
         active_games[game_id] = {
             "game": game,

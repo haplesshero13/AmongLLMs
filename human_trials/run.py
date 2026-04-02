@@ -60,7 +60,7 @@ class RunGames:
         # If experiment_name is None, call setup_experiment directly
         if experiment_name is None:
             print(f"Setting up experiment with auto-generated name")
-            experiment_name = setup_experiment(
+            experiment_name, _ = setup_experiment(
                 experiment_name,
                 LOGS_PATH,
                 CONFIG["date"],
@@ -90,7 +90,7 @@ class RunGames:
 
             print(f"Setting up experiment {experiment_name}")
             # The setup_experiment function now returns the experiment name
-            experiment_name = setup_experiment(
+            experiment_name, _ = setup_experiment(
                 experiment_name,
                 LOGS_PATH,
                 CONFIG["date"],
@@ -132,17 +132,17 @@ class RunGames:
         """Increment the game ID counter"""
         self.next_game_id += 1
 
-    def log_game_start(self, game_id: int):
+    def log_game_start(self, game_id: int, log_dir: str = None):
         """Log the start of a game to the experiment details file"""
-        if "EXPERIMENT_PATH" in os.environ:
+        if log_dir:
             with open(
-                os.path.join(os.environ["EXPERIMENT_PATH"], "experiment-details.txt"),
+                os.path.join(log_dir, "experiment-details.txt"),
                 "a",
             ) as experiment_file:
                 experiment_file.write(f"\nGame {game_id} started.\n")
 
     def create_game(
-        self, game_id: Optional[int] = None, custom_args: Optional[Dict] = None
+        self, game_id: Optional[int] = None, custom_args: Optional[Dict] = None, log_dir: Optional[str] = None
     ) -> AmongUs:
         """
         Create a new AmongUs game instance.
@@ -254,6 +254,7 @@ class RunGames:
             "agent_config": agent_config,  # Use the processed agent_config
             "UI": None,  # Explicitly None for server
             "game_index": game_id,
+            "log_dir": log_dir,
         }
         print(
             f"[RunGames] Final arguments for AmongUs.__init__ for game {game_id}: {final_args_for_game}"
@@ -280,7 +281,7 @@ class RunGames:
         print(f"[RunGames] Game {game_id} stored in active games dict.")
 
         # Log the game start
-        self.log_game_start(game_id)
+        self.log_game_start(game_id, log_dir=log_dir)
 
         return game
 
