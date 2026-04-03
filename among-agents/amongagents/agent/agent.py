@@ -97,6 +97,9 @@ class LLMAgent(Agent):
         self.chat_history = []
         self.tools = tools
         self.script_dir = os.path.dirname(os.path.abspath(__file__))
+        if log_dir is None:
+            log_dir = os.getenv("EXPERIMENT_PATH", ".")
+        os.makedirs(log_dir, exist_ok=True)
         self.log_path = os.path.join(log_dir, "agent-logs.json")
         self.compact_log_path = os.path.join(log_dir, "agent-logs-compact.json")
         self.game_index = game_index

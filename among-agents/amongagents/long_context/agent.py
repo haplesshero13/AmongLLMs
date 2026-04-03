@@ -73,7 +73,8 @@ class LongContextAgent:
         self.chat_history: list[dict] = []
 
         # Single JSONL log for all players
-        self.log_path = os.path.join(log_dir, "agent-logs.jsonl")
+        effective_log_dir = log_dir or os.getenv("EXPERIMENT_PATH") or "."
+        self.log_path = os.path.join(effective_log_dir, "agent-logs.jsonl")
 
         # Token usage tracking (populated from API response `usage` field)
         self.tokens_cumulative: int = 0
