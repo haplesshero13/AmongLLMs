@@ -99,6 +99,9 @@ async def multiple_games(experiment_name=None, num_games=1, rate_limit=50):
     async def run_limited_game(game_index):
         async with semaphore:
             try:
+                game_log_dir = os.path.join(experiment_path, f"game_{game_index}")
+                os.makedirs(game_log_dir, exist_ok=True)
+
                 if ARGS.get("tournament_style") == "1on1":
                     # Randomly select one model for each role for this specific game
                     game_config = ARGS["agent_config"].copy()
@@ -120,6 +123,7 @@ async def multiple_games(experiment_name=None, num_games=1, rate_limit=50):
                     agent_config=game_config,
                     UI=ui,
                     game_index=game_index,
+                    log_dir=game_log_dir,
                 )
                 await game.run_game()
             except Exception as e:

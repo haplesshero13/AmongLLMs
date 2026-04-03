@@ -86,7 +86,11 @@ async def test_multiple_games_passes_human_role_into_runtime(monkeypatch, tmp_pa
         async def run_game(self):
             return None
 
-    monkeypatch.setattr(main, "setup_experiment", lambda *args, **kwargs: "test-exp")
+    monkeypatch.setattr(
+        main,
+        "setup_experiment",
+        lambda *args, **kwargs: ("test-exp", str(tmp_path)),
+    )
     monkeypatch.setattr(main, "AmongUs", DummyAmongUs)
     monkeypatch.setenv("EXPERIMENT_PATH", str(tmp_path))
 
@@ -99,6 +103,7 @@ async def test_multiple_games_passes_human_role_into_runtime(monkeypatch, tmp_pa
 
     assert captured["kwargs"]["include_human"] is True
     assert captured["kwargs"]["human_role"] == "crewmate"
+    assert captured["kwargs"]["log_dir"] == os.path.join(str(tmp_path), "game_1")
 
 
 @pytest.mark.asyncio
@@ -113,7 +118,11 @@ async def test_multiple_games_passes_ui_object_when_enabled(monkeypatch, tmp_pat
         async def run_game(self):
             return None
 
-    monkeypatch.setattr(main, "setup_experiment", lambda *args, **kwargs: "test-exp")
+    monkeypatch.setattr(
+        main,
+        "setup_experiment",
+        lambda *args, **kwargs: ("test-exp", str(tmp_path)),
+    )
     monkeypatch.setattr(main, "MapUI", lambda *args, **kwargs: sentinel_ui)
     monkeypatch.setattr(main, "AmongUs", DummyAmongUs)
     monkeypatch.setenv("EXPERIMENT_PATH", str(tmp_path))
@@ -129,3 +138,31 @@ async def test_multiple_games_passes_ui_object_when_enabled(monkeypatch, tmp_pat
 
     assert captured["kwargs"]["UI"] is sentinel_ui
     assert captured["kwargs"]["human_role"] == "crewmate"
+    assert captured["kwargs"]["log_dir"] == os.path.join(str(tmp_path), "game_1")
+
+
+@pytest.mark.asyncio
+async def test_multiple_games_uses_distinct_log_dir_per_game(monkeypatch, tmp_path):
+    captured = {}
+
+    class DummyAmongUs:
+        def __init__(self, **kwargs):
+            captured[kwargs["game_index"]] = kwargs["log_dir"]
+
+        async def run_game(self):
+            return None
+
+    monkeypatch.setattr(
+        main,
+        "setup_experiment",
+        lambda *args, **kwargs: ("test-exp", str(tmp_path)),
+    )
+    monkeypatch.setattr(main, "AmongUs", DummyAmongUs)
+    monkeypatch.setattr(main, "ARGS", main.configure_args_from_cli(main.build_parser().parse_args([])))
+
+    await main.multiple_games(experiment_name="test-exp", num_games=2, rate_limit=2)
+
+    assert captured == {
+        1: os.path.join(str(tmp_path), "game_1"),
+        2: os.path.join(str(tmp_path), "game_2"),
+    }

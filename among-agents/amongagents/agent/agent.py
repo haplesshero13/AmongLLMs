@@ -635,14 +635,18 @@ class HumanAgent(Agent):
         list_of_impostors=None,
         log_dir=None,
     ):
-        super().__init__(player)
+        Agent.__init__(self, player)
         self.model = "homosapiens/brain-1.0"
         self.tools = tools
         self.game_index = game_index
         self.summarization = "No thought process has been made."
         self.processed_memory = "No memory has been processed."
-        self.log_path = os.path.join(log_dir, "agent-logs.json")
-        self.compact_log_path = os.path.join(log_dir, "agent-logs-compact.json")
+        effective_log_dir = log_dir or os.getenv("EXPERIMENT_PATH") or "."
+        os.makedirs(effective_log_dir, exist_ok=True)
+        self.log_path = os.path.join(effective_log_dir, "agent-logs.json")
+        self.compact_log_path = os.path.join(
+            effective_log_dir, "agent-logs-compact.json"
+        )
         self.current_available_actions = []
         self.current_step = 0
         self.max_steps = 50  # Default value, will be updated from game config
@@ -1047,8 +1051,16 @@ class LLMHumanAgent(HumanAgent, LLMAgent):
         game_index=0,
         agent_config=None,
         list_of_impostors=None,
+        log_dir=None,
     ):
-        super().__init__(player, tools, game_index, agent_config, list_of_impostors)
+        super().__init__(
+            player,
+            tools,
+            game_index,
+            agent_config,
+            list_of_impostors,
+            log_dir,
+        )
 
     async def choose_action(self, timestep):
         return await HumanAgent.choose_action(self, timestep)

@@ -10,8 +10,11 @@ import threading
 import uuid
 from typing import Dict, List, Optional
 
-sys.path.append(os.path.join(os.path.abspath(".."), "among-agents"))
-sys.path.append(os.path.abspath(".."))
+script_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.abspath(os.path.join(script_dir, ".."))
+
+sys.path.append(os.path.join(project_root, "among-agents"))
+sys.path.append(project_root)
 
 from amongagents.envs.configs.game_config import (
     FIVE_MEMBER_GAME,
@@ -24,7 +27,7 @@ from dotenv import load_dotenv
 
 from utils import setup_experiment
 
-ROOT_PATH = os.path.abspath(".")
+ROOT_PATH = script_dir
 LOGS_PATH = os.path.join(ROOT_PATH, CONFIG["logs_path"])
 
 load_dotenv()

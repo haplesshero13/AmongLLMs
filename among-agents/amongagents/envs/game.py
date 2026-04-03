@@ -190,7 +190,14 @@ class AmongUs:
                 human_idx = matching_indices[0]
 
         if self.test:
-            self.agents = [LLMHumanAgent(player) for player in self.players]
+            self.agents = [
+                LLMHumanAgent(
+                    player,
+                    game_index=self.game_index,
+                    log_dir=self.log_dir,
+                )
+                for player in self.players
+            ]
         else:
             tools = [GetBestPath(network=self.map.ship_map)]
 
