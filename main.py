@@ -87,7 +87,7 @@ async def multiple_games(experiment_name=None, num_games=1, rate_limit=50):
     experiment_name, experiment_path = setup_experiment(
         experiment_name, LOGS_PATH, DATE, COMMIT_HASH, ARGS
     )
-    os.environ["EXPERIMENT_PATH"] = experiment_path 
+    os.environ["EXPERIMENT_PATH"] = experiment_path
     ui = MapUI(BLANK_MAP_IMAGE, map_coords, debug=False) if ARGS["UI"] else None
     with open(
         os.path.join(experiment_path, "experiment-details.txt"), "a"

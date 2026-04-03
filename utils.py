@@ -37,7 +37,11 @@ def setup_experiment(experiment_name, LOGS_PATH, DATE, COMMIT_HASH, DEFAULT_ARGS
         experiment_file.write(f"Experiment args: {DEFAULT_ARGS}\n")
         experiment_file.write(f"Path of executable file: {os.path.abspath(__file__)}\n")
         experiment_file.write(f"Experiment index: {next_index}\n")
-        
+
+    # Preserve historical side effects for callers that read these values
+    # from the environment instead of using the return value.
+    os.environ["EXPERIMENT_PATH"] = experiment_path
+    os.environ["EXPERIMENT_INDEX"] = str(next_index)
     return experiment_name, experiment_path
 
 

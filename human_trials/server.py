@@ -529,7 +529,7 @@ async def submit_monitor_room(game_id: int, request: MonitorRoomRequest):
 
 @app.post("/api/game/{game_id}/end")
 async def end_game(game_id: int):
-    """End a game early, upload logs to Drive, and clean up."""
+    """End a game early, cancel the game and mark it cancelled."""
     if game_id not in active_games:
         raise HTTPException(status_code=404, detail="Game not found")
 
