@@ -30,6 +30,7 @@ from dotenv import load_dotenv
 from utils import setup_experiment
 from config import CONFIG, DEFAULT_GAME_ARGS
 from run import RunGames
+from r2 import upload_logs_to_r2
 
 app = FastAPI(title="Among Us Game Server")
 
@@ -114,6 +115,11 @@ async def run_game_background(game_id: int):
         running_games.add(game_id)  # Add to running games set
         await game.run_game()
         game_info["status"] = "completed"
+        try:
+            logs_path = game_info.get("log_dir", os.path.join(script_dir, "logs"))
+            upload_logs_to_r2(logs_path)
+        except Exception as e:
+            print(f"[Server] Error uploading logs to R2 for game {game_id}: {e}")
         print(f"[Server] Game {game_id} completed successfully.")
         game_info["results"] = (
             game.summary_json if hasattr(game, "summary_json") else {}
@@ -545,6 +551,15 @@ async def end_game(game_id: int):
 
     game_info = active_games[game_id]
     game_info["status"] = "cancelled"
+
+    # Upload logs to R2
+    try:
+        logs_path = game_info.get("log_dir", os.path.join(script_dir, "logs"))
+        upload_logs_to_r2(logs_path)
+        print(f"[Server] Logs uploaded to R2 for game {game_id}.")
+    except Exception as e:
+        print(f"[Server] Failed to upload logs for game {game_id}: {e}")
+
     return {"status": "cancelled", "game_id": game_id}
 
 @app.get("/health")

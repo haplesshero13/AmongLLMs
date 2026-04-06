@@ -17,6 +17,8 @@ dependencies = [
     "openskill>=6.2.0",
     "matplotlib>=3.10.8",
     "seaborn>=0.13.2",
+    "boto3>=1.35.0",
+    "google-cloud-storage>=2.0.0",
 ]
 
 [project.optional-dependencies]
