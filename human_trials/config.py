@@ -16,20 +16,13 @@ except (subprocess.CalledProcessError, FileNotFoundError):
 
 # List of available models for 1on1 tournament style
 BIG_LIST_OF_MODELS = [
-    "microsoft/phi-4",
-    "anthropic/claude-3.5-sonnet",
-    "anthropic/claude-3.7-sonnet:thinking",
-    "openai/o3-mini-high",
-    "openai/gpt-4o-mini",
-    "deepseek/deepseek-r1-distill-llama-70b",
-    "qwen/qwen-2.5-7b-instruct",
-    "mistralai/mistral-7b-instruct",
-    "deepseek/deepseek-r1",
+    "anthropic/claude-opus-4.6",
+    "openai/gpt-5.4",
+    "google/gemini-3.1-pro-preview",
     "meta-llama/llama-3.3-70b-instruct",
-    "google/gemini-2.0-flash-001",
-    "meta-llama/llama-3.3-70b-instruct:free",
-    "openai/gpt-5-mini",
-    "qwen/qwen3-next-80b-a3b-thinking",
+    "nvidia/nemotron-3-super-120b-a12b",
+    "moonshotai/kimi-k2.5",
+    "deepseek/deepseek-v3.2",
 ]
 
 # Actual default game configuration for Human Trials
@@ -39,23 +32,25 @@ DEFAULT_GAME_ARGS = {
     "test": False,
     "personality": False,
     "agent_config": {
-        "Impostor": "LLM",
-        "Crewmate": "LLM",
+        "Impostor": "LongContext",
+        "Crewmate": "LongContext",
         "IMPOSTOR_LLM_CHOICES": [
+            "anthropic/claude-opus-4.6",
             "openai/gpt-5.4",
             "google/gemini-3.1-pro-preview",
-            "nvidia/nemotron-3-super-120b-a12b",
             "meta-llama/llama-3.3-70b-instruct",
-            "anthropic/claude-opus-4.6",
+            "nvidia/nemotron-3-super-120b-a12b",
             "moonshotai/kimi-k2.5",
+            "deepseek/deepseek-v3.2",
         ],
         "CREWMATE_LLM_CHOICES": [
+            "anthropic/claude-opus-4.6",
             "openai/gpt-5.4",
             "google/gemini-3.1-pro-preview",
-            "nvidia/nemotron-3-super-120b-a12b",
             "meta-llama/llama-3.3-70b-instruct",
-            "anthropic/claude-opus-4.6",
+            "nvidia/nemotron-3-super-120b-a12b",
             "moonshotai/kimi-k2.5",
+            "deepseek/deepseek-v3.2",
         ],
         "assignment_mode": "unique",  # 'random' picks with replacement, 'unique' picks without replacement
     },

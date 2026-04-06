@@ -206,6 +206,7 @@ trio-agents/
 .opencode/
 .agents/
 .trio/
+.gemini/
 HANDOFF.md
 PLAN.md
 REVIEW.md
