@@ -25,6 +25,9 @@ BIG_LIST_OF_MODELS = [
     "deepseek/deepseek-v3.2",
 ]
 
+# Timeout settings for human player turns
+HUMAN_TURN_TIMEOUT_SECONDS = 30 * 60   # 30 minutes per turn before game ends
+
 # Actual default game configuration for Human Trials
 DEFAULT_GAME_ARGS = {
     "game_config": "SEVEN_MEMBER_GAME",  # 7 players with 2 impostors

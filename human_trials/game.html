@@ -693,10 +693,41 @@
             color: var(--accent-color);
             font-weight: bold;
         }
+        /* Floating turn timer */
+        #turnTimer {
+            display: none;
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            z-index: 9999;
+            background: var(--background-medium);
+            border: 1px solid var(--background-light);
+            border-radius: 10px;
+            padding: 10px 18px;
+            font-size: 0.95em;
+            color: var(--text-light);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            backdrop-filter: blur(6px);
+        }
+        #turnTimer .timer-value {
+            font-size: 1.3em;
+            font-weight: bold;
+            font-variant-numeric: tabular-nums;
+        }
+        #turnTimer.warning .timer-value {
+            color: var(--accent-color);
+        }
+        #turnTimer.critical .timer-value {
+            color: var(--error-color);
+        }
     </style>
 </head>
 
 <body>
+    <div id="turnTimer">
+        <span style="margin-right: 6px;">&#9202;</span>
+        <span class="timer-value" id="turnTimerValue">30:00</span>
+    </div>
     <div class="container">
         <div class="home-screen" id="homeScreen">
             <h1>Among Us: Agentic Deception</h1>
@@ -832,6 +863,12 @@
                 </div>
             </div>
             
+            <p style="color: var(--text-dark); font-size: 0.9em; margin-top: 16px;">
+                &#9202; You will have <strong style="color: var(--accent-color);">30 minutes</strong> per turn to submit your action.
+                A countdown timer will appear in the top-right corner during your turns.
+                If the timer runs out, the game will end automatically.
+            </p>
+
             <!-- Start Game Button -->
             <button id="startGameBtn" onclick="startNewGame()">
                 Start New Game
@@ -999,6 +1036,45 @@
             // Store human player information
             let humanPlayerInfo = null;
             let waitingForMonitorRoom = false;
+
+            // Turn timer state
+            let turnTimerInterval = null;
+            let currentDeadline = null;
+            const turnTimerEl = document.getElementById("turnTimer");
+            const turnTimerValue = document.getElementById("turnTimerValue");
+
+            function startTurnTimer(deadlineUnix) {
+                if (!deadlineUnix || !turnTimerEl || !turnTimerValue) return;
+                // Don't restart if already tracking the same deadline
+                if (currentDeadline === deadlineUnix && turnTimerInterval) return;
+                if (turnTimerInterval) clearInterval(turnTimerInterval);
+                currentDeadline = deadlineUnix;
+                turnTimerEl.style.display = "block";
+
+                function tick() {
+                    const remaining = Math.max(0, currentDeadline - Date.now() / 1000);
+                    const m = Math.floor(remaining / 60);
+                    const s = Math.floor(remaining % 60);
+                    turnTimerValue.textContent = `${m}:${s.toString().padStart(2, "0")}`;
+
+                    turnTimerEl.classList.toggle("critical", remaining < 60);
+                    turnTimerEl.classList.toggle("warning", remaining >= 60 && remaining < 300);
+
+                    if (remaining <= 0) {
+                        clearInterval(turnTimerInterval);
+                        turnTimerInterval = null;
+                        turnTimerValue.textContent = "Time's up!";
+                    }
+                }
+                tick();
+                turnTimerInterval = setInterval(tick, 1000);
+            }
+
+            function stopTurnTimer() {
+                if (turnTimerInterval) { clearInterval(turnTimerInterval); turnTimerInterval = null; }
+                currentDeadline = null;
+                if (turnTimerEl) { turnTimerEl.style.display = "none"; turnTimerEl.classList.remove("warning", "critical"); }
+            }
 
             // Flag to prevent ejection popup retriggering after initial display
             let ejectionShown = false;
@@ -1329,9 +1405,16 @@
                         console.log("Human player name:", gameState.player_name);
                         console.log("Available actions:", gameState.available_actions);
 
+                        // Start the countdown timer if the server sent a deadline
+                        if (gameState.turn_deadline) {
+                            startTurnTimer(gameState.turn_deadline);
+                        }
+
                         // Stop polling when it's the human's turn (as requested)
                         waitingForHumanInput = true;
                         stopGameStatePolling();
+                    } else {
+                        stopTurnTimer();
                     }
 
                     renderGameState(gameState, gameState.is_spectating);
@@ -1340,7 +1423,8 @@
                     // Stop polling if game is completed or errored
                     // if (gameState.status) {
 
-                    if (["completed", "error", "cancelled"].includes(gameState.status)) {
+                    if (["completed", "error", "cancelled", "timed_out"].includes(gameState.status)) {
+                        stopTurnTimer();
                         if (gameStateInterval) clearInterval(gameStateInterval);
                         gameStateInterval = null;
                         console.log(`Game ${gameState.status}. Polling stopped.`);
@@ -1683,6 +1767,7 @@
                     }
 
                     console.log("Action submitted successfully");
+                    stopTurnTimer();
                     humanActionArea.style.display = "none"; // Hide action area after submission
 
                     // Reset the waiting flag and resume polling
@@ -1749,6 +1834,14 @@
                         Play Again
                     </button>
                 </div></div>`;
+                } else if (state.status === "timed_out") {
+                    resultMessage = `<div style="color: var(--accent-color);">
+                    <h2>Game Ended — Turn Timer Expired</h2>
+                    <p>The game was ended because the turn timer ran out.</p>
+                    <button onclick="location.reload()" style="padding: 15px 30px; margin-top: 20px; font-size: 1.1em; background-color: var(--primary-color); border: none; border-radius: 8px; color: white; cursor: pointer;">
+                        Play Again
+                    </button>
+                </div>`;
                 } else {
                     resultMessage = `<div style="color: var(--accent-color);">
                     <h2>Game ${state.status.toUpperCase()}</h2>

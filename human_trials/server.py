@@ -4,6 +4,7 @@ import os
 import sys
 import asyncio
 import json
+import time
 import traceback
 from typing import Dict, Optional, Any, List
 import uuid
@@ -28,7 +29,7 @@ from amongagents.agent.agent import HumanAgent, human_action_futures,  human_mon
 from dotenv import load_dotenv
 
 from utils import setup_experiment
-from config import CONFIG, DEFAULT_GAME_ARGS
+from config import CONFIG, DEFAULT_GAME_ARGS, HUMAN_TURN_TIMEOUT_SECONDS
 from run import RunGames
 from r2 import upload_logs_to_r2
 
@@ -125,8 +126,10 @@ async def run_game_background(game_id: int):
             game.summary_json if hasattr(game, "summary_json") else {}
         )
     except asyncio.CancelledError:
-        game_info["status"] = "cancelled"
-        print(f"[Server] Game {game_id} task was cancelled.")
+        # Preserve "timed_out" status if already set by the watchdog
+        if game_info["status"] != "timed_out":
+            game_info["status"] = "cancelled"
+        print(f"[Server] Game {game_id} task was cancelled (status: {game_info['status']}).")
     except Exception as e:
         game_info["status"] = "error"
         game_info["error_message"] = str(e)
@@ -188,6 +191,7 @@ async def start_game(request: GameStartRequest):
             "error_message": None,
             "results": None,
             "log_dir": game_log_dir,
+            "turn_deadline": None,
         }
 
         response_config = {
@@ -308,7 +312,7 @@ async def get_game_state(game_id: int):
         state["meeting_dead"] = []
 
     # Add results and error message if game is completed/errored
-    if game_status in ["completed", "error", "cancelled"]:
+    if game_status in ["completed", "error", "cancelled", "timed_out"]:
         if "results" in game_info:
             state["results"] = game_info["results"]
         if "error_message" in game_info:
@@ -319,9 +323,14 @@ async def get_game_state(game_id: int):
         human_agent, human_index = human_player_result
         human_state = human_agent.get_current_state_for_web()
         state.update(human_state)
+
+        # Set turn deadline if not already set (first poll of this turn)
+        if game_info.get("turn_deadline") is None:
+            game_info["turn_deadline"] = time.time() + HUMAN_TURN_TIMEOUT_SECONDS
     else:
         # If it's not the human's turn, ensure is_human_turn is False
         state["is_human_turn"] = False
+        game_info["turn_deadline"] = None
 
         # Set the current player name if available
         if hasattr(game, "current_player") and game.current_player is not None:
@@ -362,7 +371,7 @@ async def get_game_state(game_id: int):
         state["monitor_rooms"] = human_monitor_rooms.get(game_id, [])
         state["is_human_turn"] = True  # Keep showing it's the human's turn
     state["is_spectating"] = is_spectating
-
+    state["turn_deadline"] = game_info.get("turn_deadline")
 
     log = []
     # if getattr(game, "important_activity_log", None):
@@ -462,6 +471,7 @@ async def submit_human_action(game_id: int, action: HumanActionRequest):
             "thinking_process": action.thinking_process,
         }
         future.set_result(action_data)
+        active_games[game_id]["turn_deadline"] = None
         return {"status": "success"}
     except Exception as e:
         print(f"[Server] Error setting result for game {game_id}: {str(e)}")
@@ -515,6 +525,7 @@ async def submit_monitor_room(game_id: int, request: MonitorRoomRequest):
 
     try:
         future.set_result(request.room)
+        active_games[game_id]["turn_deadline"] = None
 
         # Wait briefly for the game loop to execute ViewMonitor and append the observation
         for _ in range(20):  # Try for up to 2 seconds
@@ -561,6 +572,53 @@ async def end_game(game_id: int):
         print(f"[Server] Failed to upload logs for game {game_id}: {e}")
 
     return {"status": "cancelled", "game_id": game_id}
+
+async def _end_game_due_to_timeout(game_id: int):
+    """End a game because the human turn timer expired."""
+    if game_id not in active_games:
+        return
+
+    game_info = active_games[game_id]
+    game_info["status"] = "timed_out"
+
+    # Cancel the running game task
+    if game_id in game_tasks and not game_tasks[game_id].done():
+        game_tasks[game_id].cancel()
+
+    # Cancel any pending human futures so the game loop can exit
+    if game_id in human_action_futures and not human_action_futures[game_id].done():
+        human_action_futures[game_id].cancel()
+    if game_id in human_monitor_futures and not human_monitor_futures[game_id].done():
+        human_monitor_futures[game_id].cancel()
+
+    # Upload logs to R2
+    try:
+        logs_path = game_info.get("log_dir", os.path.join(script_dir, "logs"))
+        upload_logs_to_r2(logs_path)
+        print(f"[Watchdog] Logs uploaded to R2 for timed-out game {game_id}.")
+    except Exception as e:
+        print(f"[Watchdog] Failed to upload logs for game {game_id}: {e}")
+
+
+async def _timeout_watchdog():
+    """Background task that ends games when the human turn deadline expires."""
+    while True:
+        await asyncio.sleep(30)
+        now = time.time()
+        for game_id in list(active_games.keys()):
+            game_info = active_games.get(game_id)
+            if not game_info or game_info["status"] != "running":
+                continue
+            deadline = game_info.get("turn_deadline")
+            if deadline and now > deadline:
+                print(f"[Watchdog] Game {game_id} timed out (human turn exceeded {HUMAN_TURN_TIMEOUT_SECONDS}s).")
+                await _end_game_due_to_timeout(game_id)
+
+
+@app.on_event("startup")
+async def _start_watchdog():
+    asyncio.create_task(_timeout_watchdog())
+
 
 @app.get("/health")
 async def health():
