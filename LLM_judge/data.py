@@ -63,36 +63,31 @@ def get_r2_client():
 # Listing games in R2
 # ---------------------------------------------------------------------------
 
-# Matches keys like "game_1_2026-04-06_18-19-19/agent-logs.json"
-_GAME_LOG_RE = re.compile(r"^(game_\d+_[^/]+)/agent-logs\.json$")
+# Matches both agent-logs.json and agent-logs.jsonl
+_GAME_LOG_RE = re.compile(r"^(game_\d+_[^/]+)/agent-logs\.jsonl?$")
 
 
 def list_game_keys(client, bucket: str) -> list[str]:
-    """Return a sorted list of game folder names that have an agent-logs.json.
+    """Return a sorted list of game folder names that have an agent-logs file.
 
-    Example return value:
-        ["game_1_2026-04-06_18-19-19", "game_3_2026-04-06_19-00-00", ...]
-
-    Games are sorted by their numeric game index so gaps (missing game_2, etc.)
-    are handled naturally — we just skip them.
+    Prefers agent-logs.jsonl (all players) over agent-logs.json (single player).
     """
     paginator = client.get_paginator("list_objects_v2")
     pages = paginator.paginate(Bucket=bucket)
 
-    game_keys = []
+    game_keys = set()
     for page in pages:
         for obj in page.get("Contents", []):
             key = obj["Key"]
             match = _GAME_LOG_RE.match(key)
             if match:
-                game_keys.append(match.group(1))
+                game_keys.add(match.group(1))
 
-    # Sort by the numeric game index embedded in the folder name
     def _game_index(folder: str) -> int:
         m = re.match(r"game_(\d+)_", folder)
         return int(m.group(1)) if m else 0
 
-    return sorted(set(game_keys), key=_game_index)
+    return sorted(game_keys, key=_game_index)
 
 
 # ---------------------------------------------------------------------------
@@ -121,28 +116,48 @@ def _parse_multi_json(text: str) -> list[dict]:
     return objects
 
 
-def fetch_game_logs(client, bucket: str, game_folder: str) -> Optional[list[dict]]:
-    """Download and parse agent-logs.json for one game folder.
+def _parse_jsonl(text: str) -> list[dict]:
+    """Parse a JSON Lines file (one JSON object per line)."""
+    objects = []
+    for line in text.splitlines():
+        line = line.strip()
+        if line:
+            objects.append(json.loads(line))
+    return objects
 
-    The file is multi-document JSON (one object per log entry, concatenated).
+
+def fetch_game_logs(client, bucket: str, game_folder: str) -> Optional[list[dict]]:
+    """Download and parse agent logs for one game folder.
+
+    Tries agent-logs.jsonl first (contains all players), then falls back to
+    agent-logs.json (may contain only one player's logs).
     Returns a list of log entry dicts, each annotated with 'game_id'.
-    Returns None if the object is missing or unparseable.
+    Returns None if no log file is found or the file is unparseable.
     """
-    key = f"{game_folder}/agent-logs.json"
-    try:
-        response = client.get_object(Bucket=bucket, Key=key)
-        raw = response["Body"].read().decode("utf-8")
-        entries = _parse_multi_json(raw)
-        for entry in entries:
-            entry.setdefault("game_id", game_folder)
-        return entries
-    except ClientError as e:
-        code = e.response["Error"]["Code"]
-        print(f"[R2] Could not fetch {key}: {code}")
-        return None
-    except (json.JSONDecodeError, ValueError) as e:
-        print(f"[R2] Invalid JSON in {key}: {e}")
-        return None
+    candidates = [
+        (f"{game_folder}/agent-logs.jsonl", _parse_jsonl),
+        (f"{game_folder}/agent-logs.json",  _parse_multi_json),
+    ]
+    for key, parser in candidates:
+        try:
+            response = client.get_object(Bucket=bucket, Key=key)
+            raw = response["Body"].read().decode("utf-8")
+            entries = parser(raw)
+            for entry in entries:
+                entry.setdefault("game_id", game_folder)
+            print(f"[R2] Using {key} ({len(entries)} entries)")
+            return entries
+        except ClientError as e:
+            if e.response["Error"]["Code"] == "NoSuchKey":
+                continue  # try next candidate
+            print(f"[R2] Could not fetch {key}: {e.response['Error']['Code']}")
+            return None
+        except (json.JSONDecodeError, ValueError) as e:
+            print(f"[R2] Invalid JSON in {key}: {e}")
+            return None
+
+    print(f"[R2] No agent-logs file found for {game_folder}")
+    return None
 
 
 # ---------------------------------------------------------------------------
@@ -181,14 +196,11 @@ def load_new_games(
     manifest_path: str = _DEFAULT_MANIFEST,
     client=None,
 ) -> dict[str, list[dict]]:
-    """Download only games that haven't been processed yet.
+    """Download only games that haven't been fully processed yet.
 
-    On each call:
-      1. Lists all game folders in R2.
-      2. Skips folders already recorded in the manifest.
-      3. Downloads the new ones, updates the manifest, and returns the data.
-
-    This means repeated calls are cheap — only new games are fetched.
+    The manifest is NOT updated here — callers must call mark_game_processed()
+    after each game is fully evaluated and uploaded.  This prevents interrupted
+    runs from permanently locking out un-evaluated games.
 
     Args:
         bucket:        R2 bucket name.
@@ -202,7 +214,7 @@ def load_new_games(
     if client is None:
         client = get_r2_client()
 
-    all_keys = list_game_keys(client, bucket)
+    all_keys  = list_game_keys(client, bucket)
     processed = _load_manifest(manifest_path)
 
     new_keys = [k for k in all_keys if k not in processed]
@@ -217,12 +229,23 @@ def load_new_games(
         entries = fetch_game_logs(client, bucket, folder)
         if entries is not None:
             games[folder] = entries
-            processed.add(folder)
             print(f"[R2]   ✓ {folder} ({len(entries)} log entries)")
 
-    _save_manifest(manifest_path, processed)
-    print(f"[R2] Manifest updated → {manifest_path}")
     return games
+
+
+def mark_game_processed(
+    game_folder: str,
+    manifest_path: str = _DEFAULT_MANIFEST,
+) -> None:
+    """Record a game as fully processed in the manifest.
+
+    Call this only after the game has been evaluated and uploaded successfully.
+    """
+    processed = _load_manifest(manifest_path)
+    processed.add(game_folder)
+    _save_manifest(manifest_path, processed)
+    print(f"[R2] Manifest updated → {game_folder} marked processed")
 
 
 def load_all_games(
