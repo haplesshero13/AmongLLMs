@@ -20,7 +20,7 @@ import numpy as np
 from openai import AsyncOpenAI
 from dotenv import load_dotenv
 
-from data import get_r2_client, load_all_games, load_new_games, fetch_game_logs
+from data import get_r2_client, load_all_games, load_new_games, fetch_game_logs, mark_game_processed
 from parsing import parse_game_logs, create_game_log, get_player_experience_str
 from prompts import FRAMING_TEXT, CHECKLIST_RUBRIC
 
@@ -34,9 +34,9 @@ R2_BUCKET = "amongus-leaderboard"
 # ---------------------------------------------------------------------------
 
 JUDGE_MODELS = {
-    "judge_1": "meta-llama/llama-3.3-70b-instruct",
-    "judge_2": "google/gemini-2.0-flash-001",
-    "judge_3": "z-ai/glm-5.1",
+    "judge_1": "anthropic/claude-opus-4.6",
+    "judge_2": "google/gemini-3.1-pro-preview",
+    "judge_3": "openai/gpt-5.4",
 }
 
 # ---------------------------------------------------------------------------
@@ -57,22 +57,49 @@ async def judge_response(prompt, client, model):
     return response.choices[0].message.content
 
 
-async def evaluate_player(player_id, game_data, model_str, client):
+def _clean_json_response(text: str) -> str:
+    text = text.strip()
+    if text.startswith("```json"):
+        text = text[7:]
+    elif text.startswith("```"):
+        text = text[3:]
+    if text.endswith("```"):
+        text = text[:-3]
+    cleaned = text.strip()
+    # Fallback: find a JSON array anywhere in the response
+    if not cleaned or not cleaned.startswith("["):
+        m = re.search(r"\[.*\]", text, re.DOTALL)
+        if m:
+            cleaned = m.group(0).strip()
+    return cleaned
+
+
+async def evaluate_player(player_id, game_data, model_str, client, max_retries: int = 3):
     print(f"  Evaluating {player_id}...")
     prompt = get_player_experience_str(game_data, player_id)
-    try:
-        response_text = await judge_response(prompt, client, model_str)
-        cleaned_text = response_text.strip()
-        if cleaned_text.startswith("```json"):
-            cleaned_text = cleaned_text[7:]
-        elif cleaned_text.startswith("```"):
-            cleaned_text = cleaned_text[3:]
-        if cleaned_text.endswith("```"):
-            cleaned_text = cleaned_text[:-3]
-        return player_id, json.loads(cleaned_text.strip())
-    except Exception as e:
-        print(f"  Error evaluating {player_id}: {e}")
-        return player_id, {"error": str(e)}
+    if prompt is None:
+        print(f"  ⚠ No narrative found for {player_id}, skipping.")
+        return player_id, {"error": f"Player '{player_id}' not found in game_data"}
+
+    for attempt in range(1, max_retries + 1):
+        try:
+            response_text = await judge_response(prompt, client, model_str)
+            cleaned = _clean_json_response(response_text)
+            if not cleaned:
+                print(f"  Raw response was: {repr(response_text[:300])}")
+                raise ValueError("Model returned an empty response")
+            return player_id, json.loads(cleaned)
+        except (json.JSONDecodeError, ValueError) as e:
+            if attempt < max_retries:
+                print(f"  ↻ {player_id} attempt {attempt} failed ({e}), retrying...")
+                await asyncio.sleep(2 * attempt)
+            else:
+                print(f"  Error evaluating {player_id} after {max_retries} attempts: {e}")
+                return player_id, {"error": str(e)}
+        except Exception as e:
+            # Non-parse errors (API/network) — don't retry
+            print(f"  Error evaluating {player_id}: {e}")
+            return player_id, {"error": str(e)}
 
 
 async def evaluate_all(game_data, game_folder: str, client):
@@ -142,6 +169,10 @@ def load_judge_data(filepath: str, player_model_map: dict = None) -> dict:
         if isinstance(player_data, list):
             players[player_key] = player_data
         elif isinstance(player_data, dict):
+            # Skip entries that are evaluation errors (not real responses)
+            if "error" in player_data and len(player_data) == 1:
+                print(f"  ⚠ Skipping {player_key}: evaluation error — {player_data['error']}")
+                continue
             resp = player_data.get("raw_response", "")
             resp = re.sub(r"^```json\s*", "", resp.strip())
             resp = re.sub(r"\s*```$", "", resp.strip())
@@ -158,14 +189,16 @@ def load_judge_data(filepath: str, player_model_map: dict = None) -> dict:
     return players
 
 
-def load_all_judge_files(game_folder: str, player_model_map: dict = None) -> dict:
-    """Load all per-judge JSON files for a specific game_folder."""
-    pattern = f"judge_game_{game_folder}_*.json"
+def load_current_judge_files(game_folder: str, player_model_map: dict = None) -> dict:
+    """Load only the judge files produced by the current JUDGE_MODELS (no stale old files)."""
     all_judges = {}
-    for filepath in glob.glob(pattern):
-        # strip prefix and suffix to get a short model name
-        stem = filepath.replace(f"judge_game_{game_folder}_", "").replace(".json", "")
-        all_judges[stem] = load_judge_data(filepath, player_model_map)
+    for judge_id, model_str in JUDGE_MODELS.items():
+        model_name = model_str.split("/")[-1]
+        filepath = f"judge_game_{game_folder}_{model_name}.json"
+        if os.path.exists(filepath):
+            all_judges[model_name] = load_judge_data(filepath, player_model_map)
+        else:
+            print(f"  ⚠ Missing judge file: {filepath}")
     return all_judges
 
 
@@ -181,19 +214,41 @@ def build_matrix(players: dict):
 
 
 def aggregate_judge_results(all_judges: dict, threshold: float = 0.5) -> dict:
-    """Majority vote across judges. threshold=0.5 means >50% must agree."""
-    first_judge = next(iter(all_judges.values()))
-    final = {}
+    """Majority vote across judges. threshold=0.5 means >50% must agree.
 
-    for player_name, behaviors in first_judge.items():
+    Uses the UNION of all players seen across all judges so that a single
+    judge failing for a player doesn't drop that player from the final result.
+    Behavior list is taken from whichever judge has the most behaviors for
+    that player (most complete response).
+    """
+    # Collect all player names seen across every judge
+    all_player_names = set()
+    for judge_data in all_judges.values():
+        all_player_names.update(judge_data.keys())
+
+    final = {}
+    for player_name in sorted(all_player_names):
+        # Find the judge with the fullest behavior list for this player
+        best_behaviors = []
+        for judge_data in all_judges.values():
+            player_behaviors = judge_data.get(player_name, [])
+            if isinstance(player_behaviors, list) and len(player_behaviors) > len(best_behaviors):
+                best_behaviors = player_behaviors
+
+        if not best_behaviors:
+            print(f"  ⚠ No valid judge data for {player_name}, skipping.")
+            continue
+
         final[player_name] = []
-        for beh in behaviors:
+        for beh in best_behaviors:
             beh_name = normalize_behavior(_get_behavior_name(beh))
             votes = []
             justifications = []
 
             for model_name, judge_data in all_judges.items():
                 player_data = judge_data.get(player_name, [])
+                if not isinstance(player_data, list):
+                    continue
                 for b in player_data:
                     if normalize_behavior(_get_behavior_name(b)) == beh_name:
                         votes.append(1 if b.get("present") else 0)
@@ -201,7 +256,7 @@ def aggregate_judge_results(all_judges: dict, threshold: float = 0.5) -> dict:
                         break
 
             present = (sum(votes) / len(votes)) > threshold if votes else False
-            if len(votes) != len(all_judges):
+            if votes and len(votes) != len(all_judges):
                 print(
                     f"  ⚠ {player_name} | {beh_name}: "
                     f"only {len(votes)}/{len(all_judges)} judges returned this behavior"
@@ -221,12 +276,16 @@ def aggregate_judge_results(all_judges: dict, threshold: float = 0.5) -> dict:
 # Upload to Cloudflare R2
 # ---------------------------------------------------------------------------
 
-def upload_judgement_to_r2(final_judgement: dict, game_folder: str):
-    """Upload the aggregated judgement JSON to results/<game_folder>/judged_game.json in R2."""
+def upload_judgement_to_r2(local_path: str, game_folder: str):
+    """Upload the local final JSON file to results/<game_folder>/judged_game.json in R2.
+
+    Reads directly from the saved local file so R2 is guaranteed to be
+    byte-for-byte identical to what's on disk.
+    """
     r2 = get_r2_client()
     key = f"results/{game_folder}/judged_game.json"
-    body = json.dumps(final_judgement, indent=2, ensure_ascii=False).encode("utf-8")
-    r2.put_object(Bucket=R2_BUCKET, Key=key, Body=body, ContentType="application/json")
+    with open(local_path, "rb") as f:
+        r2.put_object(Bucket=R2_BUCKET, Key=key, Body=f.read(), ContentType="application/json")
     print(f"[R2] Uploaded → s3://{R2_BUCKET}/{key}")
 
 
@@ -270,9 +329,9 @@ async def main():
         # Step 1: run all 3 judge models
         await evaluate_all(game_data, game_folder, client)
 
-        # Step 2: aggregate with majority vote
+        # Step 2: aggregate with majority vote (only current JUDGE_MODELS files)
         player_model_map = build_player_model_map(game_data)
-        all_judges = load_all_judge_files(game_folder, player_model_map)
+        all_judges = load_current_judge_files(game_folder, player_model_map)
         if not all_judges:
             print(f"  No judge files found for {game_folder}, skipping aggregation.")
             continue
@@ -285,8 +344,12 @@ async def main():
             json.dump(final_judgement, f, indent=2, ensure_ascii=False)
         print(f"Saved local copy → {local_path}")
 
-        # Step 4: upload to Cloudflare R2
-        upload_judgement_to_r2(final_judgement, game_folder)
+        # Step 4: upload the saved file to Cloudflare R2
+        upload_judgement_to_r2(local_path, game_folder)
+
+        # Step 5: only mark processed after successful upload
+        if len(sys.argv) <= 1:  # don't update manifest for explicit game_folder args
+            mark_game_processed(game_folder)
 
 
 if __name__ == "__main__":
