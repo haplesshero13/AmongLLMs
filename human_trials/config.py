@@ -20,7 +20,6 @@ BIG_LIST_OF_MODELS = [
     "openai/gpt-5.4",
     "google/gemini-3.1-pro-preview",
     "meta-llama/llama-3.3-70b-instruct",
-    "nvidia/nemotron-3-super-120b-a12b",
     "moonshotai/kimi-k2.5",
     "deepseek/deepseek-v3.2",
 ]
@@ -42,7 +41,6 @@ DEFAULT_GAME_ARGS = {
             "openai/gpt-5.4",
             "google/gemini-3.1-pro-preview",
             "meta-llama/llama-3.3-70b-instruct",
-            "nvidia/nemotron-3-super-120b-a12b",
             "moonshotai/kimi-k2.5",
             "deepseek/deepseek-v3.2",
         ],
@@ -51,7 +49,6 @@ DEFAULT_GAME_ARGS = {
             "openai/gpt-5.4",
             "google/gemini-3.1-pro-preview",
             "meta-llama/llama-3.3-70b-instruct",
-            "nvidia/nemotron-3-super-120b-a12b",
             "moonshotai/kimi-k2.5",
             "deepseek/deepseek-v3.2",
         ],
