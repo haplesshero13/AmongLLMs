@@ -113,14 +113,14 @@ To run the human trials interface:
 
 To specify which models AI agents use in the human trial interface, modify the `DEFAULT_GAME_ARGS` in `human_trials/config.py`. You can set specific models for both Impostors and Crewmates by updating the `agent_config`.
 
-For example, to use specific OpenRouter models like `meta-llama/llama-3.3-70b-instruct:free` and `nvidia/nemotron-3-super-120b-a12b:free`, configure them as follows:
+For example, to use specific OpenRouter models like `meta-llama/llama-3.3-70b-instruct:free` and `openai/gpt-oss-120b:free`, configure them as follows:
 
 ```AmongLLMs/human_trials/config.py#L35-41
     "agent_config": {
         "Impostor": "LLM",
         "Crewmate": "LLM",
         "IMPOSTOR_LLM_CHOICES": ["meta-llama/llama-3.3-70b-instruct:free"],
-        "CREWMATE_LLM_CHOICES": ["nvidia/nemotron-3-super-120b-a12b:free"],
+        "CREWMATE_LLM_CHOICES": ["openai/gpt-oss-120b:free"],
         "assignment_mode": "unique",  # Use 'unique' to ensure different models per agent
     },
 ```
