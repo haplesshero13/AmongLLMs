@@ -1,0 +1,64 @@
+# Local development stack for AmongLLMs.
+#
+# Runs a MinIO server (S3-compatible, stands in for Cloudflare R2) so you can
+# play test games and run the LLM_judge pipeline entirely offline. Data lives
+# in ./minio_data/ on the host (gitignored).
+#
+# This file is ignored by Railway — production deploys continue to use the
+# real Cloudflare R2 endpoint via env vars set in the Railway dashboard.
+
+services:
+  minio:
+    image: minio/minio:latest
+    container_name: amongllms-minio
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"   # S3 API
+      - "9001:9001"   # web console
+    environment:
+      MINIO_ROOT_USER: local
+      MINIO_ROOT_PASSWORD: localpass
+    volumes:
+      - ./minio_data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/ready"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+  minio-setup:
+    # One-shot job: waits for MinIO to be healthy, then creates the
+    # amongus-leaderboard bucket (idempotent — safe to re-run).
+    image: minio/mc:latest
+    container_name: amongllms-minio-setup
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+      mc alias set local http://minio:9000 local localpass &&
+      mc mb --ignore-existing local/amongus-leaderboard &&
+      echo '[minio-setup] bucket amongus-leaderboard is ready.'
+      "
+
+  game:
+    # Builds from the existing Dockerfile (same image Railway deploys).
+    # Points its R2 uploads at local MinIO instead of Cloudflare R2.
+    build: .
+    container_name: amongllms-game
+    ports:
+      - "8080:8080"
+    depends_on:
+      minio-setup:
+        condition: service_completed_successfully
+    env_file:
+      - .env                          # OPENROUTER_API_KEY + anything else
+    environment:
+      # These override whatever's in .env — point the game at local MinIO.
+      S3_ENDPOINT_URL: http://minio:9000
+      S3_ACCESS_KEY: local
+      S3_SECRET_KEY: localpass
+      S3_REGION: us-east-1
+      S3_BUCKET_NAME: amongus-leaderboard
+    restart: unless-stopped

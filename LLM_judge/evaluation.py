@@ -2,9 +2,12 @@
 LLM-as-Judge evaluation pipeline for AmongLLMs.
 
 Usage:
-    python evaluation.py [game_folder]
+    python evaluation.py [game_folder] [--judges m1,m2,m3]
 
 If game_folder is omitted, the most-recent unprocessed game from R2 is evaluated.
+If --judges is omitted, the default JUDGE_MODELS dict below is used. When given,
+it must be a comma-separated list of exactly 3 OpenRouter model strings.
+
 The aggregated final judgement is uploaded to:
     s3://amongus-leaderboard/results/<game_folder>/judged_game.json
 """
@@ -14,7 +17,7 @@ import os
 import re
 import glob
 import asyncio
-import sys
+import argparse
 
 import numpy as np
 from openai import AsyncOpenAI
@@ -36,7 +39,7 @@ R2_BUCKET = "amongus-leaderboard"
 JUDGE_MODELS = {
     "judge_1": "anthropic/claude-opus-4.6",
     "judge_2": "google/gemini-3.1-pro-preview",
-    "judge_3": "openai/gpt-5.4",
+    "judge_3": "z-ai/glm-5.1",
 }
 
 # ---------------------------------------------------------------------------
@@ -293,7 +296,17 @@ def upload_judgement_to_r2(local_path: str, game_folder: str):
 # Main
 # ---------------------------------------------------------------------------
 
-async def main():
+async def main(args):
+    if args.judges:
+        models = [m.strip() for m in args.judges.split(",") if m.strip()]
+        if len(models) != 3:
+            raise SystemExit(
+                f"--judges requires exactly 3 models, got {len(models)}: {models}"
+            )
+        global JUDGE_MODELS
+        JUDGE_MODELS = {f"judge_{i+1}": m for i, m in enumerate(models)}
+        print(f"Using override judges: {JUDGE_MODELS}")
+
     client = AsyncOpenAI(
         base_url="https://openrouter.ai/api/v1",
         api_key=OPENROUTER_API_KEY,
@@ -302,8 +315,8 @@ async def main():
     r2_client = get_r2_client()
 
     # Determine which game(s) to process
-    if len(sys.argv) > 1:
-        game_folder = sys.argv[1]
+    if args.game_folder is not None:
+        game_folder = args.game_folder
         entries = fetch_game_logs(r2_client, R2_BUCKET, game_folder)
         if entries is None:
             print(f"Could not load game: {game_folder}")
@@ -348,9 +361,30 @@ async def main():
         upload_judgement_to_r2(local_path, game_folder)
 
         # Step 5: only mark processed after successful upload
-        if len(sys.argv) <= 1:  # don't update manifest for explicit game_folder args
+        if args.game_folder is None:  # don't update manifest for explicit game_folder args
             mark_game_processed(game_folder)
 
 
+def _parse_args():
+    parser = argparse.ArgumentParser(
+        description="LLM-as-Judge evaluation pipeline for AmongLLMs.",
+    )
+    parser.add_argument(
+        "game_folder",
+        nargs="?",
+        default=None,
+        help="Game folder name in R2 (e.g. game_7_2026-04-14_12-00-00). "
+             "If omitted, the most-recent unprocessed game is evaluated.",
+    )
+    parser.add_argument(
+        "--judges",
+        default=None,
+        help="Comma-separated list of exactly 3 model strings to use as judges "
+             "(e.g. 'anthropic/claude-opus-4.6,openai/gpt-5.4,google/gemini-3.1-pro-preview'). "
+             "If omitted, the default JUDGE_MODELS dict in this file is used.",
+    )
+    return parser.parse_args()
+
+
 if __name__ == "__main__":
-    asyncio.run(main())
+    asyncio.run(main(_parse_args()))

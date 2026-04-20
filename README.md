@@ -25,6 +25,92 @@ The aim is to simulate the popular multiplayer game "Among Us" using AI agents a
    uv sync
    ```
 
+## Local Development with MinIO
+
+The repository ships a `docker-compose.yml` that runs the game server together with a local [MinIO](https://min.io/) instance.
+
+### Prerequisites
+
+- [Docker Engine](https://docs.docker.com/engine/install/) with the Compose plugin (`docker compose`).
+- A `.env` file at the repo root containing at least `OPENROUTER_API_KEY`.
+
+### Starting the stack
+
+```bash
+docker compose up -d
+```
+
+This brings up three services:
+
+| Service | Purpose | Reachable at |
+|---|---|---|
+| `minio` | S3-compatible object store (stands in for Cloudflare R2) | `http://localhost:9000` (API), `http://localhost:9001` (web console) |
+| `minio-setup` | One-shot init job that creates the `amongus-leaderboard` bucket and exits | — |
+| `game` | Human-trials game server, built from the existing `Dockerfile` | `http://localhost:8080` |
+
+Local MinIO credentials are hardcoded in `docker-compose.yml` (`local` / `localpass`) and are intended only for the local stack. Bucket contents persist in `./minio_data/` on the host and are gitignored.
+
+### Host-side configuration
+
+The `game` container receives MinIO environment variables from Compose automatically. Processes run **directly on the host** (for example `uv run LLM_judge/evaluation.py`) read from `.env` instead, so point that file at the local MinIO endpoint:
+
+```env
+OPENROUTER_API_KEY=sk-...
+S3_ENDPOINT_URL=http://localhost:9000
+S3_ACCESS_KEY=local
+S3_SECRET_KEY=localpass
+S3_REGION=us-east-1
+S3_BUCKET_NAME=amongus-leaderboard
+```
+
+> **Two endpoints, one MinIO.** Processes running **inside** the Compose network use `http://minio:9000` (set automatically for the `game` service). Processes running **on the host** use `http://localhost:9000`. Both resolve to the same MinIO instance.
+
+### Typical workflow
+
+```bash
+# 1. Start the stack
+docker compose up -d
+
+# 2. Play a test game by opening http://localhost:8080 in a browser.
+#    When the game ends, logs are uploaded to local MinIO automatically:
+ls minio_data/amongus-leaderboard/game_*/agent-logs.jsonl
+
+# 3. Run the judge pipeline against the local bucket
+uv run LLM_judge/evaluation.py
+
+# Override the hardcoded judges for a single run (exactly 3 models required —
+# see "LLM-as-Judge Evaluation" below for details):
+uv run LLM_judge/evaluation.py \
+    --judges anthropic/claude-opus-4.6,openai/gpt-5.4,google/gemini-3.1-pro-preview
+
+# 4. Stop the stack (bucket data in ./minio_data/ survives)
+docker compose down
+```
+
+### Output locations
+
+| Artefact | Path |
+|---|---|
+| Raw game logs | `minio_data/amongus-leaderboard/<game_folder>/agent-logs.jsonl` |
+| Per-judge scratch files | `./judge_game_<game_folder>_<model_name>.json` |
+| Final aggregated judgement (local copy) | `./judge_game_<game_folder>_final.json` |
+| Final aggregated judgement (bucket) | `minio_data/amongus-leaderboard/results/<game_folder>/judged_game.json` |
+| Processed-games ledger | `./.game_manifest.json` |
+
+All of these paths are gitignored.
+
+### Inspecting the bucket
+
+Open `http://localhost:9001`, log in with `local` / `localpass`, and browse the `amongus-leaderboard` bucket like any S3 GUI.
+
+### Resetting to a clean state
+
+```bash
+docker compose down
+rm -rf minio_data/
+docker compose up -d       # fresh bucket, no games, no results
+```
+
 ## Run Games
 
 To run the sandbox and log games of various LLMs playing against each other with free models, run:
@@ -183,7 +269,38 @@ You will need to add a `.env` file with an OpenAI API key.
 
 Alternatively, you can download the ground truth labels from the [HuggingFace](https://huggingface.co/datasets/7vik/AmongUs).
 
-(TODO)
+
+## LLM-as-Judge Evaluation
+
+`LLM_judge/evaluation.py` runs a 3-judge majority-vote evaluation over a game's logs against a 25-behavior rubric (see `LLM_judge/prompts.py`). The aggregated result is uploaded to Cloudflare R2 at `s3://amongus-leaderboard/results/<game_folder>/judged_game.json`.
+
+To evaluate the most-recent unprocessed game (tracked by local `.game_manifest.json`):
+
+```bash
+uv run LLM_judge/evaluation.py
+```
+
+To evaluate a specific game folder (does not update the manifest — safe to re-run):
+
+```bash
+uv run LLM_judge/evaluation.py game_7_2026-04-14_12-00-00
+```
+
+### Overriding the judge models
+
+By default the 3 judges are hardcoded as `JUDGE_MODELS` at the top of `LLM_judge/evaluation.py`. To test a different set without editing code, pass `--judges` with a comma-separated list of **exactly 3** OpenRouter model strings:
+
+```bash
+uv run LLM_judge/evaluation.py \
+    --judges anthropic/claude-opus-4.6,openai/gpt-5.4,google/gemini-3.1-pro-preview \
+    game_7_2026-04-14_12-00-00
+```
+
+Anything other than 3 models exits with an error. If `--judges` is omitted, the hardcoded defaults are used.
+
+> **Note:** The R2 output path is keyed only by `game_folder`, so re-running the same game with a different judge set **overwrites** the previous `judged_game.json`. The per-judge scratch files (`judge_game_{folder}_{model_name}.json`) are kept locally only.
+
+You will need a `.env` file with `OPENROUTER_API_KEY` and R2 credentials (`S3_ENDPOINT_URL`, `S3_ACCESS_KEY`, `S3_SECRET_KEY`, `S3_REGION`).
 
 ## Training Linear Probes
 
@@ -235,6 +352,7 @@ You will need to add a `.env` file with a Goodfire API key.
 ├── evaluations/             # LLM-based evaluation scripts
 ├── expt-logs/               # Experiment logs
 ├── human_trials/            # Web interface for human players
+├── LLM_judge/               # 3-judge majority-vote game evaluation + aggregation
 ├── linear-probes/           # Linear probe training and evaluation
 ├── main.py                  # Main entry point for running the game
 ├── reports/                 # Analysis notebooks and results
