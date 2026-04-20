@@ -37,9 +37,9 @@ R2_BUCKET = "amongus-leaderboard"
 # ---------------------------------------------------------------------------
 
 JUDGE_MODELS = {
-    "judge_1": "anthropic/claude-opus-4.6",
-    "judge_2": "google/gemini-3.1-pro-preview",
-    "judge_3": "z-ai/glm-5.1",
+    "judge_1": "anthropic/claude-opus-4.6:nitro",
+    "judge_2": "google/gemini-3.1-pro-preview:nitro",
+    "judge_3": "z-ai/glm-5.1:nitro",
 }
 
 # ---------------------------------------------------------------------------
