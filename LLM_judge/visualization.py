@@ -167,12 +167,6 @@ def build_dataframe(all_games: dict[str, dict]) -> pd.DataFrame:
   return pd.DataFrame(rows)
 
 
-def _sorted_games(df: pd.DataFrame) -> list[str]:
-  return sorted(
-    df["game"].unique(),
-    key=lambda g: int(re.search(r"\d+", g).group() or 0),
-  )
-
 
 def _category_legend_handles() -> list[Line2D]:
   return [
@@ -227,9 +221,12 @@ def plot_behavior_heatmap(df: pd.DataFrame, r2_client) -> None:
     ax.plot(j, -0.65, marker="s", color=CATEGORY_COLORS[cat], markersize=7, clip_on=False)
 
   ax.set_title("Behavior Presence Rate by Model — All Games",
-               fontsize=14, fontweight="bold", pad=28)
-  ax.legend(handles=_category_legend_handles(), loc="upper right", framealpha=0.3,
-            fontsize=8, facecolor="#ffffff", edgecolor="#ccc",
+               fontsize=14, fontweight="bold", pad=48)
+
+  ax.legend(handles=_category_legend_handles(),
+            bbox_to_anchor=(0.5, 1.0), loc="lower center",
+            ncol=len(CATEGORY_ORDER), fontsize=8,
+            facecolor="#ffffff", edgecolor="#ccc", framealpha=0.8,
             title="Category", title_fontsize=8)
 
   cbar = fig.colorbar(im, ax=ax, shrink=0.6, pad=0.02)
@@ -244,22 +241,28 @@ def plot_behavior_heatmap(df: pd.DataFrame, r2_client) -> None:
 # ---------------------------------------------------------------------------
 
 def plot_category_breakdown(df: pd.DataFrame, r2_client) -> None:
-  """Average % behaviors present, stacked by category, one bar per model."""
-  cat_scores = (
-    df.groupby(["model", "category"])["present"]
-    .mean()
-    .mul(100)
+  """Stacked bar per model: share of present behaviors per category, sums to 100%."""
+  # Count present behaviors per (model, category)
+  cat_counts = (
+    df[df["present"] == 1]
+    .groupby(["model", "category"])
+    .size()
     .unstack(fill_value=0)
     .reindex(columns=CATEGORY_ORDER, fill_value=0)
   )
-  cat_scores = cat_scores.loc[cat_scores.sum(axis=1).sort_values(ascending=False).index]
+  # Normalise each model's row to 100 %
+  row_sums  = cat_counts.sum(axis=1).replace(0, 1)
+  cat_pct   = cat_counts.div(row_sums, axis=0).mul(100)
+  # Sort by overall presence rate so the ordering remains meaningful
+  overall   = df.groupby("model")["present"].mean()
+  cat_pct   = cat_pct.loc[overall.reindex(cat_pct.index).sort_values(ascending=False).index]
 
-  fig, ax = plt.subplots(figsize=(max(10, len(cat_scores) * 0.9), 5))
-  x      = np.arange(len(cat_scores))
-  bottom = np.zeros(len(cat_scores))
+  fig, ax = plt.subplots(figsize=(max(10, len(cat_pct) * 0.9), 5))
+  x      = np.arange(len(cat_pct))
+  bottom = np.zeros(len(cat_pct))
 
   for cat in CATEGORY_ORDER:
-    vals = cat_scores[cat].values
+    vals = cat_pct[cat].values
     ax.bar(x, vals, bottom=bottom, label=cat,
            color=CATEGORY_COLORS[cat], edgecolor="#ffffff", linewidth=0.4, width=0.7)
     for i, (v, b) in enumerate(zip(vals, bottom)):
@@ -269,49 +272,21 @@ def plot_category_breakdown(df: pd.DataFrame, r2_client) -> None:
     bottom += vals
 
   ax.set_xticks(x)
-  ax.set_xticklabels(cat_scores.index, rotation=30, ha="right", fontsize=9)
-  ax.set_ylabel("% Behaviors Present (by category)")
+  ax.set_xticklabels(cat_pct.index, rotation=30, ha="right", fontsize=9)
+  ax.set_ylim(0, 100)
+  ax.set_ylabel("Share of Present Behaviors (%)")
   ax.set_title("Behavior Category Breakdown per Model — All Games",
-               fontsize=13, fontweight="bold")
-  ax.legend(fontsize=8, facecolor="#ffffff", edgecolor="#ccc",
-            framealpha=0.8, loc="upper right")
+               fontsize=13, fontweight="bold", pad=48)
+  ax.legend(handles=_category_legend_handles(),
+            bbox_to_anchor=(0.5, 1.0), loc="lower center",
+            ncol=len(CATEGORY_ORDER), fontsize=8,
+            facecolor="#ffffff", edgecolor="#ccc", framealpha=0.8,
+            title="Category", title_fontsize=8)
   _upload_figure(r2_client, fig, "02_category_breakdown_by_model.png")
 
 
 # ---------------------------------------------------------------------------
-# Graph 3 — Behavior score over time per model (line chart)
-# ---------------------------------------------------------------------------
-
-def plot_scores_over_time(df: pd.DataFrame, r2_client) -> None:
-  games = _sorted_games(df)
-  # NaN where a model didn't appear in a game → gap in the line
-  pivot = (
-    df.groupby(["game", "model"])["present"]
-    .mean()
-    .mul(100)
-    .unstack()
-    .reindex(games)
-  )
-
-  models  = pivot.columns.tolist()
-  palette = sns.color_palette("tab10", len(models))
-
-  fig, ax = plt.subplots(figsize=(max(8, len(games) * 1.4), 5))
-  for color, model in zip(palette, models):
-    ax.plot(games, pivot[model].values, marker="o", label=model,
-            color=color, linewidth=2, markersize=6)
-
-  ax.set_title("Behavior Score per Model Over Games", fontsize=13, fontweight="bold")
-  ax.set_ylabel("% Behaviors Present")
-  ax.set_xlabel("Game")
-  ax.set_ylim(0, 105)
-  ax.tick_params(axis="x", rotation=30, labelsize=9)
-  ax.legend(bbox_to_anchor=(1.01, 1), loc="upper left", fontsize=8, title="Model")
-  _upload_figure(r2_client, fig, "03_scores_over_time.png")
-
-
-# ---------------------------------------------------------------------------
-# Graph 4 — Most & least common behaviors (horizontal bar)
+# Graph 3 — Most & least common behaviors (horizontal bar)
 # ---------------------------------------------------------------------------
 
 def plot_behavior_rates(df: pd.DataFrame, r2_client) -> None:
@@ -360,39 +335,64 @@ def plot_behavior_rates(df: pd.DataFrame, r2_client) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Graph 5 — Per-game grouped bar (each model's score in each game)
+# Graph 5 — Per-model radar charts (category-level presence rates)
 # ---------------------------------------------------------------------------
 
-def plot_per_game_breakdown(df: pd.DataFrame, r2_client) -> None:
-  games  = _sorted_games(df)
-  models = sorted(df["model"].unique())
+def plot_radar_charts(df: pd.DataFrame, r2_client) -> None:
+  """One radar per model showing category-level presence rates."""
+  models   = sorted(df["model"].unique())
+  n_models = len(models)
+  cols     = min(4, n_models)
+  rows     = (n_models + cols - 1) // cols
 
-  pivot = (
-    df.groupby(["game", "model"])["present"]
+  fig, axes = plt.subplots(rows, cols, figsize=(5 * cols, 5 * rows),
+                            subplot_kw=dict(polar=True))
+  if n_models == 1:
+    axes = np.array([axes])
+  axes = axes.flatten()
+
+  categories = CATEGORY_ORDER
+  n_cats     = len(categories)
+  angles     = [n * 2 * pi / n_cats for n in range(n_cats)]
+  angles    += angles[:1]
+
+  cat_rates = (
+    df.groupby(["model", "category"])["present"]
     .mean()
-    .mul(100)
     .unstack(fill_value=0)
-    .reindex(games, fill_value=0)
+    .reindex(columns=categories, fill_value=0)
   )
 
-  n_games, n_models = len(games), len(models)
-  x       = np.arange(n_games)
-  width   = 0.8 / max(n_models, 1)
-  palette = sns.color_palette("tab10", n_models)
+  # Scale to actual data range so the polygon fills the chart
+  y_max  = min(1.0, cat_rates.values.max() * 1.2) if cat_rates.values.max() > 0 else 1.0
+  step   = y_max / 4
+  yticks = [step * i for i in range(1, 5)]
 
-  fig, ax = plt.subplots(figsize=(max(10, n_games * n_models * 0.45), 5))
-  for i, (color, model) in enumerate(zip(palette, models)):
-    offset = (i - n_models / 2 + 0.5) * width
-    vals   = [pivot.loc[g, model] if model in pivot.columns else 0 for g in games]
-    ax.bar(x + offset, vals, width * 0.9, label=model, color=color)
+  for idx, model in enumerate(models):
+    ax = axes[idx]
+    ax.set_facecolor("#ffffff")
 
-  ax.set_xticks(x)
-  ax.set_xticklabels(games, rotation=30, ha="right", fontsize=9)
-  ax.set_title("Behavior Score per Model per Game", fontsize=13, fontweight="bold")
-  ax.set_ylabel("% Behaviors Present")
-  ax.set_ylim(0, 105)
-  ax.legend(bbox_to_anchor=(1.01, 1), loc="upper left", fontsize=8, title="Model")
-  _upload_figure(r2_client, fig, "05_per_game_breakdown.png")
+    values  = cat_rates.loc[model].tolist() if model in cat_rates.index else [0] * n_cats
+    values += values[:1]
+
+    ax.plot(angles, values, color="#1565c0", linewidth=2)
+    ax.fill(angles, values, color="#1565c0", alpha=0.15)
+
+    ax.set_xticks(angles[:-1])
+    ax.set_xticklabels(categories, fontsize=7, color="#aaa")
+    ax.set_ylim(0, y_max)
+    ax.set_yticks(yticks)
+    ax.set_yticklabels([f"{t:.0%}" for t in yticks], fontsize=6, color="#888")
+    ax.spines["polar"].set_color("#ccc")
+    ax.grid(color="#ccc", linewidth=0.5)
+    ax.set_title(model, fontsize=11, fontweight="bold", color="#1a1a1a", pad=15)
+
+  for idx in range(n_models, len(axes)):
+    axes[idx].set_visible(False)
+
+  fig.suptitle("Per-Model Behavioral Profiles (Category Radar)",
+               fontsize=15, fontweight="bold", color="#1a1a1a", y=1.02)
+  _upload_figure(r2_client, fig, "06_player_radar.png")
 
 
 # ---------------------------------------------------------------------------
@@ -423,10 +423,9 @@ def generate_all_graphs() -> None:
   print("\nGenerating and uploading graphs...")
   plot_behavior_heatmap(df, r2_client)
   plot_category_breakdown(df, r2_client)
-  plot_scores_over_time(df, r2_client)
   plot_behavior_rates(df, r2_client)
-  plot_per_game_breakdown(df, r2_client)
-  print("\nDone — all 5 graphs uploaded to R2 under results/graphs/.")
+  plot_radar_charts(df, r2_client)
+  print("\nDone — all 4 graphs uploaded to R2 under results/graphs/.")
 
 
 if __name__ == "__main__":
