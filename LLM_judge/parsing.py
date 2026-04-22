@@ -295,6 +295,23 @@ def get_player_experience_str(game_data, player_id):
     return out
 
 
+def get_player_experience_with_ground_truth(game_data, player_id):
+    """Like get_player_experience_str but appends a ground-truth section
+    listing every player's true role. Required by the belief-tracking
+    rubric so judges can assess accuracy of the player's beliefs."""
+    base = get_player_experience_str(game_data, player_id)
+    if base is None:
+        return None
+
+    lines = ["\n\nGROUND TRUTH — TRUE ROLES:"]
+    for player in game_data.get("players", []):
+        name = player.get("name", "Unknown")
+        identity = player.get("identity", "Unknown")
+        lines.append(f"  {name}: {identity}")
+
+    return base + "\n".join(lines)
+
+
 # ---------------------------------------------------------------------------
 # CLI smoke-test
 # ---------------------------------------------------------------------------
