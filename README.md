@@ -10,6 +10,17 @@ The aim is to simulate the popular multiplayer game "Among Us" using AI agents a
 
 <img src="https://static.wikia.nocookie.net/among-us-wiki/images/f/f5/Among_Us_space_key_art_redesign.png" alt="Among Us" width="400"/>
 
+### Two analysis tracks
+
+Once games are played (or downloaded from [HuggingFace](https://huggingface.co/datasets/7vik/AmongUs)), two pipelines take over:
+
+| Track | Directory | What it answers |
+|---|---|---|
+| **Skill & outcomes** | [`reporting/`](#reporting--analysis) | *"How often does model X win, how certain are we, and how does that shift across seasons or context regimes?"* — OpenSkill ratings, Wilson CIs, paired-season statistics, and presentation/paper charts. |
+| **Linguistic & behavioral** | [`LLM_judge/`](#llm-as-judge-evaluation) | *"What kinds of deception, awareness, and planning patterns are models exhibiting?"* — a 3-judge majority-vote evaluation over raw game transcripts against a 25-behavior rubric. |
+
+The two tracks are complementary: `reporting/` gives the quantitative story, `LLM_judge/` gives the qualitative mechanism. Details below in [Reporting & Analysis](#reporting--analysis) and [LLM-as-Judge Evaluation](#llm-as-judge-evaluation).
+
 ## Setup
 
 1. Clone the repository.
@@ -190,8 +201,10 @@ To run the human trials interface:
 2. Open your browser and navigate to:
 
    ```
-   http://localhost:3000
+   http://localhost:8888
    ```
+
+   (Override with the `PORT` environment variable if needed.)
 
 3. Follow the on-screen instructions to create a game and join as a human player alongside AI agents.
 
@@ -235,42 +248,76 @@ uv run pytest -m integration
 uv run pytest -m ""
 ```
 
-## Deception ELO
+## Reporting & Analysis
 
-After running (or downloading) the games, to reproduce our Deception ELO results, run the following notebook:
+> **Track 1 — Skill & outcomes.** Who wins, how often, and with how much statistical certainty.
 
-```
-reports/2025_02_26_deception_ELO_v3_ci.ipynb
-```
+The `reporting/` directory contains scripts that produce the numbers and figures used in the paper. They pull live leaderboard data from the public API (or a custom endpoint via `--api-base`) and emit structured outputs — CSVs, markdown summaries, and dark/light-theme charts.
 
-The other report files can be used to reproduce the respective results.
+Generated artifacts (PNG, HTML, MD, CSV under `reporting/out/`) are gitignored; re-run the scripts to refresh them.
 
-## Caching Activations
+### Season win-rate statistics
 
-Once the (full) game logs are in place, use the following command to cache the activations of the LLMs:
+Per-season leaderboard with Wilson 95% CIs, Human Brain 1.0 vs. chance binomial tests, paired S0→S1 deltas with paired-t + sign tests, and per-model CI disjointness — rendered as rich console tables with optional CSV and markdown export:
 
 ```bash
-uv run linear-probes/cache_activations.py --dataset <dataset_name>
+uv run --with polars --with rich python reporting/season_win_rates.py \
+    --out-dir reporting/out --markdown reporting/season_win_rates.md
 ```
 
-This loads up the HuggingFace models and caches the activations of the specified layers for each game action step. This step is computationally expensive, so it is recommended to run this using GPUs.
+### Game outcomes & mechanics
 
-Use `configs.py` to specify the model and layer to cache, and other configuration options.
-
-## LLM-based Evaluation (for Lying, Awareness, Deception, and Planning)
-
-To evaluate the game actions by passing agent outputs to an LLM, run:
+Pulls every completed game's logs, categorizes the ending reason (crew-tasks / crew-voteout / imp-outnumber / imp-timelimit), and computes per-game mechanistic signals — meetings, votes, ejections, kills, vote accuracy, vote quality. Outputs per-season aggregates and a winner-conditioned split that exposes *why* outcomes shifted (e.g., S1's crewmate vote-out path jumped because vote accuracy rose from 38% → 64%, not because crewmates voted more often).
 
 ```bash
-bash evaluations/run_evals.sh
+uv run --with polars --with rich python reporting/win_reasons.py \
+    --out-dir reporting/out --markdown reporting/win_reasons.md
 ```
 
-You will need to add a `.env` file with an OpenAI API key.
+> **Schema caveat:** `turn_log` wasn't populated in S0 (older baseline engine), so phase-split turn counts appear as 0 across all S0 games. The voting / kill / ejection signals are fully available for both seasons.
 
-Alternatively, you can download the ground truth labels from the [HuggingFace](https://huggingface.co/datasets/7vik/AmongUs).
+### Season comparison charts
 
+Two companion Plotly charts — role win rates (marker size ∝ √role games → larger markers = more certain) and OpenSkill role ratings rendered as bar + whisker (bar = μ − σ conservative, whisker = σ). Dark theme targets presentation use, light theme targets the paper.
+
+Two model subsets are emitted by default:
+- **`featured`** (20 models) — full paper/reporting leaderboard view, dynamic height.
+- **`presentation`** (11 models) — 7 long-context human-AI participants + Human Brain 1.0 + 3 clean references (Gemini 3 Flash, Claude Sonnet 4.5, Grok 4.1 Fast), sized for 16:9 slides (1280 × 720).
+
+```bash
+# Emits both subsets for the dark theme (default)
+uv run --with plotly --with kaleido python reporting/season_chart.py
+
+# Paper variant
+uv run --with plotly --with kaleido python reporting/season_chart.py --theme light
+
+# Just the 16:9 slide set
+uv run --with plotly --with kaleido python reporting/season_chart.py --subset presentation
+```
+
+Outputs (gitignored): `season_comparison_{subset}_{theme}.{html,png}`, `season_ratings_{subset}_{theme}.{html,png}`, where `subset ∈ {featured, presentation}` and `theme ∈ {dark, light}`.
+
+### Markdown comparison summary
+
+Text-only Season 0 / Season 1 comparison (top-10 tables, climbers/fallers, provider mix, new & missing models):
+
+```bash
+uv run python reporting/season_analysis.py > reporting/season_analysis.md
+```
+
+### Offline experiment replay
+
+When you have a local `expt-logs/<run>/summary.json`, replay games through the OpenSkill meta-agent update and generate the leaderboard-style matplotlib charts (leaderboard table, bar breakdown, rating history, win rates):
+
+```bash
+uv run python reporting/calculate_ratings.py expt-logs/<run>/summary.json --theme dark
+```
+
+Alternatively, you can download the [HuggingFace dataset](https://huggingface.co/datasets/7vik/AmongUs) of 400 full-game logs and 810 game summaries to reproduce the paper's results directly.
 
 ## LLM-as-Judge Evaluation
+
+> **Track 2 — Linguistic & behavioral analysis.** What deception, awareness, and planning patterns are visible in the transcripts — the qualitative complement to `reporting/`.
 
 `LLM_judge/evaluation.py` runs a 3-judge majority-vote evaluation over a game's logs against three rubrics (see `LLM_judge/prompts.py`): a **Checklist** (25 strategic behaviors), a **Language** rubric (14 linguistic behaviors), and a **Belief Tracking** analysis (theory of mind, cognitive biases, turn-by-turn belief accuracy). Results are saved to `LLM_judge/data/results/` and optionally uploaded to Cloudflare R2.
 
@@ -458,35 +505,27 @@ You will need to add a `.env` file with a Goodfire API key.
 
 ```plaintext
 .
-├── CONTRIBUTING.md         # Contribution guidelines
 ├── Dockerfile               # Docker setup for project environment
+├── docker-compose.yml       # Local MinIO + game server stack
 ├── LICENSE                  # License information
 ├── README.md                # Project documentation (this file)
 ├── CLAUDE.md                # Instructions for Claude Code
 ├── pyproject.toml           # Python project configuration and dependencies
 ├── uv.lock                  # Lock file for reproducible dependency resolution
-├── among-agents/            # Main code for the Among Us agents
-│   ├── README.md            # Documentation for agent implementation
-│   ├── pyproject.toml       # Package configuration
-│   └── amongagents/         # Core agent and environment modules
-├── evaluations/             # LLM-based evaluation scripts
-├── expt-logs/               # Experiment logs
-├── human_trials/            # Web interface for human players
-├── LLM_judge/               # 3-judge majority-vote game evaluation + aggregation
-├── linear-probes/           # Linear probe training and evaluation
 ├── main.py                  # Main entry point for running the game
-├── reports/                 # Analysis notebooks and results
-├── tests/                   # Unit tests for project functionality
-└── utils.py                 # Utility functions
+├── start.sh                 # Container entrypoint (used by Railway deploy)
+├── railway.toml             # Railway deployment configuration
+├── utils.py                 # Utility functions
+├── among-agents/            # Core Among Us agent + environment package
+├── human_trials/            # FastAPI server for human-in-the-loop play
+├── LLM_judge/               # 3-judge majority-vote game evaluation + aggregation
+├── reporting/               # Season stats + chart generation scripts
+└── tests/                   # Unit tests for project functionality
 ```
-
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to contribute to this project.
 
 ## License
 
-This project is licensed under CC0 1.0 Universal - see [LICENSE](LICENSE).
+This project is licensed under CC0 1.0 Universal — see [LICENSE](LICENSE).
 
 ## Acknowledgments
 
