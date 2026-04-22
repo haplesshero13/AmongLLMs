@@ -26,6 +26,15 @@ minio_data/
 judge_game_*.json
 .game_manifest.json
 
+# LLM_judge data directory — track folder structure, ignore contents
+LLM_judge/data/**
+!LLM_judge/data/
+!LLM_judge/data/.gitkeep
+!LLM_judge/data/results/
+!LLM_judge/data/results/.gitkeep
+!LLM_judge/data/graphs/
+!LLM_judge/data/graphs/.gitkeep
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
