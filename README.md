@@ -370,8 +370,10 @@ All output is written to `LLM_judge/data/`:
 To generate graphs from existing local results (no R2 or API calls):
 
 ```bash
-uv run python generate_local_graphs.py
+uv run LLM_judge/visualization.py --local
 ```
+
+Omit `--local` to load the three rubric JSONs from R2 and upload all 14 graphs to `s3://amongus-leaderboard/results/graphs/`.
 
 ### Evaluation Metrics
 
