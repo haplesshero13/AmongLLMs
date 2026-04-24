@@ -211,6 +211,9 @@ cython_debug/
 CLAUDE.md
 .claude/
 
+# local scratch (throwaway scripts, data dumps, exploratory notes)
+.local/
+
 
 .DS_Store
 .ruff_cache
