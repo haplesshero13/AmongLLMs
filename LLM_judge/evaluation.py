@@ -24,6 +24,8 @@ from pathlib import Path
 import numpy as np
 from openai import AsyncOpenAI
 from dotenv import load_dotenv
+from tqdm import tqdm
+from tqdm.asyncio import tqdm as async_tqdm
 
 from data import get_r2_client, load_all_games, load_new_games, fetch_game_logs, mark_game_processed
 from parsing import parse_game_logs, create_game_log, get_player_experience_str, get_player_experience_with_ground_truth
@@ -95,10 +97,9 @@ def _clean_json_response(text: str) -> str:
 
 
 async def evaluate_player(player_id, game_data, model_str, client, max_retries: int = 3, rubric=CHECKLIST_RUBRIC):
-    print(f"  Evaluating {player_id}...")
     prompt = get_player_experience_str(game_data, player_id)
     if prompt is None:
-        print(f"  ⚠ No narrative found for {player_id}, skipping.")
+        tqdm.write(f"  ⚠ No narrative found for {player_id}, skipping.")
         return player_id, {"error": f"Player '{player_id}' not found in game_data"}
 
     for attempt in range(1, max_retries + 1):
@@ -106,62 +107,68 @@ async def evaluate_player(player_id, game_data, model_str, client, max_retries: 
             response_text = await judge_response(prompt, client, model_str, rubric=rubric)
             cleaned = _clean_json_response(response_text)
             if not cleaned:
-                print(f"  Raw response (empty after cleaning): {repr(response_text[:500])}")
+                tqdm.write(f"  Raw response (empty after cleaning): {repr(response_text[:500])}")
                 raise ValueError("Model returned an empty response")
             return player_id, json.loads(cleaned)
         except (json.JSONDecodeError, ValueError) as e:
             if attempt < max_retries:
-                print(f"  ↻ {player_id} attempt {attempt} failed ({e}), retrying...")
+                tqdm.write(f"  ↻ {player_id} attempt {attempt} failed ({e}), retrying...")
                 if attempt == 1:
-                    print(f"    Raw response preview: {repr(response_text[:500])}")
+                    tqdm.write(f"    Raw response preview: {repr(response_text[:500])}")
                 await asyncio.sleep(2 * attempt)
             else:
-                print(f"  Error evaluating {player_id} after {max_retries} attempts: {e}")
-                print(f"    Final raw response: {repr(response_text[:500])}")
+                tqdm.write(f"  Error evaluating {player_id} after {max_retries} attempts: {e}")
+                tqdm.write(f"    Final raw response: {repr(response_text[:500])}")
                 return player_id, {"error": str(e)}
         except Exception as e:
             # Non-parse errors (API/network) — don't retry
-            print(f"  Error evaluating {player_id}: {e}")
+            tqdm.write(f"  Error evaluating {player_id}: {e}")
             return player_id, {"error": str(e)}
 
 
 async def evaluate_all(game_data, game_folder: str, client):
     """Run every judge model over every player and write per-judge JSON files."""
     for judge_id, model_str in JUDGE_MODELS.items():
-        print(f"\n  Running judge: {model_str}...")
-
+        model_name = model_str.split("/")[-1]
         tasks = [
             evaluate_player(player.get("name"), game_data, model_str, client)
             for player in game_data.get("players", [])
         ]
-        results = await asyncio.gather(*tasks)
+        results = await async_tqdm.gather(
+            *tasks,
+            desc=f"    checklist · {model_name} ({judge_id})",
+            leave=False,
+            unit="pl",
+        )
 
         game_evaluations = dict(results)
-        model_name = model_str.split("/")[-1]
         output_file = DATA_DIR / f"judge_game_{game_folder}_{model_name}.json"
         with open(output_file, "w", encoding="utf-8") as f:
             json.dump(game_evaluations, f, indent=2, ensure_ascii=False)
-        print(f"  Saved {output_file}")
+        tqdm.write(f"  Saved {output_file}")
 
 
 async def evaluate_all_language(game_data, game_folder: str, client):
     """Run every judge model over every player with the LANGUAGE_DATA_RUBRIC."""
     for judge_id, model_str in JUDGE_MODELS.items():
-        print(f"\n  Running language judge: {model_str}...")
-
+        model_name = model_str.split("/")[-1]
         tasks = [
             evaluate_player(player.get("name"), game_data, model_str, client,
                             rubric=LANGUAGE_DATA_RUBRIC)
             for player in game_data.get("players", [])
         ]
-        results = await asyncio.gather(*tasks)
+        results = await async_tqdm.gather(
+            *tasks,
+            desc=f"    language  · {model_name} ({judge_id})",
+            leave=False,
+            unit="pl",
+        )
 
         game_evaluations = dict(results)
-        model_name = model_str.split("/")[-1]
         output_file = DATA_DIR / f"judge_game_{game_folder}_{model_name}_language.json"
         with open(output_file, "w", encoding="utf-8") as f:
             json.dump(game_evaluations, f, indent=2, ensure_ascii=False)
-        print(f"  Saved {output_file}")
+        tqdm.write(f"  Saved {output_file}")
 
 
 def _clean_json_response_object(text: str) -> str:
@@ -179,10 +186,9 @@ def _clean_json_response_object(text: str) -> str:
 
 async def evaluate_player_belief(player_id, game_data, model_str, client, max_retries: int = 3):
     """Evaluate a single player with the BELIEF_TRACKING_ANALYSIS rubric."""
-    print(f"  Evaluating belief tracking for {player_id}...")
     prompt = get_player_experience_with_ground_truth(game_data, player_id)
     if prompt is None:
-        print(f"  ⚠ No narrative found for {player_id}, skipping.")
+        tqdm.write(f"  ⚠ No narrative found for {player_id}, skipping.")
         return player_id, {"error": f"Player '{player_id}' not found in game_data"}
 
     for attempt in range(1, max_retries + 1):
@@ -191,7 +197,7 @@ async def evaluate_player_belief(player_id, game_data, model_str, client, max_re
                                                   rubric=BELIEF_TRACKING_ANALYSIS)
             cleaned = _clean_json_response_object(response_text)
             if not cleaned:
-                print(f"  Raw response (empty after cleaning): {repr(response_text[:500])}")
+                tqdm.write(f"  Raw response (empty after cleaning): {repr(response_text[:500])}")
                 raise ValueError("Model returned an empty response")
             parsed = json.loads(cleaned)
             if not isinstance(parsed, dict):
@@ -199,36 +205,39 @@ async def evaluate_player_belief(player_id, game_data, model_str, client, max_re
             return player_id, parsed
         except (json.JSONDecodeError, ValueError) as e:
             if attempt < max_retries:
-                print(f"  ↻ {player_id} belief attempt {attempt} failed ({e}), retrying...")
+                tqdm.write(f"  ↻ {player_id} belief attempt {attempt} failed ({e}), retrying...")
                 if attempt == 1:
-                    print(f"    Raw response preview: {repr(response_text[:500])}")
+                    tqdm.write(f"    Raw response preview: {repr(response_text[:500])}")
                 await asyncio.sleep(2 * attempt)
             else:
-                print(f"  Error evaluating belief for {player_id} after {max_retries} attempts: {e}")
-                print(f"    Final raw response: {repr(response_text[:500])}")
+                tqdm.write(f"  Error evaluating belief for {player_id} after {max_retries} attempts: {e}")
+                tqdm.write(f"    Final raw response: {repr(response_text[:500])}")
                 return player_id, {"error": str(e)}
         except Exception as e:
-            print(f"  Error evaluating belief for {player_id}: {e}")
+            tqdm.write(f"  Error evaluating belief for {player_id}: {e}")
             return player_id, {"error": str(e)}
 
 
 async def evaluate_all_beliefs(game_data, game_folder: str, client):
     """Run every judge model over every player with the BELIEF_TRACKING_ANALYSIS rubric."""
     for judge_id, model_str in JUDGE_MODELS.items():
-        print(f"\n  Running belief judge: {model_str}...")
-
+        model_name = model_str.split("/")[-1]
         tasks = [
             evaluate_player_belief(player.get("name"), game_data, model_str, client)
             for player in game_data.get("players", [])
         ]
-        results = await asyncio.gather(*tasks)
+        results = await async_tqdm.gather(
+            *tasks,
+            desc=f"    belief    · {model_name} ({judge_id})",
+            leave=False,
+            unit="pl",
+        )
 
         game_evaluations = dict(results)
-        model_name = model_str.split("/")[-1]
         output_file = DATA_DIR / f"judge_game_{game_folder}_{model_name}_belief.json"
         with open(output_file, "w", encoding="utf-8") as f:
             json.dump(game_evaluations, f, indent=2, ensure_ascii=False)
-        print(f"  Saved {output_file}")
+        tqdm.write(f"  Saved {output_file}")
 
 
 # ---------------------------------------------------------------------------
@@ -693,7 +702,7 @@ def upload_judgement_to_r2(local_path: str, game_folder: str):
     key = f"results/{game_folder}/judged_game.json"
     with open(local_path, "rb") as f:
         r2.put_object(Bucket=R2_BUCKET, Key=key, Body=f.read(), ContentType="application/json")
-    print(f"[R2] Uploaded → s3://{R2_BUCKET}/{key}")
+    tqdm.write(f"[R2] Uploaded → s3://{R2_BUCKET}/{key}")
 
 
 def upload_language_judgement_to_r2(local_path: str, game_folder: str):
@@ -702,7 +711,7 @@ def upload_language_judgement_to_r2(local_path: str, game_folder: str):
     key = f"results/{game_folder}/judged_game_language.json"
     with open(local_path, "rb") as f:
         r2.put_object(Bucket=R2_BUCKET, Key=key, Body=f.read(), ContentType="application/json")
-    print(f"[R2] Uploaded → s3://{R2_BUCKET}/{key}")
+    tqdm.write(f"[R2] Uploaded → s3://{R2_BUCKET}/{key}")
 
 
 def upload_belief_judgement_to_r2(local_path: str, game_folder: str):
@@ -711,7 +720,7 @@ def upload_belief_judgement_to_r2(local_path: str, game_folder: str):
     key = f"results/{game_folder}/judged_game_belief.json"
     with open(local_path, "rb") as f:
         r2.put_object(Bucket=R2_BUCKET, Key=key, Body=f.read(), ContentType="application/json")
-    print(f"[R2] Uploaded → s3://{R2_BUCKET}/{key}")
+    tqdm.write(f"[R2] Uploaded → s3://{R2_BUCKET}/{key}")
 
 
 # ---------------------------------------------------------------------------
@@ -750,8 +759,15 @@ async def main(args):
             print("No new games to evaluate.")
             return
 
-    for game_folder, entries in games.items():
-        print(f"\n=== Evaluating game: {game_folder} ===")
+    outer_iter = games.items()
+    outer_bar = None
+    if len(games) > 1:
+        outer_bar = tqdm(total=len(games), desc="Games", unit="game")
+
+    for game_folder, entries in outer_iter:
+        if outer_bar is not None:
+            outer_bar.set_postfix_str(game_folder, refresh=True)
+        tqdm.write(f"\n=== Evaluating game: {game_folder} ===")
 
         parsed = parse_game_logs(entries)
         game_data = create_game_log(
@@ -769,57 +785,63 @@ async def main(args):
 
         # --- Checklist rubric ---
         if run_checklist:
-            print(f"\n  --- Checklist rubric ---")
+            tqdm.write(f"\n  --- Checklist rubric ---")
             await evaluate_all(game_data, game_folder, client)
 
             all_judges = load_current_judge_files(game_folder, player_model_map)
             if not all_judges:
-                print(f"  No checklist judge files found for {game_folder}, skipping.")
+                tqdm.write(f"  No checklist judge files found for {game_folder}, skipping.")
             else:
                 final_judgement = aggregate_judge_results(all_judges)
                 local_path = RESULTS_DIR / f"judge_game_{game_folder}_final.json"
                 with open(local_path, "w", encoding="utf-8") as f:
                     json.dump(final_judgement, f, indent=2, ensure_ascii=False)
-                print(f"Saved local copy → {local_path}")
+                tqdm.write(f"  Saved local copy → {local_path}")
                 if not args.local:
                     upload_judgement_to_r2(str(local_path), game_folder)
 
         # --- Language rubric ---
         if run_language:
-            print(f"\n  --- Language rubric ---")
+            tqdm.write(f"\n  --- Language rubric ---")
             await evaluate_all_language(game_data, game_folder, client)
 
             all_judges_lang = load_current_judge_files_language(game_folder, player_model_map)
             if not all_judges_lang:
-                print(f"  No language judge files found for {game_folder}, skipping.")
+                tqdm.write(f"  No language judge files found for {game_folder}, skipping.")
             else:
                 final_lang = aggregate_judge_results_language(all_judges_lang)
                 local_lang_path = RESULTS_DIR / f"judge_game_{game_folder}_final_language.json"
                 with open(local_lang_path, "w", encoding="utf-8") as f:
                     json.dump(final_lang, f, indent=2, ensure_ascii=False)
-                print(f"Saved local copy → {local_lang_path}")
+                tqdm.write(f"  Saved local copy → {local_lang_path}")
                 if not args.local:
                     upload_language_judgement_to_r2(str(local_lang_path), game_folder)
 
         # --- Belief tracking rubric ---
         if run_belief:
-            print(f"\n  --- Belief tracking rubric ---")
+            tqdm.write(f"\n  --- Belief tracking rubric ---")
             await evaluate_all_beliefs(game_data, game_folder, client)
 
             all_judges_belief = load_current_belief_judge_files(game_folder, player_model_map)
             if not all_judges_belief:
-                print(f"  No belief judge files found for {game_folder}, skipping.")
+                tqdm.write(f"  No belief judge files found for {game_folder}, skipping.")
             else:
                 final_belief = aggregate_belief_results(all_judges_belief)
                 local_belief_path = RESULTS_DIR / f"judge_game_{game_folder}_final_belief.json"
                 with open(local_belief_path, "w", encoding="utf-8") as f:
                     json.dump(final_belief, f, indent=2, ensure_ascii=False)
-                print(f"Saved local copy → {local_belief_path}")
+                tqdm.write(f"  Saved local copy → {local_belief_path}")
                 if not args.local:
                     upload_belief_judgement_to_r2(str(local_belief_path), game_folder)
 
         if args.game_folder is None:
             mark_game_processed(game_folder)
+
+        if outer_bar is not None:
+            outer_bar.update(1)
+
+    if outer_bar is not None:
+        outer_bar.close()
 
 
 def _parse_args():
