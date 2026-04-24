@@ -131,14 +131,13 @@ def fetch_games(base_url: str, version: int) -> list[dict]:
 
 def fetch_summary(base_url: str, game_id: str, retries: int = 1) -> dict | None:
     url = f"{base_url}/api/games/{game_id}/logs"
-    last_err: Exception | None = None
     for attempt in range(retries + 1):
         try:
             with urllib.request.urlopen(url, timeout=45) as resp:
                 payload = json.load(resp)
             return payload.get("summary")
-        except Exception as exc:  # socket timeout, SSL error, JSON error, etc.
-            last_err = exc
+        except Exception:  # socket timeout, SSL error, JSON error, etc.
+            pass
     # Give up after the retry budget — don't crash the run over a flaky fetch.
     return None
 
