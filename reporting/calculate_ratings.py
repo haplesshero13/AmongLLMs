@@ -9,16 +9,15 @@ team-level rating updates despite asymmetric team sizes.
 
 Usage:
     uv run calculate_ratings.py expt-logs/2026-02-11_exp_5/summary.json
-    uv run calculate_ratings.py expt-logs/2026-02-21_exp_3/summary.json
+    uv run calculate_ratings.py expt-logs/2026-02-21_exp_3/summary.json --theme light
 """
 
+import argparse
 import json
 import math
 import os
-import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterator
 
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
@@ -422,12 +421,69 @@ MODEL_PALETTE = {
 
 FALLBACK_PALETTE = sns.color_palette("husl", 10)
 
+CHART_THEMES = {
+    "dark": {
+        "bg": "#0d1117",
+        "panel": "#0d1117",
+        "text": "#e6edf3",
+        "muted": "#8b949e",
+        "grid": "#21262d",
+        "header_bg": "#161b22",
+        "row_a": "#0d1117",
+        "row_b": "#161b22",
+        "edge": "#30363d",
+        "fifty": "#6e7681",
+        "overall": "#8b949e",
+        "impostor": "#f85149",
+        "crewmate": "#58a6ff",
+        "seaborn_style": "darkgrid",
+    },
+    "light": {
+        "bg": "#ffffff",
+        "panel": "#ffffff",
+        "text": "#1f2328",
+        "muted": "#656d76",
+        "grid": "#eaecef",
+        "header_bg": "#2d2d2d",
+        "row_a": "#ffffff",
+        "row_b": "#f7f7f7",
+        "edge": "#d0d7de",
+        "fifty": "#999999",
+        "overall": "#555555",
+        "impostor": "#e74c3c",
+        "crewmate": "#3498db",
+        "seaborn_style": "whitegrid",
+    },
+}
+
 
 def _color_for(name: str, idx: int) -> str:
     return MODEL_PALETTE.get(name, FALLBACK_PALETTE[idx % len(FALLBACK_PALETTE)])
 
 
-def plot_leaderboard_table(ranked: list[dict], num_games: int, out_path: str) -> None:
+def _apply_theme(theme: dict) -> None:
+    """Apply matplotlib rcParams for the chosen theme."""
+    sns.set_theme(style=theme["seaborn_style"], font_scale=1.05)
+    plt.rcParams.update(
+        {
+            "figure.facecolor": theme["bg"],
+            "axes.facecolor": theme["panel"],
+            "axes.edgecolor": theme["edge"],
+            "axes.labelcolor": theme["text"],
+            "axes.titlecolor": theme["text"],
+            "xtick.color": theme["muted"],
+            "ytick.color": theme["text"],
+            "text.color": theme["text"],
+            "grid.color": theme["grid"],
+            "savefig.facecolor": theme["bg"],
+            "savefig.edgecolor": theme["bg"],
+        }
+    )
+
+
+def plot_leaderboard_table(
+    ranked: list[dict], num_games: int, out_path: str, theme: dict
+) -> None:
     """Render a publication-quality leaderboard table as an image."""
     fig, ax = plt.subplots(figsize=(14, 0.6 * len(ranked) + 1.8))
     ax.axis("off")
@@ -467,7 +523,7 @@ def plot_leaderboard_table(ranked: list[dict], num_games: int, out_path: str) ->
                 f"{r['crew_wr']:.1f}",
             ]
         )
-        row_colors.append("#f7f7f7" if i % 2 == 0 else "#ffffff")
+        row_colors.append(theme["row_b"] if i % 2 == 0 else theme["row_a"])
 
     table = ax.table(
         cellText=cell_data,
@@ -482,8 +538,9 @@ def plot_leaderboard_table(ranked: list[dict], num_games: int, out_path: str) ->
     # Style header
     for j in range(len(columns)):
         cell = table[0, j]
-        cell.set_facecolor("#2d2d2d")
+        cell.set_facecolor(theme["header_bg"])
         cell.set_text_props(color="white", fontweight="bold", fontsize=9)
+        cell.set_edgecolor(theme["edge"])
 
     # Style rows
     for i in range(len(ranked)):
@@ -491,28 +548,31 @@ def plot_leaderboard_table(ranked: list[dict], num_games: int, out_path: str) ->
         for j in range(len(columns)):
             cell = table[i + 1, j]
             cell.set_facecolor(row_colors[i])
-            cell.set_edgecolor("#dddddd")
+            cell.set_edgecolor(theme["edge"])
             if j == 1:  # Model name column
                 cell.set_text_props(color=color, fontweight="bold", ha="left")
             elif j == 2:  # Rating column
-                cell.set_text_props(fontweight="bold")
+                cell.set_text_props(color=theme["text"], fontweight="bold")
+            else:
+                cell.set_text_props(color=theme["text"])
 
     ax.set_title(
         f"OpenSkill Leaderboard  ({num_games} games, mu - 1\u03c3)",
         fontsize=14,
         fontweight="bold",
         pad=20,
+        color=theme["text"],
     )
     fig.tight_layout()
-    fig.savefig(out_path, dpi=200, bbox_inches="tight", facecolor="white")
+    fig.savefig(out_path, dpi=200, bbox_inches="tight", facecolor=theme["bg"])
     plt.close(fig)
     print(f"  Saved table: {out_path}")
 
 
-def plot_rating_bars(ranked: list[dict], num_games: int, out_path: str) -> None:
+def plot_rating_bars(
+    ranked: list[dict], num_games: int, out_path: str, theme: dict
+) -> None:
     """Horizontal bar chart: overall rating with impostor/crewmate breakdown."""
-    sns.set_theme(style="whitegrid", font_scale=1.05)
-
     fig, axes = plt.subplots(1, 3, figsize=(18, 5.5), sharey=True)
     names = [r["name"] for r in ranked][::-1]  # bottom-to-top
     n = len(names)
@@ -528,18 +588,21 @@ def plot_rating_bars(ranked: list[dict], num_games: int, out_path: str) -> None:
         sigmas = [r[sigma_key] for r in ranked][::-1]
         colors = [_color_for(names[i], n - 1 - i) for i in range(n)]
 
-        bars = ax.barh(
+        ax.barh(
             range(n),
             mus,
             xerr=sigmas,
             color=colors,
-            edgecolor="white",
+            edgecolor=theme["bg"],
             linewidth=0.8,
             capsize=3,
-            error_kw={"elinewidth": 1.2, "capthick": 1.2},
+            error_kw={
+                "elinewidth": 1.2,
+                "capthick": 1.2,
+                "ecolor": theme["muted"],
+            },
         )
 
-        # Value labels
         for j, (mu_val, sig_val) in enumerate(zip(mus, sigmas)):
             ax.text(
                 mu_val + sig_val + 30,
@@ -548,22 +611,29 @@ def plot_rating_bars(ranked: list[dict], num_games: int, out_path: str) -> None:
                 va="center",
                 fontsize=9,
                 fontweight="bold",
+                color=theme["text"],
             )
 
         ax.set_yticks(range(n))
-        ax.set_yticklabels(names, fontsize=10)
-        ax.set_title(title, fontsize=12, fontweight="bold")
-        ax.set_xlabel("Rating (mu x100)")
-        ax.axvline(x=2500, color="#999999", linestyle="--", linewidth=0.8, alpha=0.6)
+        ax.set_yticklabels(names, fontsize=10, color=theme["text"])
+        ax.set_title(title, fontsize=12, fontweight="bold", color=theme["text"])
+        ax.set_xlabel("Rating (mu x100)", color=theme["muted"])
+        ax.axvline(
+            x=2500, color=theme["fifty"], linestyle="--", linewidth=0.8, alpha=0.6
+        )
+        ax.set_facecolor(theme["panel"])
+        for spine in ax.spines.values():
+            spine.set_color(theme["edge"])
 
     fig.suptitle(
         f"Model Ratings Breakdown  ({num_games} games)",
         fontsize=14,
         fontweight="bold",
         y=1.02,
+        color=theme["text"],
     )
     fig.tight_layout()
-    fig.savefig(out_path, dpi=200, bbox_inches="tight", facecolor="white")
+    fig.savefig(out_path, dpi=200, bbox_inches="tight", facecolor=theme["bg"])
     plt.close(fig)
     print(f"  Saved bars: {out_path}")
 
@@ -573,10 +643,9 @@ def plot_rating_history(
     ranked: list[dict],
     num_games: int,
     out_path: str,
+    theme: dict,
 ) -> None:
     """Line chart showing rating convergence over games."""
-    sns.set_theme(style="whitegrid", font_scale=1.05)
-
     fig, ax = plt.subplots(figsize=(12, 6))
 
     rank_order = [r["name"] for r in ranked]
@@ -588,36 +657,46 @@ def plot_rating_history(
         xs = [d[0] for d in data]
         ys = [d[1] for d in data]
         color = _color_for(name, i)
-        ax.plot(xs, ys, label=name, color=color, linewidth=2.0, alpha=0.85)
+        ax.plot(xs, ys, label=name, color=color, linewidth=2.0, alpha=0.88)
 
     ax.axhline(
         y=2500,
-        color="#999999",
+        color=theme["fifty"],
         linestyle="--",
         linewidth=0.8,
         alpha=0.5,
         label="Starting rating",
     )
-    ax.set_xlabel("Game Number", fontsize=11)
-    ax.set_ylabel("Conservative Rating (mu - 1\u03c3, x100)", fontsize=11)
+    ax.set_xlabel("Game Number", fontsize=11, color=theme["muted"])
+    ax.set_ylabel(
+        "Conservative Rating (mu - 1\u03c3, x100)", fontsize=11, color=theme["muted"]
+    )
     ax.set_title(
         f"Rating Convergence Over {num_games} Games",
         fontsize=14,
         fontweight="bold",
+        color=theme["text"],
     )
-    ax.legend(loc="best", fontsize=9, framealpha=0.9)
+    legend = ax.legend(loc="best", fontsize=9, framealpha=0.9)
+    legend.get_frame().set_facecolor(theme["panel"])
+    legend.get_frame().set_edgecolor(theme["edge"])
+    for text in legend.get_texts():
+        text.set_color(theme["text"])
     ax.yaxis.set_major_formatter(mticker.FuncFormatter(lambda x, _: f"{x:,.0f}"))
+    ax.set_facecolor(theme["panel"])
+    for spine in ax.spines.values():
+        spine.set_color(theme["edge"])
 
     fig.tight_layout()
-    fig.savefig(out_path, dpi=200, bbox_inches="tight", facecolor="white")
+    fig.savefig(out_path, dpi=200, bbox_inches="tight", facecolor=theme["bg"])
     plt.close(fig)
     print(f"  Saved history: {out_path}")
 
 
-def plot_win_rates(ranked: list[dict], num_games: int, out_path: str) -> None:
+def plot_win_rates(
+    ranked: list[dict], num_games: int, out_path: str, theme: dict
+) -> None:
     """Grouped bar chart comparing overall / impostor / crewmate win rates."""
-    sns.set_theme(style="whitegrid", font_scale=1.05)
-
     import numpy as np
 
     fig, ax = plt.subplots(figsize=(12, 5.5))
@@ -632,14 +711,15 @@ def plot_win_rates(ranked: list[dict], num_games: int, out_path: str) -> None:
     crew = [r["crew_wr"] for r in ranked]
 
     bars1 = ax.bar(
-        x - width, overall, width, label="Overall", color="#555555", alpha=0.85
+        x - width, overall, width, label="Overall", color=theme["overall"], alpha=0.9
     )
-    bars2 = ax.bar(x, imp, width, label="Impostor", color="#e74c3c", alpha=0.85)
+    bars2 = ax.bar(
+        x, imp, width, label="Impostor", color=theme["impostor"], alpha=0.9
+    )
     bars3 = ax.bar(
-        x + width, crew, width, label="Crewmate", color="#3498db", alpha=0.85
+        x + width, crew, width, label="Crewmate", color=theme["crewmate"], alpha=0.9
     )
 
-    # Value labels
     for bars in [bars1, bars2, bars3]:
         for bar in bars:
             h = bar.get_height()
@@ -650,32 +730,56 @@ def plot_win_rates(ranked: list[dict], num_games: int, out_path: str) -> None:
                 ha="center",
                 va="bottom",
                 fontsize=8,
+                color=theme["text"],
             )
 
     ax.set_xticks(x)
-    ax.set_xticklabels(names, rotation=25, ha="right", fontsize=9)
-    ax.set_ylabel("Win Rate (%)")
+    ax.set_xticklabels(
+        names, rotation=25, ha="right", fontsize=9, color=theme["text"]
+    )
+    ax.set_ylabel("Win Rate (%)", color=theme["muted"])
     ax.set_ylim(0, 100)
     ax.set_title(
         f"Win Rates by Role  ({num_games} games)",
         fontsize=14,
         fontweight="bold",
+        color=theme["text"],
     )
-    ax.legend(fontsize=10)
+    legend = ax.legend(fontsize=10)
+    legend.get_frame().set_facecolor(theme["panel"])
+    legend.get_frame().set_edgecolor(theme["edge"])
+    for text in legend.get_texts():
+        text.set_color(theme["text"])
+    ax.set_facecolor(theme["panel"])
+    for spine in ax.spines.values():
+        spine.set_color(theme["edge"])
 
     fig.tight_layout()
-    fig.savefig(out_path, dpi=200, bbox_inches="tight", facecolor="white")
+    fig.savefig(out_path, dpi=200, bbox_inches="tight", facecolor=theme["bg"])
     plt.close(fig)
     print(f"  Saved win rates: {out_path}")
 
 
 def main():
-    if len(sys.argv) < 2:
-        print(f"Usage: {sys.argv[0]} <path/to/summary.json>")
-        sys.exit(1)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("summary", help="Path to summary.json from an experiment run")
+    parser.add_argument(
+        "--theme",
+        choices=["dark", "light"],
+        default="dark",
+        help="dark = presentation, light = paper",
+    )
+    parser.add_argument(
+        "--out-dir",
+        help="Directory to write charts into (default: summary file's folder)",
+    )
+    args = parser.parse_args()
 
-    filepath = sys.argv[1]
-    out_dir = str(Path(filepath).parent)
+    filepath = args.summary
+    out_dir = args.out_dir or str(Path(filepath).parent)
+    theme = CHART_THEMES[args.theme]
+    _apply_theme(theme)
+    suffix = f"_{args.theme}"
 
     games = load_games(filepath)
     num_games = len(games)
@@ -688,13 +792,24 @@ def main():
 
     print("Exporting charts...")
     plot_leaderboard_table(
-        ranked, num_games, os.path.join(out_dir, "leaderboard_table.png")
+        ranked,
+        num_games,
+        os.path.join(out_dir, f"leaderboard_table{suffix}.png"),
+        theme,
     )
-    plot_rating_bars(ranked, num_games, os.path.join(out_dir, "rating_bars.png"))
+    plot_rating_bars(
+        ranked, num_games, os.path.join(out_dir, f"rating_bars{suffix}.png"), theme
+    )
     plot_rating_history(
-        history, ranked, num_games, os.path.join(out_dir, "rating_history.png")
+        history,
+        ranked,
+        num_games,
+        os.path.join(out_dir, f"rating_history{suffix}.png"),
+        theme,
     )
-    plot_win_rates(ranked, num_games, os.path.join(out_dir, "win_rates.png"))
+    plot_win_rates(
+        ranked, num_games, os.path.join(out_dir, f"win_rates{suffix}.png"), theme
+    )
     print("Done!")
 
 

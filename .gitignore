@@ -226,3 +226,11 @@ trio-agents/
 HANDOFF.md
 PLAN.md
 REVIEW.md
+
+# reporting artifacts (generated charts + markdown summaries)
+reporting/*.png
+reporting/*.html
+reporting/*.md
+reporting/*.svg
+reporting/*.pdf
+reporting/out/
