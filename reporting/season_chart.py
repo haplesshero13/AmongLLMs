@@ -10,16 +10,19 @@ Season 1 peak of the plotted metric:
 2. `season_ratings_{subset}_{theme}.{html,png}` — OpenSkill role ratings as
    horizontal bar + whisker (bar = μ − σ conservative, whisker = σ).
 
-Two model subsets are emitted by default (override with `--subset`):
+Available model subsets (override with `--subset`):
+  - `exemplars` = 7-model paper focus set.
   - `featured` = 20-model paper set (full leaderboard view)
   - `presentation` = 11-model 16:9 slide set (7 long-context human-AI
     participants + Human Brain 1.0 + 3 clean references).
+By default, `featured` and `presentation` are emitted.
 
 Dark theme targets presentation use; `--theme light` produces the paper variant.
 
 Usage:
     uv run reporting/season_chart.py                               # both subsets, dark
     uv run reporting/season_chart.py --theme light                 # both subsets, light
+    uv run reporting/season_chart.py --theme light --subset exemplars
     uv run reporting/season_chart.py --subset presentation         # just the slide set
     uv run reporting/season_chart.py --api-base http://localhost:8000
 """
@@ -83,7 +86,18 @@ PRESENTATION_MODEL_IDS = [
     "grok-4.1-fast",
 ]
 
+EXEMPLAR_MODEL_IDS = [
+    "claude-opus-4.6",
+    "gpt-5.4",
+    "gemini-3.1-pro",
+    "llama-3.3-70b",
+    "nemotron-3-super",
+    "kimi-k2.5",
+    "deepseek-v3.2",
+]
+
 MODEL_SUBSETS = {
+    "exemplars": EXEMPLAR_MODEL_IDS,
     "featured": FEATURED_MODEL_IDS,
     "presentation": PRESENTATION_MODEL_IDS,
 }
@@ -297,8 +311,8 @@ def build_winrate_figure(
         column_widths=[0.5, 0.5],
         horizontal_spacing=0.12,
         subplot_titles=[
-            "Season 0 — Single-Turn Summarized Context",
-            "Season 1 — Multi-Turn Long Context",
+            "Short-context",
+            "Long-context",
         ],
     )
 
@@ -440,7 +454,7 @@ def build_winrate_figure(
 
     fig.update_layout(
         title=dict(
-            text="Summarized vs Long Context — Among Us Role Win Rates",
+            text="Short-context vs Long-context — Among Us Role Win Rates",
             font=dict(size=24, color=theme["text"]),
             x=0.0,
             xanchor="left",
@@ -581,8 +595,8 @@ def build_rating_figure(
         column_widths=[0.5, 0.5],
         horizontal_spacing=0.12,
         subplot_titles=[
-            "Season 0 — Single-Turn Summarized Context",
-            "Season 1 — Multi-Turn Long Context",
+            "Short-context",
+            "Long-context",
         ],
     )
 
@@ -694,7 +708,7 @@ def build_rating_figure(
         bargap=0.28,
         bargroupgap=0.08,
         title=dict(
-            text="Summarized vs Long Context — OpenSkill Role Ratings (bar = μ − σ, whisker = σ)",
+            text="Short-context vs Long-context — OpenSkill Role Ratings (bar = μ − σ, whisker = σ)",
             font=dict(size=22, color=theme["text"]),
             x=0.0,
             xanchor="left",
@@ -778,13 +792,14 @@ def main() -> None:
     )
     parser.add_argument(
         "--subset",
-        choices=["both", "featured", "presentation"],
+        choices=["both", "exemplars", "featured", "presentation"],
         default="both",
         help=(
-            "Which model inclusion list to render. `featured` = full 20-model "
-            "paper set; `presentation` = 11-model 16:9 slide subset (7 "
+            "Which model inclusion list to render. `exemplars` = 7-model "
+            "paper focus set; `featured` = full 20-model paper set; "
+            "`presentation` = 11-model 16:9 slide subset (7 "
             "human-AI participants + Human Brain 1.0 + 3 clean references). "
-            "Default `both` emits both."
+            "Default `both` emits featured and presentation."
         ),
     )
     args = parser.parse_args()

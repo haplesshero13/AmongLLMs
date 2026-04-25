@@ -79,8 +79,14 @@ PRESENTATION_MODEL_IDS = [
     "gemini-3-flash", "claude-sonnet-4.5", "grok-4.1-fast",
 ]
 
+EXEMPLAR_MODEL_IDS = [
+    "claude-opus-4.6", "gpt-5.4", "gemini-3.1-pro", "llama-3.3-70b",
+    "nemotron-3-super", "kimi-k2.5", "deepseek-v3.2",
+]
+
 MODEL_COHORTS: dict[str, list[str] | None] = {
     "all": None,  # no filter
+    "exemplars": EXEMPLAR_MODEL_IDS,
     "featured": FEATURED_MODEL_IDS,
     "presentation": PRESENTATION_MODEL_IDS,
     # "common" is resolved at runtime — intersection of model_ids across the
@@ -102,10 +108,34 @@ REASON_BUCKETS = [
 CATEGORY_LABELS = {
     "crew_tasks": "Crewmates completed all tasks",
     "crew_vote_out": "Crewmates voted out impostors",
-    "imp_outnumber": "Impostors reached kill parity",
+    "imp_outnumber": "Impostors won by kills",
     "imp_time_limit": "Impostors ran out the clock",
     "unknown": "Unclassified",
 }
+
+CONDITION_LABELS = {
+    0: "Short-context",
+    1: "Long-context",
+}
+
+
+def condition_label(version: int) -> str:
+    return CONDITION_LABELS.get(version, f"Engine {version}")
+
+
+def compact_condition_label(version: int) -> str:
+    return {
+        0: "Short",
+        1: "Long",
+    }.get(version, f"E{version}")
+
+
+def delta_label(versions: list[int]) -> str:
+    if versions == [0, 1]:
+        return "Δ long−short"
+    if len(versions) == 2:
+        return f"Δ {compact_condition_label(versions[1])}−{compact_condition_label(versions[0])}"
+    return "Δ"
 
 
 def categorize(reason: str | None) -> tuple[str, str]:
@@ -329,12 +359,19 @@ def compute_common_cohort(
     return common
 
 
-def _game_matches_cohort(game: dict, cohort: set[str], policy: str) -> bool:
-    """Per-game membership test. `policy` is 'all', 'majority', or 'any'."""
+def _game_matches_cohort(
+    game: dict,
+    cohort: set[str],
+    policy: str,
+    min_players: int | None = None,
+) -> bool:
+    """Per-game membership test for named model cohorts."""
     participants = game.get("participants") or []
     if not participants:
         return False
     in_cohort = sum(1 for p in participants if p.get("model_id") in cohort)
+    if min_players is not None:
+        return in_cohort >= min_players
     if policy == "all":
         return in_cohort == len(participants)
     if policy == "majority":
@@ -351,14 +388,28 @@ def collect_season(
     console: Console,
     cohort: set[str] | None = None,
     match_policy: str = "all",
+    min_cohort_players: int | None = None,
 ) -> pl.DataFrame:
     games = fetch_games(base_url, version)
     total = len(games)
     if cohort is not None:
-        games = [g for g in games if _game_matches_cohort(g, cohort, match_policy)]
+        games = [
+            g for g in games
+            if _game_matches_cohort(
+                g,
+                cohort,
+                match_policy,
+                min_players=min_cohort_players,
+            )
+        ]
+        policy_label = (
+            f"min{min_cohort_players}"
+            if min_cohort_players is not None
+            else match_policy
+        )
         console.print(
             f"  S{version}: {len(games)}/{total} games match cohort "
-            f"(policy=[cyan]{match_policy}[/cyan])"
+            f"(policy=[cyan]{policy_label}[/cyan])"
         )
     if not games:
         return pl.DataFrame()
@@ -452,7 +503,7 @@ def render_outcomes(summary: pl.DataFrame, console: Console) -> None:
     categories = [code for _, code, _ in REASON_BUCKETS] + ["unknown"]
 
     table = Table(
-        title="Game-ending outcomes by season",
+        title="Game-ending outcomes by context regime",
         header_style="bold cyan",
         border_style="dim",
     )
@@ -464,8 +515,8 @@ def render_outcomes(summary: pl.DataFrame, console: Console) -> None:
             .head(1)
             .item()
         )
-        table.add_column(f"S{v}  (n={total})", justify="right")
-    table.add_column("Δ S1−S0 (pts)", justify="right")
+        table.add_column(f"{compact_condition_label(v)}  (n={total})", justify="right")
+    table.add_column(f"{delta_label(versions)} (pts)", justify="right")
 
     for cat in categories:
         cells = []
@@ -503,7 +554,7 @@ def render_outcomes(summary: pl.DataFrame, console: Console) -> None:
 
     # Team-level totals.
     team_table = Table(
-        title="Team win share by season",
+        title="Team win share by context regime",
         header_style="bold cyan",
         border_style="dim",
     )
@@ -514,8 +565,8 @@ def render_outcomes(summary: pl.DataFrame, console: Console) -> None:
             .head(1)
             .item()
         )
-        team_table.add_column(f"S{v}  (n={total})", justify="right")
-    team_table.add_column("Δ S1−S0 (pts)", justify="right")
+        team_table.add_column(f"{compact_condition_label(v)}  (n={total})", justify="right")
+    team_table.add_column(f"{delta_label(versions)} (pts)", justify="right")
 
     for team, style in [("Crewmates", "blue"), ("Impostors", "red")]:
         pcts: dict[int, float] = {}
@@ -551,7 +602,7 @@ def _fmt(v: float | None, as_pct: bool = False, nd: int = 2) -> str:
 def render_mechanics(
     per_game: pl.DataFrame, console: Console, title_suffix: str = ""
 ) -> None:
-    """Per-season mechanic means with S1−S0 delta."""
+    """Per-condition mechanic means with long−short delta."""
     grand = mechanics_means(per_game, ["engine_version"])
     if grand.is_empty():
         console.print("[yellow]No mechanics data.[/yellow]")
@@ -559,15 +610,15 @@ def render_mechanics(
 
     versions = sorted(grand["engine_version"].unique().to_list())
     table = Table(
-        title=f"Game mechanics — per-season means{title_suffix}",
+        title=f"Game mechanics — per-condition means{title_suffix}",
         header_style="bold cyan",
         border_style="dim",
     )
     table.add_column("Metric")
     for v in versions:
         n = int(grand.filter(pl.col("engine_version") == v)["n_games"].head(1).item())
-        table.add_column(f"S{v}  (n={n})", justify="right")
-    table.add_column("Δ S1−S0", justify="right")
+        table.add_column(f"{compact_condition_label(v)}  (n={n})", justify="right")
+    table.add_column(delta_label(versions), justify="right")
     table.add_column("Rel Δ", justify="right")
 
     for field, label in MECHANIC_FIELDS:
@@ -615,7 +666,7 @@ def render_mechanics_by_winner(per_game: pl.DataFrame, console: Console) -> None
 
     for v in versions:
         table = Table(
-            title=f"Mechanics conditioned on winner — Season {v}",
+            title=f"Mechanics conditioned on winner — {condition_label(v)}",
             header_style="bold cyan",
             border_style="dim",
         )
@@ -693,10 +744,10 @@ def render_vote_decomposition(per_game: pl.DataFrame, console: Console) -> None:
     table.add_column("Metric")
     for r in rows:
         table.add_column(
-            f"S{r['v']}  (n_games={r['n_games']})", justify="right"
+            f"{compact_condition_label(r['v'])}  (n_games={r['n_games']})", justify="right"
         )
     if len(rows) == 2:
-        table.add_column("Δ S1−S0", justify="right")
+        table.add_column(delta_label([r["v"] for r in rows]), justify="right")
 
     def add(label: str, key: str, as_pct: bool) -> None:
         cells = []
@@ -779,7 +830,7 @@ def render_first_ejection(per_game: pl.DataFrame, console: Console) -> None:
         n = int(
             per_game.filter(pl.col("engine_version") == v).height
         )
-        table.add_column(f"S{v}  (n={n})", justify="right")
+        table.add_column(f"{compact_condition_label(v)}  (n={n})", justify="right")
     if len(versions) == 2:
         table.add_column("Δ crew-rate (pts)", justify="right")
 
@@ -827,12 +878,12 @@ def render_first_ejection(per_game: pl.DataFrame, console: Console) -> None:
 
 
 def render_imp_pathway(per_game: pl.DataFrame, console: Console) -> None:
-    """Impostor-win pathway mechanics: outnumber (kill-rush) vs. time-limit (stall)."""
+    """Impostor-win pathway mechanics: kills vs. time-limit (stall)."""
     imp = per_game.filter(pl.col("winner") == "Impostors")
     if imp.is_empty():
         return
     pathways = [
-        ("imp_outnumber", "Outnumber (kill-rush)"),
+        ("imp_outnumber", "Kills"),
         ("imp_time_limit", "Time-limit (stall)"),
     ]
     versions = sorted(imp["engine_version"].unique().to_list())
@@ -848,7 +899,7 @@ def render_imp_pathway(per_game: pl.DataFrame, console: Console) -> None:
         }
 
         table = Table(
-            title=f"Impostor-win pathway mechanics — Season {v}",
+            title=f"Impostor-win pathway mechanics — {condition_label(v)}",
             header_style="bold cyan",
             border_style="dim",
         )
@@ -882,7 +933,7 @@ def render_imp_pathway(per_game: pl.DataFrame, console: Console) -> None:
             table.add_row(label, *cells, diff)
         console.print(table)
     console.print(
-        "[dim]  Outnumber = impostors won by reaching kill parity (aggressive kill-rush).  "
+        "[dim]  Kills = impostors won through the kill-based win condition.  "
         "Time-limit = impostors won by stalling until the clock ran out (patient / "
         "avoid-detection).  Look for metrics where the two pathways diverge.[/dim]"
     )
@@ -899,8 +950,8 @@ def write_markdown(
 
     lines.append("## Outcome distribution\n")
     lines.append("| Category | Winner |" + "".join(
-        f" S{v} |" for v in versions
-    ) + " Δ S1−S0 (pts) |")
+        f" {compact_condition_label(v)} |" for v in versions
+    ) + f" {delta_label(versions)} (pts) |")
     lines.append("|---|---|" + "---:|" * len(versions) + "---:|")
 
     for _, cat, _ in REASON_BUCKETS + [(None, "unknown", None)]:
@@ -932,11 +983,11 @@ def write_markdown(
     # Mechanics block.
     grand = mechanics_means(per_game, ["engine_version"])
     if not grand.is_empty():
-        lines.append("## Mechanics — per-season means\n")
+        lines.append("## Mechanics — per-condition means\n")
         header = "| Metric |" + "".join(
-            f" S{v} (n={int(grand.filter(pl.col('engine_version') == v)['n_games'].head(1).item())}) |"
+            f" {compact_condition_label(v)} (n={int(grand.filter(pl.col('engine_version') == v)['n_games'].head(1).item())}) |"
             for v in versions
-        ) + " Δ S1−S0 |"
+        ) + f" {delta_label(versions)} |"
         lines.append(header)
         lines.append("|---|" + "---:|" * (len(versions) + 1))
         for field, label in MECHANIC_FIELDS:
@@ -960,8 +1011,8 @@ def write_markdown(
     if vd:
         lines.append("## Vote decomposition — individual detection vs. group alignment\n")
         header = "| Metric |" + "".join(
-            f" S{r['v']} (n_games={r['n_games']}) |" for r in vd
-        ) + (" Δ S1−S0 |" if len(vd) == 2 else "")
+            f" {compact_condition_label(r['v'])} (n_games={r['n_games']}) |" for r in vd
+        ) + (f" {delta_label([r['v'] for r in vd])} |" if len(vd) == 2 else "")
         lines.append(header)
         lines.append("|---|" + "---:|" * (len(vd) + (1 if len(vd) == 2 else 0)))
         pool_cells = [
@@ -1014,7 +1065,7 @@ def write_markdown(
             for v in fe_versions
         }
         header = "| First ejection |" + "".join(
-            f" S{v} (n={totals[v]}) |" for v in fe_versions
+            f" {compact_condition_label(v)} (n={totals[v]}) |" for v in fe_versions
         ) + (" Δ crew-rate (pts) |" if len(fe_versions) == 2 else "")
         lines.append(header)
         lines.append(
@@ -1059,11 +1110,11 @@ def write_markdown(
     if not imp.is_empty():
         lines.append("## Impostor-win pathway mechanics\n")
         lines.append(
-            "For each season, split impostor-wins into **Outnumber** (kill-rush) "
+            "For each context condition, split impostor-wins into **Kills** "
             "vs. **Time-limit** (stall) and compare the mechanical profile.\n"
         )
         pathways = [
-            ("imp_outnumber", "Outnumber (kill-rush)"),
+            ("imp_outnumber", "Kills"),
             ("imp_time_limit", "Time-limit (stall)"),
         ]
         for v in sorted(imp["engine_version"].unique().to_list()):
@@ -1072,7 +1123,7 @@ def write_markdown(
             total = sum(counts.values())
             if total == 0:
                 continue
-            lines.append(f"### Season {v}\n")
+            lines.append(f"### {condition_label(v)}\n")
             header = "| Metric |" + "".join(
                 f" {label} (n={counts[code]}, {counts[code] / total * 100:.0f}%) |"
                 for code, label in pathways
@@ -1123,8 +1174,9 @@ def main() -> None:
         choices=list(MODEL_COHORTS.keys()),
         default="all",
         help=(
-            "Named cohort to restrict to. `featured` = 20-model paper set; "
-            "`presentation` = 11-model slide set; `common` = intersection of "
+            "Named cohort to restrict to. `exemplars` = 7-model paper focus "
+            "set; `featured` = 20-model paper set; `presentation` = "
+            "11-model slide set; `common` = intersection of "
             "models that appeared in every requested season, computed at "
             "runtime (the right control for cross-season claims). Default "
             "`all` = no filter."
@@ -1152,6 +1204,17 @@ def main() -> None:
         ),
     )
     parser.add_argument(
+        "--min-cohort-players",
+        type=int,
+        default=None,
+        help=(
+            "If set, require at least this many participants from the named "
+            "cohort in each game. Overrides --cohort-match. For seven-player "
+            "Among Us games, `--cohort exemplars --min-cohort-players 6` "
+            "keeps all-exemplar games and human games with six exemplar agents."
+        ),
+    )
+    parser.add_argument(
         "--out-dir",
         default=None,
         help="If set, writes per_game.csv, summary.csv, mechanics.csv here.",
@@ -1170,6 +1233,11 @@ def main() -> None:
 
     console = Console()
     versions = [int(v) for v in args.seasons.split(",") if v.strip()]
+    match_label = (
+        f"min{args.min_cohort_players}"
+        if args.min_cohort_players is not None
+        else args.cohort_match
+    )
 
     if args.cohort == "common":
         cohort_set: set[str] | None = compute_common_cohort(
@@ -1188,7 +1256,7 @@ def main() -> None:
             f"[bold]Among Us — game-outcome & mechanics report[/bold]\n"
             f"api={args.api_base}  |  workers={args.workers}  |  "
             f"cohort=[cyan]{args.cohort}[/cyan] ({cohort_size})  |  "
-            f"match=[cyan]{args.cohort_match}[/cyan]",
+            f"match=[cyan]{match_label}[/cyan]",
             border_style="cyan",
         )
     )
@@ -1201,6 +1269,7 @@ def main() -> None:
             console,
             cohort=cohort_set,
             match_policy=args.cohort_match,
+            min_cohort_players=args.min_cohort_players,
         )
         if df.is_empty():
             console.print(f"  S{v}: 0 games in analysis (cohort filter excluded all)")

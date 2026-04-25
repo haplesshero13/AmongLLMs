@@ -258,31 +258,94 @@ Generated artifacts (PNG, HTML, MD, CSV under `reporting/out/`) are gitignored; 
 
 ### Season win-rate statistics
 
-Per-season leaderboard with Wilson 95% CIs, Human Brain 1.0 vs. chance binomial tests, paired S0→S1 deltas with paired-t + sign tests, and per-model CI disjointness — rendered as rich console tables with optional CSV and markdown export:
+Per-season leaderboard with Wilson 95% CIs, Human Brain 1.0 vs. chance binomial tests, paired S0→S1 deltas with paired-t + sign tests, and per-model CI disjointness — rendered as rich console tables with optional CSV and markdown export.
+
+Use `--subset featured` for the broader paper set, `--subset exemplars` for the seven-model focus set (`Claude Opus 4.6`, `GPT-5.4`, `Gemini 3.1 Pro`, `Llama 3.3 70B`, `Nemotron 3 Super`, `Kimi K2.5`, `DeepSeek V3.2`), or `--subset all --min-season-games 30` for all models with at least 30 games in each analyzed season.
 
 ```bash
 uv run --with polars --with rich python reporting/season_win_rates.py \
     --out-dir reporting/out --markdown reporting/season_win_rates.md
+
+uv run --with polars --with rich python reporting/season_win_rates.py \
+    --subset exemplars \
+    --out-dir reporting/out --markdown reporting/season_win_rates.md
+
+uv run --with polars --with rich python reporting/season_win_rates.py \
+    --subset all --min-season-games 30 \
+    --out-dir reporting/out --markdown reporting/season_win_rates.md
 ```
+
+Featured outputs use the historical filenames (`season_s0.csv`, `paired.csv`, etc.). Non-default subsets and filters add a suffix, e.g. `reporting/out/season_s0_exemplars.csv`, `reporting/out/paired_exemplars.csv`, `reporting/out/paired_all_min30games.csv`, `reporting/season_win_rates_exemplars.md`, and `reporting/season_win_rates_all_min30games.md`.
 
 ### Game outcomes & mechanics
 
-Pulls every completed game's logs, categorizes the ending reason (crew-tasks / crew-voteout / imp-outnumber / imp-timelimit), and computes per-game mechanistic signals — meetings, votes, ejections, kills, vote accuracy, vote quality. Outputs per-season aggregates and a winner-conditioned split that exposes *why* outcomes shifted (e.g., S1's crewmate vote-out path jumped because vote accuracy rose from 38% → 64%, not because crewmates voted more often).
+Pulls every completed game's logs, categorizes the ending reason (crew-tasks / crew-voteout / imp-outnumber / imp-timelimit), and computes per-game mechanistic signals — meetings, votes, ejections, kills, vote accuracy, vote quality. Outputs per-season aggregates and a winner-conditioned split that exposes *why* outcomes shifted.
 
 ```bash
 uv run --with polars --with rich python reporting/win_reasons.py \
     --out-dir reporting/out --markdown reporting/win_reasons.md
+
+uv run --with polars --with rich python reporting/win_reasons.py \
+    --seasons 0,1 --cohort exemplars --cohort-match all \
+    --out-dir reporting/out --markdown reporting/win_reasons.md
+
+uv run --with polars --with rich python reporting/win_reasons.py \
+    --seasons 0,1 --cohort exemplars --min-cohort-players 6 \
+    --out-dir reporting/out/exemplars_min6 \
+    --markdown reporting/win_reasons_min6.md
 ```
 
-> **Schema caveat:** `turn_log` wasn't populated in S0 (older baseline engine), so phase-split turn counts appear as 0 across all S0 games. The voting / kill / ejection signals are fully available for both seasons.
+The named cohorts are:
+
+- **`exemplars`** — the seven-model paper focus set.
+- **`featured`** — the broader 20-model paper/reporting set.
+- **`presentation`** — the 11-model slide set.
+- **`common`** — model intersection across requested seasons, computed at runtime.
+- **`all`** — no cohort filter.
+
+For the controlled seven-model baseline tournament, use `--cohort exemplars --cohort-match all` so every included game contains only the exemplar models. This emits `reporting/out/win_reasons_summary_exemplars.csv`, `reporting/out/win_reasons_mechanics_exemplars.csv`, and `reporting/out/win_reasons_per_game_exemplars.csv`.
+
+For the paper's S0/S1 game-mechanics comparison, prefer `--cohort exemplars --min-cohort-players 6` when S1 includes Human Brain 1.0 games. That filter keeps strict all-exemplar S0 games and S1 games with the human aggregate plus six of the seven exemplar models, while excluding looser games that only contain a bare majority of exemplars.
+
+> **Schema caveat:** older S0 snapshots may lack `turn_log`, which makes phase-split turn counts appear as 0. The fresh controlled S0 baseline has phase logs; voting / kill / ejection signals are available across seasons.
+
+### Win-reason figures
+
+After `reporting/win_reasons.py` has written CSVs, render paper-ready figures for the game-ending pathway shift and vote-mechanics shift:
+
+```bash
+uv run python reporting/win_reason_figures.py \
+    --cohort exemplars --theme light --formats png,pdf
+
+uv run python reporting/win_reason_figures.py \
+    --summary-csv reporting/out/exemplars_min6/win_reasons_summary_exemplars.csv \
+    --mechanics-csv reporting/out/exemplars_min6/win_reasons_mechanics_exemplars.csv \
+    --cohort exemplars_min6 --theme light --formats png,pdf
+```
+
+Outputs:
+
+- `reporting/win_reason_pathways_exemplars_light.png`
+- `reporting/win_reason_pathways_exemplars_light.pdf`
+- `reporting/vote_mechanics_exemplars_light.png`
+- `reporting/vote_mechanics_exemplars_light.pdf`
+- `reporting/win_reason_pathways_exemplars_min6_light.png`
+- `reporting/win_reason_pathways_exemplars_min6_light.pdf`
+- `reporting/vote_mechanics_exemplars_min6_light.png`
+- `reporting/vote_mechanics_exemplars_min6_light.pdf`
+
+Use `--summary-csv` and `--mechanics-csv` to point at custom CSVs, or `--cohort featured` / `--cohort all` to render the corresponding suffixed CSVs from `reporting/out/`.
 
 ### Season comparison charts
 
 Two companion Plotly charts — role win rates (marker size ∝ √role games → larger markers = more certain) and OpenSkill role ratings rendered as bar + whisker (bar = μ − σ conservative, whisker = σ). Dark theme targets presentation use, light theme targets the paper.
 
-Two model subsets are emitted by default:
+Available model subsets:
+- **`exemplars`** (7 models) — main paper focus set.
 - **`featured`** (20 models) — full paper/reporting leaderboard view, dynamic height.
 - **`presentation`** (11 models) — 7 long-context human-AI participants + Human Brain 1.0 + 3 clean references (Gemini 3 Flash, Claude Sonnet 4.5, Grok 4.1 Fast), sized for 16:9 slides (1280 × 720).
+
+By default, `season_chart.py` emits `featured` and `presentation`. Use `--subset exemplars` for the focused paper figures.
 
 ```bash
 # Emits both subsets for the dark theme (default)
@@ -291,11 +354,15 @@ uv run --with plotly --with kaleido python reporting/season_chart.py
 # Paper variant
 uv run --with plotly --with kaleido python reporting/season_chart.py --theme light
 
+# Seven-model paper focus set
+uv run --with plotly --with kaleido python reporting/season_chart.py \
+    --theme light --subset exemplars --out-dir reporting
+
 # Just the 16:9 slide set
 uv run --with plotly --with kaleido python reporting/season_chart.py --subset presentation
 ```
 
-Outputs (gitignored): `season_comparison_{subset}_{theme}.{html,png}`, `season_ratings_{subset}_{theme}.{html,png}`, where `subset ∈ {featured, presentation}` and `theme ∈ {dark, light}`.
+Outputs (gitignored): `season_comparison_{subset}_{theme}.{html,png}`, `season_ratings_{subset}_{theme}.{html,png}`, where `subset ∈ {exemplars, featured, presentation}` and `theme ∈ {dark, light}`.
 
 ### Markdown comparison summary
 

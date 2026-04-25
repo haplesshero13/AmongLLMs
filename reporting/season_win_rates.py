@@ -64,7 +64,25 @@ FEATURED_MODEL_IDS = [
     "brain-1.0",
 ]
 
+EXEMPLAR_MODEL_IDS = [
+    "claude-opus-4.6",
+    "gpt-5.4",
+    "gemini-3.1-pro",
+    "llama-3.3-70b",
+    "nemotron-3-super",
+    "kimi-k2.5",
+    "deepseek-v3.2",
+]
+
+MODEL_SUBSETS: dict[str, list[str] | None] = {
+    "all": None,
+    "exemplars": EXEMPLAR_MODEL_IDS,
+    "featured": FEATURED_MODEL_IDS,
+}
+
 HUMAN_MODEL_ID = "brain-1.0"
+SHORT_CONTEXT_LABEL = "Short-context"
+LONG_CONTEXT_LABEL = "Long-context"
 
 # Critical-t at α=0.05 two-sided for small df. Avoids pulling scipy for one call.
 _T_CRIT = {
@@ -212,12 +230,28 @@ def enrich(df: pl.DataFrame, season_label: str) -> pl.DataFrame:
     return base
 
 
-def filter_featured(df: pl.DataFrame, min_role_games: int) -> pl.DataFrame:
+def filter_subset(
+    df: pl.DataFrame,
+    min_role_games: int,
+    min_season_games: int,
+    subset: str,
+) -> pl.DataFrame:
+    model_ids = MODEL_SUBSETS[subset]
+    filtered = df
+    if model_ids is not None:
+        filtered = filtered.filter(pl.col("model_id").is_in(model_ids))
     return (
-        df.filter(pl.col("model_id").is_in(FEATURED_MODEL_IDS))
+        filtered.filter(pl.col("games_played") >= min_season_games)
         .filter(pl.col("impostor_games") >= min_role_games)
         .filter(pl.col("crewmate_games") >= min_role_games)
     )
+
+
+def condition_label(tag: str) -> str:
+    return {
+        "S0": SHORT_CONTEXT_LABEL,
+        "S1": LONG_CONTEXT_LABEL,
+    }.get(tag, tag)
 
 
 # ── analyses ──────────────────────────────────────────────────────────────────
@@ -248,7 +282,7 @@ def human_brain_analysis(s1: pl.DataFrame) -> dict:
 
 
 def paired_frame(s0: pl.DataFrame, s1: pl.DataFrame) -> pl.DataFrame:
-    """Inner-join paired models and compute per-model S1−S0 deltas."""
+    """Inner-join paired models and compute per-model long−short deltas."""
     keep_cols = [
         "model_id",
         "model_name",
@@ -353,7 +387,7 @@ def render_leaderboard(df: pl.DataFrame, title: str, console: Console) -> None:
 
 def render_human(stats: dict, console: Console) -> None:
     if not stats:
-        console.print("[yellow]No human data found in S1.[/yellow]")
+        console.print(f"[yellow]No human data found in {LONG_CONTEXT_LABEL}.[/yellow]")
         return
     table = Table(
         title="Human Brain 1.0 vs chance (p=0.5, two-sided binomial)",
@@ -399,6 +433,10 @@ def render_paired_summary(paired: pl.DataFrame, console: Console) -> dict:
     imp_d = paired["imp_delta"].to_list()
     crew_d = paired["crew_delta"].to_list()
     over_d = paired["overall_delta"].to_list()
+    imp_s0_mean = st.mean(paired["s0_impostor_win_rate"].to_list()) if imp_d else float("nan")
+    imp_s1_mean = st.mean(paired["s1_impostor_win_rate"].to_list()) if imp_d else float("nan")
+    crew_s0_mean = st.mean(paired["s0_crewmate_win_rate"].to_list()) if crew_d else float("nan")
+    crew_s1_mean = st.mean(paired["s1_crewmate_win_rate"].to_list()) if crew_d else float("nan")
 
     imp_stat = paired_t_ci(imp_d)
     crew_stat = paired_t_ci(crew_d)
@@ -411,7 +449,10 @@ def render_paired_summary(paired: pl.DataFrame, console: Console) -> dict:
     sign_crew_p = sign_test_two_sided(n_crew_down, n)
 
     table = Table(
-        title=f"Paired S0→S1 deltas (n={n} models in both seasons)",
+        title=(
+            f"Paired {SHORT_CONTEXT_LABEL}→{LONG_CONTEXT_LABEL} deltas "
+            f"(n={n} models in both conditions)"
+        ),
         header_style="bold cyan",
         border_style="dim",
     )
@@ -441,7 +482,7 @@ def render_paired_summary(paired: pl.DataFrame, console: Console) -> dict:
     console.print(table)
 
     st_table = Table(
-        title="Sign tests (direction-of-shift)",
+        title="Sign tests (short-context to long-context shift)",
         header_style="bold cyan",
         border_style="dim",
     )
@@ -454,6 +495,10 @@ def render_paired_summary(paired: pl.DataFrame, console: Console) -> dict:
 
     return {
         "n": n,
+        "imp_s0_mean": imp_s0_mean,
+        "imp_s1_mean": imp_s1_mean,
+        "crew_s0_mean": crew_s0_mean,
+        "crew_s1_mean": crew_s1_mean,
         "imp_stat": imp_stat,
         "crew_stat": crew_stat,
         "overall_stat": over_stat,
@@ -478,11 +523,11 @@ def render_ci_overlap(ci_df: pl.DataFrame, console: Console) -> None:
         border_style="dim",
     )
     table.add_column("Model")
-    table.add_column("Imp S0 CI", justify="right", style="dim red")
-    table.add_column("Imp S1 CI", justify="right", style="red")
+    table.add_column("Imp short CI", justify="right", style="dim red")
+    table.add_column("Imp long CI", justify="right", style="red")
     table.add_column("Imp disj?", justify="center")
-    table.add_column("Crew S0 CI", justify="right", style="dim blue")
-    table.add_column("Crew S1 CI", justify="right", style="blue")
+    table.add_column("Crew short CI", justify="right", style="dim blue")
+    table.add_column("Crew long CI", justify="right", style="blue")
     table.add_column("Crew disj?", justify="center")
 
     for r in ci_df.sort("model_name").iter_rows(named=True):
@@ -511,12 +556,24 @@ def write_csvs(
     paired: pl.DataFrame,
     ci: pl.DataFrame,
     out_dir: Path,
+    suffix: str = "",
 ) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
-    s0.write_csv(out_dir / "season_s0.csv")
-    s1.write_csv(out_dir / "season_s1.csv")
-    paired.write_csv(out_dir / "paired.csv")
-    ci.write_csv(out_dir / "ci_overlap.csv")
+    s0.write_csv(out_dir / f"season_s0{suffix}.csv")
+    s1.write_csv(out_dir / f"season_s1{suffix}.csv")
+    paired.write_csv(out_dir / f"paired{suffix}.csv")
+    ci.write_csv(out_dir / f"ci_overlap{suffix}.csv")
+
+
+def output_suffix(subset: str, min_role_games: int, min_season_games: int) -> str:
+    parts: list[str] = []
+    if subset != "featured":
+        parts.append(subset)
+    if min_season_games > 1:
+        parts.append(f"min{min_season_games}games")
+    if min_role_games > 1:
+        parts.append(f"min{min_role_games}role")
+    return "" if not parts else "_" + "_".join(parts)
 
 
 def write_markdown(
@@ -526,12 +583,18 @@ def write_markdown(
     human: dict,
     paired_summary: dict,
     ci: pl.DataFrame,
+    subset: str,
+    min_role_games: int,
+    min_season_games: int,
 ) -> None:
     lines: list[str] = []
-    lines.append("# Season Win-Rate Findings\n")
-    lines.append(f"- Season 0 featured models: {s0.height}")
-    lines.append(f"- Season 1 featured models: {s1.height}")
-    lines.append(f"- Paired (both seasons): {paired_summary['n']}")
+    lines.append("# Context-Regime Win-Rate Findings\n")
+    lines.append(f"- Model subset: `{subset}`")
+    lines.append(f"- Minimum condition games: {min_season_games}")
+    lines.append(f"- Minimum role games: {min_role_games}")
+    lines.append(f"- {SHORT_CONTEXT_LABEL} qualifying models: {s0.height}")
+    lines.append(f"- {LONG_CONTEXT_LABEL} qualifying models: {s1.height}")
+    lines.append(f"- Paired (both conditions): {paired_summary['n']}")
     lines.append("")
 
     lines.append("## Human Brain 1.0 vs chance (two-sided binomial)\n")
@@ -553,11 +616,30 @@ def write_markdown(
             f"{human['total_wins'] / human['total_games'] * 100:.1f}%"
         )
     else:
-        lines.append("- _no human row found in Season 1_")
+        lines.append(f"- _no human row found in {LONG_CONTEXT_LABEL}_")
     lines.append("")
 
     ps = paired_summary
-    lines.append("## Paired S0→S1 analysis\n")
+    lines.append(f"## Paired {SHORT_CONTEXT_LABEL}→{LONG_CONTEXT_LABEL} analysis\n")
+    lines.append("### Report bullets\n")
+    lines.append(
+        f"- Mean Impostor win rate rises from {ps['imp_s0_mean']:.1f}% "
+        f"to {ps['imp_s1_mean']:.1f}%"
+    )
+    lines.append(
+        f"- Mean crewmate win rate falls from {ps['crew_s0_mean']:.1f}% "
+        f"to {ps['crew_s1_mean']:.1f}%"
+    )
+    lines.append(
+        f"- {ps['n_imp_up']}/{ps['n']} models improve their Impostor win rate "
+        "from short-context to long-context"
+    )
+    lines.append(
+        f"- {ps['n_crew_down']}/{ps['n']} models worsen their crewmate win rate "
+        "from short-context to long-context"
+    )
+    lines.append("")
+
     lines.append("| Quantity | Mean Δ | 95% CI | t |")
     lines.append("|---|---:|---:|---:|")
     for label, stat in [
@@ -586,7 +668,7 @@ def write_markdown(
     lines.append(f"- Impostor disjoint: {imp_disj}/{ci.height}")
     lines.append(f"- Crewmate disjoint: {crew_disj}/{ci.height}")
     lines.append("")
-    lines.append("| Model | Imp S0 CI | Imp S1 CI | Imp disj | Crew S0 CI | Crew S1 CI | Crew disj |")
+    lines.append("| Model | Imp short CI | Imp long CI | Imp disj | Crew short CI | Crew long CI | Crew disj |")
     lines.append("|---|---|---|:---:|---|---|:---:|")
     for r in ci.sort("model_name").iter_rows(named=True):
         lines.append(
@@ -615,7 +697,22 @@ def main() -> None:
         "--min-role-games",
         type=int,
         default=1,
-        help="Require ≥ this many games per role per season (default: 1)",
+        help="Require ≥ this many games per role per condition (default: 1)",
+    )
+    parser.add_argument(
+        "--min-season-games",
+        type=int,
+        default=1,
+        help="Require ≥ this many total games in each context condition (default: 1)",
+    )
+    parser.add_argument(
+        "--subset",
+        choices=sorted(MODEL_SUBSETS),
+        default="featured",
+        help=(
+            "Model set to analyze: `all`, `exemplars`, or `featured` "
+            "(default: featured)."
+        ),
     )
     parser.add_argument(
         "--out-dir",
@@ -637,27 +734,45 @@ def main() -> None:
     console = Console()
     console.print(
         Panel.fit(
-            f"[bold]Among Us — season win-rate report[/bold]\n"
-            f"api={args.api_base}  |  min role games={args.min_role_games}",
+            f"[bold]Among Us — context-regime win-rate report[/bold]\n"
+            f"api={args.api_base}  |  subset={args.subset}  |  "
+            f"min condition games={args.min_season_games}  |  "
+            f"min role games={args.min_role_games}",
             border_style="cyan",
         )
     )
 
     raw_s0 = fetch_leaderboard(args.api_base, 0)
     raw_s1 = fetch_leaderboard(args.api_base, 1)
-    console.print(f"Fetched S0={raw_s0.height}, S1={raw_s1.height} models total.")
-
-    s0 = filter_featured(enrich(raw_s0, "S0"), args.min_role_games)
-    s1 = filter_featured(enrich(raw_s1, "S1"), args.min_role_games)
     console.print(
-        f"Featured set after filter: S0={s0.height}, S1={s1.height}"
-        f" (featured list = {len(FEATURED_MODEL_IDS)})"
+        f"Fetched {SHORT_CONTEXT_LABEL}={raw_s0.height}, "
+        f"{LONG_CONTEXT_LABEL}={raw_s1.height} models total."
+    )
+
+    s0 = filter_subset(
+        enrich(raw_s0, "S0"),
+        args.min_role_games,
+        args.min_season_games,
+        args.subset,
+    )
+    s1 = filter_subset(
+        enrich(raw_s1, "S1"),
+        args.min_role_games,
+        args.min_season_games,
+        args.subset,
+    )
+    subset_size = MODEL_SUBSETS[args.subset]
+    subset_label = len(subset_size) if subset_size is not None else "all"
+    console.print(
+        f"{args.subset.title()} set after filter: "
+        f"{SHORT_CONTEXT_LABEL}={s0.height}, {LONG_CONTEXT_LABEL}={s1.height}"
+        f" (model list = {subset_label})"
     )
     console.print()
 
-    render_leaderboard(s1, "Season 1 — Long Context", console)
+    render_leaderboard(s1, LONG_CONTEXT_LABEL, console)
     console.print()
-    render_leaderboard(s0, "Season 0 — Summary Mode", console)
+    render_leaderboard(s0, SHORT_CONTEXT_LABEL, console)
     console.print()
 
     human = human_brain_analysis(s1)
@@ -675,12 +790,37 @@ def main() -> None:
 
     if args.out_dir:
         out_dir = Path(args.out_dir)
-        write_csvs(s0, s1, paired, ci, out_dir)
-        console.print(f"[green]OK[/green] Wrote CSVs to {out_dir}")
+        suffix = output_suffix(
+            args.subset,
+            args.min_role_games,
+            args.min_season_games,
+        )
+        write_csvs(s0, s1, paired, ci, out_dir, suffix=suffix)
+        console.print(
+            f"[green]OK[/green] Wrote CSVs to {out_dir} "
+            f"(suffix='{suffix or '(none)'}')"
+        )
 
     if args.markdown:
         md_path = Path(args.markdown)
-        write_markdown(md_path, s0, s1, human, paired_summary, ci)
+        suffix = output_suffix(
+            args.subset,
+            args.min_role_games,
+            args.min_season_games,
+        )
+        if suffix and suffix.lstrip("_") not in md_path.stem:
+            md_path = md_path.with_stem(md_path.stem + suffix)
+        write_markdown(
+            md_path,
+            s0,
+            s1,
+            human,
+            paired_summary,
+            ci,
+            subset=args.subset,
+            min_role_games=args.min_role_games,
+            min_season_games=args.min_season_games,
+        )
         console.print(f"[green]OK[/green] Wrote markdown summary to {md_path}")
 
 
