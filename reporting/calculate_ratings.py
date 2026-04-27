@@ -29,6 +29,8 @@ RATING_MODEL = PlackettLuce()
 DEFAULT_MU = 25.0
 DEFAULT_SIGMA = DEFAULT_MU / 3  # 8.333...
 
+OPENROUTER_ROUTE_SUFFIXES = (":free", ":floor", ":nitro")
+
 
 # =============================================================================
 # Core rating algorithm
@@ -166,6 +168,14 @@ class ModelRating:
 # =============================================================================
 
 
+def canonical_model_id(model_id: str) -> str:
+    for suffix in OPENROUTER_ROUTE_SUFFIXES:
+        if model_id.endswith(suffix):
+            model_id = model_id[: -len(suffix)]
+            break
+    return model_id
+
+
 def scale(mu: float) -> int:
     """Scale OpenSkill mu to display-friendly integer (25 -> 2500)."""
     return round(mu * 100)
@@ -238,7 +248,7 @@ def extract_players(game: dict) -> tuple[list[tuple[str, str]], list[tuple[str, 
             continue
         if not isinstance(val, dict) or "identity" not in val:
             continue
-        model = val["model"]
+        model = canonical_model_id(val["model"])
         name = val.get("name", key)
         if val["identity"] == "Impostor":
             impostors.append((model, name))

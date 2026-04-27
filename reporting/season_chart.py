@@ -30,6 +30,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 import math
 import os
@@ -105,6 +106,8 @@ MODEL_SUBSETS = {
 HUMAN_MODEL_IDS = {"brain-1.0"}
 HUMAN_LABEL_PREFIX = "\U0001f9e0 "  # brain emoji prepended to human row labels
 
+OPENROUTER_ROUTE_SUFFIXES = (":free", ":floor", ":nitro")
+
 
 # ── themes ────────────────────────────────────────────────────────────────────
 THEMES = {
@@ -145,6 +148,38 @@ def fetch_json(url: str) -> object:
         return json.load(response)
 
 
+def canonical_model_id(model_id: str) -> str:
+    for suffix in OPENROUTER_ROUTE_SUFFIXES:
+        if model_id.endswith(suffix):
+            model_id = model_id[: -len(suffix)]
+            break
+    return model_id
+
+
+def _prefer_season_row(existing: dict, incoming: dict) -> dict:
+    """Choose one row when provider aliases collide inside a season.
+
+    Season leaderboard rows already contain post-game ratings, so exact merging
+    would require replaying logs. If both aliases appear, the row with more
+    games is the least surprising representative for the canonical model.
+    """
+    existing_games = int(existing.get("games_played") or 0)
+    incoming_games = int(incoming.get("games_played") or 0)
+    return incoming if incoming_games > existing_games else existing
+
+
+def index_season_models(rows: list[dict]) -> dict[str, dict]:
+    indexed: dict[str, dict] = {}
+    for row in rows:
+        canonical_id = canonical_model_id(str(row["model_id"]))
+        row["model_id"] = canonical_id
+        if canonical_id in indexed:
+            indexed[canonical_id] = _prefer_season_row(indexed[canonical_id], row)
+        else:
+            indexed[canonical_id] = row
+    return indexed
+
+
 def fetch_season(base_url: str, version: int) -> dict[str, dict]:
     # API caps per_page at 100; paginate if the leaderboard grows past that.
     merged: list[dict] = []
@@ -160,7 +195,30 @@ def fetch_season(base_url: str, version: int) -> dict[str, dict]:
         if len(data) < 100:
             break
         page += 1
-    return {m["model_id"]: m for m in merged}
+    return index_season_models(merged)
+
+
+def load_local_season(dir_path: Path, version: int) -> dict[str, dict]:
+    filepath = dir_path / f"season_s{version}.csv"
+    if not filepath.exists():
+        raise FileNotFoundError(f"Local CSV not found: {filepath}")
+    
+    data = {}
+    with open(filepath, "r", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            for k in ["impostor_win_rate", "crewmate_win_rate", "impostor_games", "crewmate_games",
+                      "impostor_wins", "crewmate_wins", "impostor_rating", "crewmate_rating",
+                      "impostor_sigma", "crewmate_sigma"]:
+                if k in row and row[k] != "":
+                    row[k] = float(row[k]) if "." in row[k] else int(float(row[k]))
+            canonical_id = canonical_model_id(str(row["model_id"]))
+            row["model_id"] = canonical_id
+            if canonical_id in data:
+                data[canonical_id] = _prefer_season_row(data[canonical_id], row)
+            else:
+                data[canonical_id] = row
+    return data
 
 
 def whole_board_stats(season: dict[str, dict]) -> dict:
@@ -240,8 +298,10 @@ def _season_snapshot(
         "crew_games": crew_games,
         "imp_rating": float(model["impostor_rating"]),
         "crew_rating": float(model["crewmate_rating"]),
+        "overall_rating": float(model["overall_rating"]),
         "imp_sigma": float(model["impostor_sigma"]),
         "crew_sigma": float(model["crewmate_sigma"]),
+        "overall_sigma": float(model["overall_sigma"]),
     }
 
 
@@ -303,23 +363,39 @@ def build_winrate_figure(
     """
     theme = THEMES[theme_name]
     names = [r["name"] for r in rows]
+    side_by_side = aspect == "16x9"
 
-    fig = make_subplots(
-        rows=1,
-        cols=2,
-        shared_yaxes=True,
-        column_widths=[0.5, 0.5],
-        horizontal_spacing=0.12,
-        subplot_titles=[
-            "Short-context",
-            "Long-context",
-        ],
-    )
-
-    panels = [
-        (1, "s0", theme["imp_s0"], theme["crew_s0"]),
-        (2, "s1", theme["imp_s1"], theme["crew_s1"]),
-    ]
+    if side_by_side:
+        fig = make_subplots(
+            rows=1,
+            cols=2,
+            shared_yaxes=True,
+            column_widths=[0.5, 0.5],
+            horizontal_spacing=0.12,
+            subplot_titles=[
+                "Short-context",
+                "Long-context",
+            ],
+        )
+        panels = [
+            (1, 1, "s0", theme["imp_s0"], theme["crew_s0"]),
+            (1, 2, "s1", theme["imp_s1"], theme["crew_s1"]),
+        ]
+    else:
+        fig = make_subplots(
+            rows=2,
+            cols=1,
+            shared_xaxes=True,
+            vertical_spacing=0.055,
+            subplot_titles=[
+                "Short-context",
+                "Long-context",
+            ],
+        )
+        panels = [
+            (1, 1, "s0", theme["imp_s0"], theme["crew_s0"]),
+            (2, 1, "s1", theme["imp_s1"], theme["crew_s1"]),
+        ]
 
     # Marker-size scaling: sqrt(n) so marker AREA scales with precision (1/Var).
     # We fix the range so "big dot" and "small dot" are interpretable across panels.
@@ -340,7 +416,7 @@ def build_winrate_figure(
         t = (math.sqrt(n) - math.sqrt(n_lo)) / (math.sqrt(n_hi) - math.sqrt(n_lo))
         return MIN_SIZE + t * (MAX_SIZE - MIN_SIZE)
 
-    for panel, snap_key, imp_c, crew_c in panels:
+    for plot_row, plot_col, snap_key, imp_c, crew_c in panels:
         imp_x, imp_y, imp_sizes, imp_hover = [], [], [], []
         crew_x, crew_y, crew_sizes, crew_hover = [], [], [], []
 
@@ -385,8 +461,8 @@ def build_winrate_figure(
                     showlegend=False,
                     hoverinfo="skip",
                 ),
-                row=1,
-                col=panel,
+                row=plot_row,
+                col=plot_col,
             )
 
         fig.add_trace(
@@ -402,12 +478,12 @@ def build_winrate_figure(
                     line=dict(color=theme["marker_border"], width=1.5),
                 ),
                 legendgroup="imp",
-                showlegend=(panel == 2),
+                showlegend=(snap_key == "s1"),
                 hovertemplate="%{customdata}<extra></extra>",
                 customdata=imp_hover,
             ),
-            row=1,
-            col=panel,
+            row=plot_row,
+            col=plot_col,
         )
 
         fig.add_trace(
@@ -423,39 +499,50 @@ def build_winrate_figure(
                     line=dict(color=theme["marker_border"], width=1.5),
                 ),
                 legendgroup="crew",
-                showlegend=(panel == 2),
+                showlegend=(snap_key == "s1"),
                 hovertemplate="%{customdata}<extra></extra>",
                 customdata=crew_hover,
             ),
-            row=1,
-            col=panel,
+            row=plot_row,
+            col=plot_col,
         )
 
         fig.add_vline(
             x=50,
-            row=1,
-            col=panel,
+            row=plot_row,
+            col=plot_col,
             line_dash="dot",
             line_color=theme["fifty"],
             line_width=1.2,
         )
 
-    # Inter-panel vertical divider.
-    fig.add_shape(
-        type="line",
-        x0=0.5,
-        x1=0.5,
-        y0=0,
-        y1=1,
-        xref="paper",
-        yref="paper",
-        line=dict(color=theme["divider"], width=2),
-    )
+    if side_by_side:
+        # Inter-panel vertical divider.
+        fig.add_shape(
+            type="line",
+            x0=0.5,
+            x1=0.5,
+            y0=0,
+            y1=1,
+            xref="paper",
+            yref="paper",
+            line=dict(color=theme["divider"], width=2),
+        )
 
+    winrate_title = (
+        "Short-context vs Long-context — Among Us Role Win Rates"
+        if side_by_side
+        else (
+            "Role Win Rates by Context"
+            f"<br><span style='font-size:12px;color:{theme['muted']}'>"
+            "marker size = confidence (∝ √role games, larger = more certain)"
+            "</span>"
+        )
+    )
     fig.update_layout(
         title=dict(
-            text="Short-context vs Long-context — Among Us Role Win Rates",
-            font=dict(size=24, color=theme["text"]),
+            text=winrate_title,
+            font=dict(size=24 if side_by_side else 22, color=theme["text"]),
             x=0.0,
             xanchor="left",
             pad=dict(l=12),
@@ -468,16 +555,21 @@ def build_winrate_figure(
         ),
         legend=dict(
             orientation="h",
-            y=-0.08,
-            x=0.5,
+            y=-0.10 if side_by_side else 1.08,
+            x=0.5 if side_by_side else 0.78,
             xanchor="center",
+            yanchor="top" if side_by_side else "bottom",
             bgcolor="rgba(0,0,0,0)",
             font=dict(size=13, color=theme["text"]),
             itemsizing="constant",
         ),
-        margin=dict(l=150, r=40, t=100, b=90),
-        height=720 if aspect == "16x9" else max(620, 36 * len(names) + 200),
-        width=1280,
+        margin=(
+            dict(l=150, r=40, t=100, b=140)
+            if side_by_side
+            else dict(l=150, r=30, t=125, b=145)
+        ),
+        height=720 if side_by_side else max(720, 62 * len(names) + 260),
+        width=1280 if side_by_side else 760,
         hovermode="closest",
     )
 
@@ -509,21 +601,23 @@ def build_winrate_figure(
         if ann.text and ("Season" in ann.text or "Context" in ann.text):
             ann.font = dict(size=15, color=theme["text"])
 
-    # Size-encoding legend annotation — top-right above the plot area.
-    fig.add_annotation(
-        x=1.0,
-        y=1.06,
-        xref="paper",
-        yref="paper",
-        text=(
-            f"<span style='color:{theme['muted']}'>"
-            f"marker size = confidence (∝ √role games, larger = more certain)"
-            f"</span>"
-        ),
-        showarrow=False,
-        font=dict(size=11),
-        xanchor="right",
-    )
+    if side_by_side:
+        # Size-encoding legend annotation, aligned with the left edge of the figure
+        # so it does not compete with the Long-context panel title.
+        fig.add_annotation(
+            x=-0.14,
+            y=1.06,
+            xref="paper",
+            yref="paper",
+            text=(
+                f"<span style='color:{theme['muted']}'>"
+                f"marker size = confidence (∝ √role games, larger = more certain)"
+                f"</span>"
+            ),
+            showarrow=False,
+            font=dict(size=11),
+            xanchor="left",
+        )
 
     # Board-wide pooled captions under each panel. These always reflect the
     # *full* season leaderboard, not just the subset we're plotting — the
@@ -542,26 +636,40 @@ def build_winrate_figure(
             f"Overall {stats['overall_pct']:.1f}%</span>"
         )
 
-    fig.add_annotation(
-        x=0.22,
-        y=-0.15,
-        xref="paper",
-        yref="paper",
-        text=_board_caption(board_s0, "imp_s0", "crew_s0"),
-        showarrow=False,
-        font=dict(size=12),
-        xanchor="center",
+    caption_layout = (
+        [
+            (0.22, -0.24, "center", _board_caption(board_s0, "imp_s0", "crew_s0")),
+            (0.78, -0.24, "center", _board_caption(board_s1, "imp_s1", "crew_s1")),
+        ]
+        if side_by_side
+        else [
+            (
+                0.0,
+                -0.16,
+                "left",
+                "<b>Short-context:</b> "
+                + _board_caption(board_s0, "imp_s0", "crew_s0"),
+            ),
+            (
+                0.0,
+                -0.25,
+                "left",
+                "<b>Long-context:</b> "
+                + _board_caption(board_s1, "imp_s1", "crew_s1"),
+            ),
+        ]
     )
-    fig.add_annotation(
-        x=0.78,
-        y=-0.15,
-        xref="paper",
-        yref="paper",
-        text=_board_caption(board_s1, "imp_s1", "crew_s1"),
-        showarrow=False,
-        font=dict(size=12),
-        xanchor="center",
-    )
+    for x, y, xanchor, text in caption_layout:
+        fig.add_annotation(
+            x=x,
+            y=y,
+            xref="paper",
+            yref="paper",
+            text=text,
+            showarrow=False,
+            font=dict(size=12 if side_by_side else 10),
+            xanchor=xanchor,
+        )
 
     return fig
 
@@ -578,6 +686,7 @@ def build_rating_figure(
     """
     theme = THEMES[theme_name]
     names = [r["name"] for r in rows]
+    side_by_side = aspect == "16x9"
 
     # X-axis range: 0 on the left; right edge from max μ with padding.
     max_mu = 0.0
@@ -585,29 +694,51 @@ def build_rating_figure(
         for snap in (r["s0"], r["s1"]):
             if snap is None:
                 continue
-            max_mu = max(max_mu, snap["imp_rating"], snap["crew_rating"])
+            max_mu = max(
+                max_mu,
+                snap["imp_rating"],
+                snap["crew_rating"],
+                snap["overall_rating"],
+            )
     x_range = [0, max_mu * 1.08]
 
-    fig = make_subplots(
-        rows=1,
-        cols=2,
-        shared_yaxes=True,
-        column_widths=[0.5, 0.5],
-        horizontal_spacing=0.12,
-        subplot_titles=[
-            "Short-context",
-            "Long-context",
-        ],
-    )
+    if side_by_side:
+        fig = make_subplots(
+            rows=1,
+            cols=2,
+            shared_yaxes=True,
+            column_widths=[0.5, 0.5],
+            horizontal_spacing=0.12,
+            subplot_titles=[
+                "Short-context",
+                "Long-context",
+            ],
+        )
+        panels = [
+            (1, 1, "s0", theme["imp_s0"], theme["crew_s0"]),
+            (1, 2, "s1", theme["imp_s1"], theme["crew_s1"]),
+        ]
+    else:
+        fig = make_subplots(
+            rows=2,
+            cols=1,
+            shared_xaxes=True,
+            vertical_spacing=0.055,
+            subplot_titles=[
+                "Short-context",
+                "Long-context",
+            ],
+        )
+        panels = [
+            (1, 1, "s0", theme["imp_s0"], theme["crew_s0"]),
+            (2, 1, "s1", theme["imp_s1"], theme["crew_s1"]),
+        ]
+    overall_c = theme["muted"]
 
-    panels = [
-        (1, "s0", theme["imp_s0"], theme["crew_s0"]),
-        (2, "s1", theme["imp_s1"], theme["crew_s1"]),
-    ]
-
-    for panel, snap_key, imp_c, crew_c in panels:
+    for plot_row, plot_col, snap_key, imp_c, crew_c in panels:
         imp_x, imp_y, imp_sigma, imp_hover = [], [], [], []
         crew_x, crew_y, crew_sigma, crew_hover = [], [], [], []
+        overall_x, overall_y, overall_sigma, overall_hover = [], [], [], []
 
         for r in rows:
             snap = r[snap_key]
@@ -617,8 +748,10 @@ def build_rating_figure(
 
             ir = snap["imp_rating"]
             cr = snap["crew_rating"]
+            or_ = snap["overall_rating"]
             is_ = snap["imp_sigma"]
             cs = snap["crew_sigma"]
+            os_ = snap["overall_sigma"]
 
             imp_x.append(ir - is_)  # bar ends at conservative rating
             imp_y.append(name)
@@ -634,6 +767,41 @@ def build_rating_figure(
                 f"<b>{name}</b><br>Crewmate μ: {cr:,.0f}  σ: {cs:,.0f}"
                 f"<br>Conservative (μ − σ): {cr - cs:,.0f}"
             )
+            overall_x.append(or_ - os_)
+            overall_y.append(name)
+            overall_sigma.append(os_)
+            overall_hover.append(
+                f"<b>{name}</b><br>Overall μ: {or_:,.0f}  σ: {os_:,.0f}"
+                f"<br>Conservative (μ − σ): {or_ - os_:,.0f}"
+            )
+
+        fig.add_trace(
+            go.Bar(
+                x=overall_x,
+                y=overall_y,
+                orientation="h",
+                name="Overall",
+                marker=dict(
+                    color=overall_c,
+                    line=dict(color=_fade(overall_c, 0.9), width=1.25),
+                ),
+                error_x=dict(
+                    type="data",
+                    symmetric=False,
+                    array=overall_sigma,
+                    arrayminus=[0] * len(overall_sigma),
+                    color=_fade(overall_c, 0.85),
+                    thickness=1.4,
+                    width=5,
+                ),
+                legendgroup="overall",
+                showlegend=(snap_key == "s1"),
+                hovertemplate="%{customdata}<extra></extra>",
+                customdata=overall_hover,
+            ),
+            row=plot_row,
+            col=plot_col,
+        )
 
         fig.add_trace(
             go.Bar(
@@ -655,12 +823,12 @@ def build_rating_figure(
                     width=5,
                 ),
                 legendgroup="imp",
-                showlegend=(panel == 2),
+                showlegend=(snap_key == "s1"),
                 hovertemplate="%{customdata}<extra></extra>",
                 customdata=imp_hover,
             ),
-            row=1,
-            col=panel,
+            row=plot_row,
+            col=plot_col,
         )
 
         fig.add_trace(
@@ -683,33 +851,38 @@ def build_rating_figure(
                     width=5,
                 ),
                 legendgroup="crew",
-                showlegend=(panel == 2),
+                showlegend=(snap_key == "s1"),
                 hovertemplate="%{customdata}<extra></extra>",
                 customdata=crew_hover,
             ),
-            row=1,
-            col=panel,
+            row=plot_row,
+            col=plot_col,
         )
 
-    # Inter-panel vertical divider.
-    fig.add_shape(
-        type="line",
-        x0=0.5,
-        x1=0.5,
-        y0=0,
-        y1=1,
-        xref="paper",
-        yref="paper",
-        line=dict(color=theme["divider"], width=2),
-    )
+    if side_by_side:
+        # Inter-panel vertical divider.
+        fig.add_shape(
+            type="line",
+            x0=0.5,
+            x1=0.5,
+            y0=0,
+            y1=1,
+            xref="paper",
+            yref="paper",
+            line=dict(color=theme["divider"], width=2),
+        )
 
     fig.update_layout(
         barmode="group",
         bargap=0.28,
         bargroupgap=0.08,
         title=dict(
-            text="Short-context vs Long-context — OpenSkill Role Ratings (bar = μ − σ, whisker = σ)",
-            font=dict(size=22, color=theme["text"]),
+            text=(
+                "Short-context vs Long-context — OpenSkill Role Ratings (bar = μ − σ, whisker = σ)"
+                if side_by_side
+                else "OpenSkill Role Ratings by Context"
+            ),
+            font=dict(size=22 if side_by_side else 20, color=theme["text"]),
             x=0.0,
             xanchor="left",
             pad=dict(l=12),
@@ -729,9 +902,13 @@ def build_rating_figure(
             font=dict(size=13, color=theme["text"]),
             itemsizing="constant",
         ),
-        margin=dict(l=150, r=40, t=100, b=60),
-        height=720 if aspect == "16x9" else max(680, 42 * len(names) + 200),
-        width=1280,
+        margin=(
+            dict(l=150, r=40, t=100, b=100)
+            if side_by_side
+            else dict(l=150, r=30, t=76, b=76)
+        ),
+        height=720 if side_by_side else max(620, 54 * len(names) + 220),
+        width=1280 if side_by_side else 760,
         hovermode="closest",
     )
 
@@ -765,6 +942,11 @@ def build_rating_figure(
 
 def main() -> None:
     parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--local-csv-dir",
+        default=None,
+        help="Path to directory containing season_s0.csv and season_s1.csv. If provided, reads from local CSVs instead of the API.",
+    )
     parser.add_argument(
         "--api-base",
         default=os.environ.get("ANALYSIS_API_BASE_URL", DEFAULT_API_BASE),
@@ -804,9 +986,15 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    print(f"Fetching seasons from {args.api_base} ...")
-    s0 = fetch_season(args.api_base, 0)
-    s1 = fetch_season(args.api_base, 1)
+    if args.local_csv_dir:
+        csv_dir = Path(args.local_csv_dir)
+        print(f"Reading local seasons from {csv_dir} ...")
+        s0 = load_local_season(csv_dir, 0)
+        s1 = load_local_season(csv_dir, 1)
+    else:
+        print(f"Fetching seasons from {args.api_base} ...")
+        s0 = fetch_season(args.api_base, 0)
+        s1 = fetch_season(args.api_base, 1)
     print(f"  Season 0: {len(s0)} models  |  Season 1: {len(s1)} models")
 
     # Whole-board pooled stats for captions — computed once from unfiltered
