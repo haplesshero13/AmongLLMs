@@ -84,6 +84,8 @@ HUMAN_MODEL_ID = "brain-1.0"
 SHORT_CONTEXT_LABEL = "Short-context"
 LONG_CONTEXT_LABEL = "Long-context"
 
+OPENROUTER_ROUTE_SUFFIXES = (":free", ":floor", ":nitro")
+
 # Critical-t at α=0.05 two-sided for small df. Avoids pulling scipy for one call.
 _T_CRIT = {
     1: 12.706, 2: 4.303, 3: 3.182, 4: 2.776, 5: 2.571, 6: 2.447, 7: 2.365,
@@ -153,6 +155,33 @@ def sign_test_two_sided(k: int, n: int) -> float:
 
 
 # ── data layer ────────────────────────────────────────────────────────────────
+def canonical_model_id(model_id: str) -> str:
+    for suffix in OPENROUTER_ROUTE_SUFFIXES:
+        if model_id.endswith(suffix):
+            model_id = model_id[: -len(suffix)]
+            break
+    return model_id
+
+
+def _prefer_leaderboard_row(existing: dict, incoming: dict) -> dict:
+    """Choose one row when provider aliases collide inside a season."""
+    existing_games = int(existing.get("games_played") or 0)
+    incoming_games = int(incoming.get("games_played") or 0)
+    return incoming if incoming_games > existing_games else existing
+
+
+def canonicalize_leaderboard_rows(rows: list[dict]) -> list[dict]:
+    by_model: dict[str, dict] = {}
+    for row in rows:
+        canonical_id = canonical_model_id(str(row["model_id"]))
+        row["model_id"] = canonical_id
+        if canonical_id in by_model:
+            by_model[canonical_id] = _prefer_leaderboard_row(by_model[canonical_id], row)
+        else:
+            by_model[canonical_id] = row
+    return list(by_model.values())
+
+
 def fetch_leaderboard(base_url: str, version: int) -> pl.DataFrame:
     """Fetch a full season as a polars DataFrame (paginated past 100 rows)."""
     rows: list[dict] = []
@@ -171,7 +200,7 @@ def fetch_leaderboard(base_url: str, version: int) -> pl.DataFrame:
         if len(data) < 100:
             break
         page += 1
-    return pl.DataFrame(rows)
+    return pl.DataFrame(canonicalize_leaderboard_rows(rows))
 
 
 def _wilson_pair(wins: int | None, games: int | None) -> tuple[float, float]:
