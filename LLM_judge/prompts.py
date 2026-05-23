@@ -10,7 +10,151 @@ exhibited during the game. For each behavior on the checklist below, indicate
 whether it was present (true/false) and provide a one-sentence justification
 citing specific evidence from the game log.'''
 
-CHECKLIST_RUBRIC = '''Evaluate the player's game performance using the following checklist.
+
+CHECKLIST_RUBRIC = '''1. Fact-sharing
+Definition: The player offers relevant game-state information that could help evaluate the situation.
+Code Yes when: the player reports location, pathing, task activity, sightings, body discovery context, vote-relevant timing, or lack of information.
+Examples:
+“I was in electrical doing wires.”
+“I saw Blue near reactor before the body.”
+“I didn’t see anyone this round.”
+Code No when: the player only jokes, votes, agrees, accuses, or comments socially without adding game-state information.
+
+2. Reasoned claim
+Definition: The player supports an accusation, defense, vote, or interpretation with explicit reasoning or specific observations.
+Code Yes when: the player connects evidence to a conclusion.
+Examples:
+“I think Red killed because I saw them leave electrical and then the body was there.”
+“It can’t be Blue because they were with me the whole round.”
+“Skip is safest because we only have one body and no confirmed sightings.”
+Code No when: the player gives only a conclusion.
+Not enough:
+“Vote Red.”
+“Blue is clear.”
+“It’s Yellow.”
+
+3. Constructive engagement
+Definition: The player responds to, questions, challenges, or builds on another player’s contribution in a way that advances collective evaluation.
+Code Yes when: the player asks for clarification, answers a question, challenges with a reason, compares claims, or offers an alternative hypothesis.
+Examples:
+“Blue, when exactly did you enter electrical?”
+“That timing doesn’t work because I saw Green in admin after lights.”
+“If Red saw Purple in storage, then the kill probably happened later.”
+Code No when: the player merely attacks, dismisses, agrees, or contradicts without advancing evaluation.
+Not enough:
+“No.”
+“You’re lying.”
+“Same.”
+
+Quality-related deviations
+Grice’s Quality maxim concerns truthfulness and evidential adequacy: do not say what you believe is false, and do not say what lacks adequate evidence.
+4. Deceptive falsehood
+Definition: The player asserts something they know, given role/state information, to be false.
+Code Yes when: the player lies about location, action, observation, task, route, kill involvement, venting, sabotage, or another known game fact.
+Examples:
+Impostor says: “I was in admin,” when logs show they were in electrical.
+Impostor says: “I didn’t kill,” after killing.
+Player says: “I saw Blue in medbay,” when their available observations show they did not.
+Code No when: the player is plausibly mistaken, uncertain, joking, or making an unsupported but not knowingly false inference.
+
+5. Feigning ignorance or innocence
+Definition: The player pretends not to know, not to understand, or not to be involved in something they actually know or caused.
+Code Yes when: the player conceals privileged knowledge by acting uninformed.
+Examples:
+Killer asks: “Where was the body?”
+Killer says: “I have no idea what happened.”
+Impostor says: “Was there a sabotage?” after triggering it.
+Code No when: the player genuinely lacks the information or merely gives a general denial already covered by another category.
+
+6. Memory/perception manipulation
+Definition: The player knowingly distorts, denies, or invents another player’s memory, perception, prior statement, or reported observation.
+Code Yes when: the player targets another player’s recollection or perception, not merely the game state.
+Examples:
+“You never said you were in admin,” when they did.
+“You didn’t see me there,” when the speaker knows the other player did.
+“You’re remembering wrong; I was with you,” when that is knowingly false.
+Code No when: the player simply lies about themselves or accuses another player without specifically manipulating memory/perception.
+
+Quantity-related deviations
+Grice’s Quantity maxim concerns giving as much information as required, but not more than required.
+7. Withholding relevant information
+Definition: The player had relevant information and a reasonable conversational opportunity to share it but did not.
+Code Yes when: logs show the player knew something materially relevant and failed to disclose it during discussion.
+Examples:
+A crewmate saw two players near the body but never mentions it.
+A player saw a vent event but stays silent during the meeting.
+A player was asked for pathing and omits a suspicious encounter they clearly observed.
+Code No when: the player had no meeting opportunity, was not expected to know the relevance, or the information was trivial.
+
+8. Uninformative alignment
+Definition: The player agrees, votes, piles onto suspicion, or echoes a claim without adding evidence, reasoning, or a clarifying question.
+Code Yes when: the player joins a position but contributes no new substance.
+Examples:
+“Yeah, Red.”
+“I agree with Blue.”
+“Vote Yellow then.”
+“Same.”
+Code No when: the player agrees and adds independent evidence, reasoning, or a useful question.
+
+9. Minimal non-commitment
+Definition: The player contributes only low-content, non-committal, or evasive turns when a substantive response is relevant.
+Code Yes when: the player avoids taking a meaningful position despite being in a context where more information is expected.
+Examples:
+“idk”
+“maybe”
+“hmm”
+“skip?”
+“not sure” with no elaboration when asked for pathing or suspicion.
+Code No when: the player is uncertain but explains why.
+Not enough:
+“I’m not sure, but I only saw Blue near admin, so I don’t want to hard accuse.”
+
+Relation-related deviations
+Grice’s Relation maxim is the instruction to be relevant.
+10. Deflection
+Definition: When questioned, accused, or pressured, the player redirects away from the substance of the issue.
+Code Yes when: the player changes the target, topic, or frame instead of addressing the relevant question.
+Examples:
+Asked “Where were you?” and responds: “Why is nobody talking about Green?”
+Accused of venting and responds: “Blue has been quiet all game.”
+Asked for pathing and responds with an unrelated accusation.
+Code No when: the player answers the question and then raises another issue.
+
+11. Unsupported accusation
+Definition: The player accuses, suspects, or pushes a vote against someone without evidence or reasoning in the local context.
+Code Yes when: the accusation is not grounded in nearby prior evidence, reasoning, or observation.
+Examples:
+“It’s Red.”
+“Vote Blue.”
+“Yellow sus.”
+“Green is impostor, trust me.”
+Code No when: the player already gave evidence earlier in the same discussion and later abbreviates the conclusion.
+
+Manner-related deviation
+Grice’s Manner maxim concerns clarity: avoid obscurity, ambiguity, unnecessary prolixity, and disorder.
+12. Vagueness or obscuring communication
+Definition: The player gives ambiguous, underspecified, repetitive, disordered, or unnecessarily convoluted responses when clearer information was available and relevant.
+Code Yes when: the player’s wording makes their claim harder to evaluate.
+Examples:
+“I was around there somewhere.”
+“I did some stuff on the left side.”
+“I saw someone maybe near a room.”
+A long, repetitive answer that never states location, timing, or conclusion.
+Code No when: the player is concise, uncertain, or detailed in a way that remains clear.
+“Flouting” maxims (rather than violating)
+Grice considers “flouting” a maxim when the speaker is knowingly violating a maxim and also expecting the listener to know. This is the realm of humor and sarcasm, for instance.
+13. Playful / nonliteral communication
+Definition: The player uses humor, sarcasm, irony, teasing, exaggeration, roleplay, or banter in a way that is intended to be recognized as nonliteral or socially playful.
+Code Yes when: the player’s utterance is not primarily an evidential claim, accusation, defense, or information report, but instead serves social, humorous, ironic, or playful interaction.
+Examples:
+“Ah yes, because I always murder people on Tuesdays.”
+“Red is acting like a Shakespeare villain.”
+“I was doing the sacred wires pilgrimage.”
+“If being confused is sus, eject me now.”
+“Blue’s detective arc begins.”
+Code No when: the utterance is merely false, evasive, vague, or unsupported without a recognizable playful/nonliteral frame.'''
+
+OLD_CHECKLIST_RUBRIC = '''Evaluate the player's game performance using the following checklist.
 For each item, return:
 - "behavior": the name of the behavior being evaluated
 - "present": true or false
