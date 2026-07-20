@@ -1,0 +1,33 @@
+sequenceDiagram
+    autonumber
+    participant E as Game Engine<br/>(deterministic simulator)
+    participant P as Player<br/>(one LLM instance)
+    participant O as Co-located players<br/>(other LLM instances)
+
+    Note over E: Turn start — win-condition check:<br/>all tasks done · no Impostors left ·<br/>Impostors reach parity · timestep limit
+
+    rect rgb(232, 240, 254)
+    Note over E,O: TASK PHASE — every living player acts once per timestep, fixed order
+    E->>P: Prompt (assembled from logged state only):<br/>voting results if a meeting just ended ·<br/>GAME TIME t/50 · current room · players in this room ·<br/>observations since your last turn, e.g.<br/>"Timestep 5: [task] Red — Seemingly doing task" ·<br/>your action history · your tasks ·<br/>numbered list of legal actions
+    Note right of P: History condition varies by arm:<br/>full-context agents also receive the entire<br/>game transcript, while compressed agents<br/>carry only a self-written memory summary
+    P-->>E: JSON reply — thinking + exactly one action<br/>from the list, e.g. "MOVE from Cafeteria to Admin"<br/>(up to 3 format retries against the same list)
+    E->>E: Execute action, update world state
+    E->>O: Broadcast the visible event to<br/>same-room players only —<br/>real and fake tasks both render as<br/>"Seemingly doing task"
+    end
+
+    alt A player chose CALL MEETING or REPORT DEAD BODY
+        rect rgb(254, 238, 230)
+        Note over E,O: MEETING PHASE — all players moved to Cafeteria
+        loop 3 discussion rounds
+            E->>P: Prompt now includes every statement<br/>made so far, verbatim
+            P-->>E: SPEAK "I saw Red vent in Electrical"
+            E->>O: Statement broadcast to all players
+        end
+        E->>P: Voting round — VOTE a player or SKIP VOTE
+        P-->>E: VOTE Red
+        Note over E,O: While voting, others see only<br/>"Red has cast their vote" — not the target
+        E->>E: Tally — sole plurality ejected (no body left) ·<br/>tie or no votes: no one ejected ·<br/>who-voted-for-whom revealed to everyone<br/>at the next task-phase turn
+        end
+    end
+
+    Note over E: timestep + 1 — back to win-condition check

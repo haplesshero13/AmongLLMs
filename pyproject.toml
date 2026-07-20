@@ -47,7 +47,9 @@ amongagents = { path = "among-agents", editable = true }
 
 [dependency-groups]
 dev = [
-    "kaleido>=1.2.0",
+    # kaleido 1.2.0 is incompatible with plotly>=6.9 (choreographer API drift)
+    "kaleido>=1.3",
+    "plotly>=6.9.0",
     "polars>=1.40.0",
     "pytest>=9.0.2",
     "pytest-asyncio>=1.3.0",

@@ -349,17 +349,20 @@ By default, `season_chart.py` emits `featured` and `presentation`. Use `--subset
 
 ```bash
 # Emits both subsets for the dark theme (default)
-uv run --with plotly --with kaleido python reporting/season_chart.py
+uv run reporting/season_chart.py
 
 # Paper variant
-uv run --with plotly --with kaleido python reporting/season_chart.py --theme light
+uv run reporting/season_chart.py --theme light
 
 # Seven-model paper focus set
-uv run --with plotly --with kaleido python reporting/season_chart.py \
+uv run reporting/season_chart.py \
     --theme light --subset exemplars --out-dir reporting
 
 # Just the 16:9 slide set
-uv run --with plotly --with kaleido python reporting/season_chart.py --subset presentation
+uv run reporting/season_chart.py --subset presentation
+
+# Camera-ready vector figures (PDF + SVG, no titles) → paper-figures/
+uv run reporting/acl_figures.py
 ```
 
 Outputs (gitignored): `season_comparison_{subset}_{theme}.{html,png}`, `season_ratings_{subset}_{theme}.{html,png}`, where `subset ∈ {exemplars, featured, presentation}` and `theme ∈ {dark, light}`.

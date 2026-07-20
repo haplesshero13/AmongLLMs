@@ -1,0 +1,22 @@
+%%{init: {"theme": "base", "themeVariables": {"fontSize": "18px", "primaryColor": "#ffffff", "primaryBorderColor": "#555555", "lineColor": "#555555", "clusterBkg": "#f4f6fa", "clusterBorder": "#999999", "edgeLabelBackground": "#ffffff"}, "flowchart": {"wrappingWidth": 320, "curve": "basis", "nodeSpacing": 45, "rankSpacing": 50}}}%%
+flowchart TB
+    subgraph MEETING["<b>MEETING PHASE</b> — everyone moved to Cafeteria"]
+        direction LR
+        M1["<b>Discussion — 3 rounds</b><br/>each player SPEAKS once per round<br/>statements shown verbatim to all"]
+        M2["<b>Voting</b><br/>VOTE a player or SKIP<br/>ballots secret until tally<br/>plurality ejected · tie = no one"]
+        RES(["<b>Meeting ends</b><br/>who-voted-for-whom and ejection<br/>revealed on your next turn"])
+        M1 --> M2 --> RES
+    end
+    subgraph TASK["<b>TASK PHASE</b> — each timestep, every living player takes one turn, in fixed order"]
+        direction LR
+        P1["<b>You are prompted</b><br/>your room + its occupants<br/>events seen since your last turn<br/>your tasks · legal actions"]
+        P2["<b>You pick one action</b><br/>MOVE · DO [FAKE] TASK<br/>KILL · VENT · REPORT<br/>CALL MEETING"]
+        P3["<b>Engine executes it</b><br/>event shown to your room only<br/>real + fake tasks both look<br/>like 'Seemingly doing task'"]
+        WIN(["<b>Win check</b><br/>Crew: tasks done or Impostors gone<br/>Impostors: parity or timeout"])
+        P1 --> P2 --> P3
+        P3 -- "next player" --> P1
+        P3 -- "timestep<br/>ends" --> WIN
+        WIN -- "game on" --> P1
+    end
+    P3 -- "CALL MEETING or<br/>REPORT DEAD BODY" --> M1
+    RES -. "back to Task phase:<br/>next timestep" .-> WIN
