@@ -238,3 +238,4 @@ reporting/*.md
 reporting/*.svg
 reporting/*.pdf
 reporting/out/
+paper-figures/
