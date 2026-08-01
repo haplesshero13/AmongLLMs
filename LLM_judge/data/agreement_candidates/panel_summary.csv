@@ -1,0 +1,5 @@
+panel,judges,judge_count,cohen_kappa,agreement,krippendorff_alpha,label_pairs,units_complete,units_total,unit_coverage
+matched_original3,"paper-gemini-3.1-pro,glm-5.2,paper-claude-opus-4.6",3,0.8117608894393817,0.9205702647657841,0.9173933843483782,491,38,38,1.0
+expanded5,"paper-gemini-3.1-pro,glm-5.2,paper-claude-opus-4.6,inkling-small,grok-4.3",5,0.8013381622965865,0.9164969450101833,0.8803617900880011,491,38,38,1.0
+agreement_top3,"glm-5.2,deepseek-v4-flash-0731,grok-4.3",3,0.8193147346959073,0.924643584521385,0.8702768988207986,491,38,38,1.0
+noncohort3,"glm-5.2,inkling-small,grok-4.3",3,0.7952988822933831,0.9144602851323829,0.8601741154255728,491,38,38,1.0

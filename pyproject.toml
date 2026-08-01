@@ -19,6 +19,7 @@ dependencies = [
     "seaborn>=0.13.2",
     "boto3>=1.35.0",
     "google-cloud-storage>=2.0.0",
+    "openai>=1.32.0",
 ]
 
 [project.optional-dependencies]
@@ -28,7 +29,6 @@ analysis = [
     "pandas>=2.2.2",
     "matplotlib>=3.9.1",
     "seaborn>=0.13.2",
-    "openai>=1.32.0",
 ]
 # For running linear probe experiments
 probes = [
@@ -65,4 +65,4 @@ markers = [
     "integration: marks tests that require external API calls (e.g., OpenRouter)",
 ]
 asyncio_default_fixture_loop_scope = "function"
-pythonpath = ["."]
+pythonpath = [".", "reporting"]

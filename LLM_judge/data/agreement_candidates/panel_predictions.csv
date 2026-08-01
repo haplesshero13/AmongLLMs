@@ -1,0 +1,1977 @@
+panel,game_id,player_num,behavior,human,majority,yes_votes,judge_count
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Fact-sharing,True,True,3,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Fact-sharing,True,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Fact-sharing,False,True,2,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Fact-sharing,False,True,3,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Fact-sharing,True,True,3,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Fact-sharing,False,True,3,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Fact-sharing,True,True,3,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Fact-sharing,True,True,3,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Fact-sharing,True,True,3,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Fact-sharing,True,True,3,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Fact-sharing,True,True,3,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Fact-sharing,True,True,3,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Fact-sharing,True,True,3,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Fact-sharing,True,True,3,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Fact-sharing,True,True,3,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Fact-sharing,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Fact-sharing,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Fact-sharing,True,True,3,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Fact-sharing,True,True,3,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Fact-sharing,True,True,3,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Fact-sharing,True,True,3,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Fact-sharing,True,True,3,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Fact-sharing,True,True,3,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Fact-sharing,True,True,3,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Fact-sharing,True,True,3,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Fact-sharing,True,True,3,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Fact-sharing,True,True,2,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Fact-sharing,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Fact-sharing,True,True,3,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Fact-sharing,True,True,3,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Fact-sharing,True,True,3,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Fact-sharing,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Fact-sharing,True,True,3,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Fact-sharing,True,True,3,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Fact-sharing,True,True,3,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Fact-sharing,True,True,3,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Fact-sharing,True,True,3,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Fact-sharing,True,True,3,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Reasoned claim,True,True,3,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Reasoned claim,True,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Reasoned claim,True,True,3,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Reasoned claim,True,True,3,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Reasoned claim,True,True,3,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Reasoned claim,False,True,3,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Reasoned claim,True,True,3,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Reasoned claim,True,True,3,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Reasoned claim,True,True,3,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Reasoned claim,True,True,3,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Reasoned claim,True,True,3,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Reasoned claim,True,True,3,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Reasoned claim,True,True,3,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Reasoned claim,True,True,3,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Reasoned claim,True,True,3,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Reasoned claim,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Reasoned claim,,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Reasoned claim,True,True,3,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Reasoned claim,False,True,3,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Reasoned claim,True,True,3,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Reasoned claim,True,True,3,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Reasoned claim,True,True,3,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Reasoned claim,True,True,3,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Reasoned claim,True,True,3,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Reasoned claim,True,True,3,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Reasoned claim,True,True,3,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Reasoned claim,True,True,3,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Reasoned claim,False,True,2,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Reasoned claim,True,True,3,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Reasoned claim,,True,3,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Reasoned claim,True,True,3,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Reasoned claim,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Reasoned claim,True,True,3,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Reasoned claim,True,True,3,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Reasoned claim,True,True,3,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Reasoned claim,True,True,3,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Reasoned claim,True,True,3,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Reasoned claim,False,True,3,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Constructive engagement,True,True,3,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Constructive engagement,True,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Constructive engagement,True,True,3,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Constructive engagement,True,True,3,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Constructive engagement,True,True,3,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Constructive engagement,True,True,3,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Constructive engagement,True,True,3,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Constructive engagement,True,True,3,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Constructive engagement,True,True,3,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Constructive engagement,True,True,3,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Constructive engagement,True,True,3,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Constructive engagement,True,True,3,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Constructive engagement,True,True,3,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Constructive engagement,True,True,3,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Constructive engagement,True,True,3,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Constructive engagement,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Constructive engagement,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Constructive engagement,True,True,3,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Constructive engagement,False,True,3,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Constructive engagement,True,True,3,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Constructive engagement,True,True,3,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Constructive engagement,True,True,3,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Constructive engagement,True,True,3,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Constructive engagement,True,True,3,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Constructive engagement,True,True,3,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Constructive engagement,True,True,3,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Constructive engagement,True,True,3,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Constructive engagement,True,True,3,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Constructive engagement,True,True,3,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Constructive engagement,True,True,3,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Constructive engagement,True,True,3,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Constructive engagement,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Constructive engagement,False,True,3,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Constructive engagement,True,True,3,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Constructive engagement,True,True,3,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Constructive engagement,True,True,3,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Constructive engagement,True,True,3,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Constructive engagement,False,True,3,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Deceptive falsehood,False,True,3,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Deceptive falsehood,True,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Deceptive falsehood,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Deceptive falsehood,True,True,3,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Deceptive falsehood,True,True,3,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Deceptive falsehood,True,True,3,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Deceptive falsehood,True,True,3,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Deceptive falsehood,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Deceptive falsehood,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Deceptive falsehood,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Deceptive falsehood,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Deceptive falsehood,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Deceptive falsehood,True,True,3,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Deceptive falsehood,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Deceptive falsehood,True,True,3,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Deceptive falsehood,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Deceptive falsehood,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Deceptive falsehood,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Deceptive falsehood,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Deceptive falsehood,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Deceptive falsehood,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Deceptive falsehood,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Deceptive falsehood,False,False,1,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Deceptive falsehood,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Deceptive falsehood,True,True,2,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Deceptive falsehood,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Deceptive falsehood,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Deceptive falsehood,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Deceptive falsehood,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Deceptive falsehood,True,True,3,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Deceptive falsehood,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Deceptive falsehood,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Deceptive falsehood,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Deceptive falsehood,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Deceptive falsehood,True,True,3,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Deceptive falsehood,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Deceptive falsehood,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Deceptive falsehood,False,True,3,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Feigning ignorance or innocence,False,True,3,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Feigning ignorance or innocence,True,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Feigning ignorance or innocence,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Feigning ignorance or innocence,True,True,3,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Feigning ignorance or innocence,True,True,3,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Feigning ignorance or innocence,True,True,3,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Feigning ignorance or innocence,True,True,3,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Feigning ignorance or innocence,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Feigning ignorance or innocence,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Feigning ignorance or innocence,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Feigning ignorance or innocence,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Feigning ignorance or innocence,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Feigning ignorance or innocence,True,True,3,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Feigning ignorance or innocence,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Feigning ignorance or innocence,True,True,3,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Feigning ignorance or innocence,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Feigning ignorance or innocence,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Feigning ignorance or innocence,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Feigning ignorance or innocence,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Feigning ignorance or innocence,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Feigning ignorance or innocence,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Feigning ignorance or innocence,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Feigning ignorance or innocence,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Feigning ignorance or innocence,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Feigning ignorance or innocence,True,True,3,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Feigning ignorance or innocence,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Feigning ignorance or innocence,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Feigning ignorance or innocence,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Feigning ignorance or innocence,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Feigning ignorance or innocence,False,True,3,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Feigning ignorance or innocence,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Feigning ignorance or innocence,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Feigning ignorance or innocence,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Feigning ignorance or innocence,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Feigning ignorance or innocence,False,True,3,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Feigning ignorance or innocence,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Feigning ignorance or innocence,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Feigning ignorance or innocence,True,True,3,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Memory/perception manipulation,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Memory/perception manipulation,True,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Memory/perception manipulation,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Memory/perception manipulation,False,True,3,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Memory/perception manipulation,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Memory/perception manipulation,True,True,3,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Memory/perception manipulation,True,False,1,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Memory/perception manipulation,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Memory/perception manipulation,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Memory/perception manipulation,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Memory/perception manipulation,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Memory/perception manipulation,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Memory/perception manipulation,True,True,3,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Memory/perception manipulation,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Memory/perception manipulation,False,True,3,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Memory/perception manipulation,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Memory/perception manipulation,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Memory/perception manipulation,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Memory/perception manipulation,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Memory/perception manipulation,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Memory/perception manipulation,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Memory/perception manipulation,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Memory/perception manipulation,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Memory/perception manipulation,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Memory/perception manipulation,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Memory/perception manipulation,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Memory/perception manipulation,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Memory/perception manipulation,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Memory/perception manipulation,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Memory/perception manipulation,True,True,3,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Memory/perception manipulation,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Memory/perception manipulation,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Memory/perception manipulation,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Memory/perception manipulation,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Memory/perception manipulation,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Memory/perception manipulation,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Memory/perception manipulation,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Memory/perception manipulation,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Withholding relevant information,True,True,3,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Withholding relevant information,True,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Withholding relevant information,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Withholding relevant information,True,True,3,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Withholding relevant information,True,True,3,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Withholding relevant information,True,True,3,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Withholding relevant information,True,True,3,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Withholding relevant information,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Withholding relevant information,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Withholding relevant information,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Withholding relevant information,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Withholding relevant information,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Withholding relevant information,False,True,3,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Withholding relevant information,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Withholding relevant information,False,False,1,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Withholding relevant information,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Withholding relevant information,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Withholding relevant information,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Withholding relevant information,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Withholding relevant information,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Withholding relevant information,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Withholding relevant information,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Withholding relevant information,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Withholding relevant information,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Withholding relevant information,True,True,3,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Withholding relevant information,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Withholding relevant information,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Withholding relevant information,False,False,1,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Withholding relevant information,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Withholding relevant information,False,True,3,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Withholding relevant information,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Withholding relevant information,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Withholding relevant information,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Withholding relevant information,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Withholding relevant information,True,True,3,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Withholding relevant information,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Withholding relevant information,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Withholding relevant information,True,True,3,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Uninformative alignment,False,False,1,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Uninformative alignment,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Uninformative alignment,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Uninformative alignment,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Uninformative alignment,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Uninformative alignment,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Uninformative alignment,False,False,1,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Uninformative alignment,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Uninformative alignment,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Uninformative alignment,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Uninformative alignment,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Uninformative alignment,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Uninformative alignment,True,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Uninformative alignment,True,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Uninformative alignment,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Uninformative alignment,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Uninformative alignment,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Uninformative alignment,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Uninformative alignment,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Uninformative alignment,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Uninformative alignment,False,False,1,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Uninformative alignment,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Uninformative alignment,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Uninformative alignment,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Uninformative alignment,True,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Uninformative alignment,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Uninformative alignment,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Uninformative alignment,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Uninformative alignment,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Uninformative alignment,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Uninformative alignment,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Uninformative alignment,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Uninformative alignment,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Uninformative alignment,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Uninformative alignment,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Uninformative alignment,True,True,2,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Uninformative alignment,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Uninformative alignment,True,False,1,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Minimal non-commitment,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Minimal non-commitment,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Minimal non-commitment,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Minimal non-commitment,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Minimal non-commitment,True,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Minimal non-commitment,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Minimal non-commitment,False,False,1,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Minimal non-commitment,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Minimal non-commitment,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Minimal non-commitment,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Minimal non-commitment,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Minimal non-commitment,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Minimal non-commitment,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Minimal non-commitment,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Minimal non-commitment,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Minimal non-commitment,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Minimal non-commitment,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Minimal non-commitment,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Minimal non-commitment,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Minimal non-commitment,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Minimal non-commitment,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Minimal non-commitment,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Minimal non-commitment,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Minimal non-commitment,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Minimal non-commitment,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Minimal non-commitment,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Minimal non-commitment,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Minimal non-commitment,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Minimal non-commitment,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Minimal non-commitment,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Minimal non-commitment,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Minimal non-commitment,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Minimal non-commitment,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Minimal non-commitment,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Minimal non-commitment,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Minimal non-commitment,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Minimal non-commitment,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Minimal non-commitment,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Deflection,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Deflection,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Deflection,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Deflection,True,True,3,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Deflection,True,True,2,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Deflection,True,True,3,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Deflection,True,True,2,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Deflection,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Deflection,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Deflection,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Deflection,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Deflection,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Deflection,True,True,2,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Deflection,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Deflection,True,True,3,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Deflection,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Deflection,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Deflection,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Deflection,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Deflection,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Deflection,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Deflection,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Deflection,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Deflection,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Deflection,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Deflection,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Deflection,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Deflection,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Deflection,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Deflection,True,False,1,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Deflection,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Deflection,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Deflection,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Deflection,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Deflection,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Deflection,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Deflection,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Deflection,True,True,2,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Unsupported accusation,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Unsupported accusation,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Unsupported accusation,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Unsupported accusation,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Unsupported accusation,True,True,2,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Unsupported accusation,True,True,3,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Unsupported accusation,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Unsupported accusation,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Unsupported accusation,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Unsupported accusation,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Unsupported accusation,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Unsupported accusation,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Unsupported accusation,True,True,2,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Unsupported accusation,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Unsupported accusation,False,False,1,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Unsupported accusation,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Unsupported accusation,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Unsupported accusation,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Unsupported accusation,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Unsupported accusation,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Unsupported accusation,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Unsupported accusation,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Unsupported accusation,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Unsupported accusation,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Unsupported accusation,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Unsupported accusation,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Unsupported accusation,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Unsupported accusation,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Unsupported accusation,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Unsupported accusation,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Unsupported accusation,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Unsupported accusation,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Unsupported accusation,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Unsupported accusation,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Unsupported accusation,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Unsupported accusation,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Unsupported accusation,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Unsupported accusation,True,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Vagueness or obscuring communication,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Vagueness or obscuring communication,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Vagueness or obscuring communication,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Vagueness or obscuring communication,False,True,2,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Vagueness or obscuring communication,True,False,1,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Vagueness or obscuring communication,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Vagueness or obscuring communication,False,True,2,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Vagueness or obscuring communication,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Vagueness or obscuring communication,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Vagueness or obscuring communication,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Vagueness or obscuring communication,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Vagueness or obscuring communication,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Vagueness or obscuring communication,True,False,1,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Vagueness or obscuring communication,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Vagueness or obscuring communication,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Vagueness or obscuring communication,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Vagueness or obscuring communication,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Vagueness or obscuring communication,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Vagueness or obscuring communication,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Vagueness or obscuring communication,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Vagueness or obscuring communication,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Vagueness or obscuring communication,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Vagueness or obscuring communication,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Vagueness or obscuring communication,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Vagueness or obscuring communication,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Vagueness or obscuring communication,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Vagueness or obscuring communication,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Vagueness or obscuring communication,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Vagueness or obscuring communication,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Vagueness or obscuring communication,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Vagueness or obscuring communication,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Vagueness or obscuring communication,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Vagueness or obscuring communication,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Vagueness or obscuring communication,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Vagueness or obscuring communication,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Vagueness or obscuring communication,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Vagueness or obscuring communication,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Vagueness or obscuring communication,True,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Playful / nonliteral communication,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Playful / nonliteral communication,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Playful / nonliteral communication,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Playful / nonliteral communication,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Playful / nonliteral communication,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Playful / nonliteral communication,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Playful / nonliteral communication,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Playful / nonliteral communication,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Playful / nonliteral communication,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Playful / nonliteral communication,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Playful / nonliteral communication,False,False,0,3
+matched_original3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Playful / nonliteral communication,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Playful / nonliteral communication,,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Playful / nonliteral communication,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Playful / nonliteral communication,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Playful / nonliteral communication,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Playful / nonliteral communication,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Playful / nonliteral communication,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Playful / nonliteral communication,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Playful / nonliteral communication,False,False,0,3
+matched_original3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Playful / nonliteral communication,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Playful / nonliteral communication,False,False,0,3
+matched_original3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Playful / nonliteral communication,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Playful / nonliteral communication,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Playful / nonliteral communication,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Playful / nonliteral communication,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Playful / nonliteral communication,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Playful / nonliteral communication,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Playful / nonliteral communication,False,False,0,3
+matched_original3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Playful / nonliteral communication,False,False,0,3
+matched_original3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Playful / nonliteral communication,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Playful / nonliteral communication,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Playful / nonliteral communication,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Playful / nonliteral communication,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Playful / nonliteral communication,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Playful / nonliteral communication,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Playful / nonliteral communication,False,False,0,3
+matched_original3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Playful / nonliteral communication,False,False,0,3
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Fact-sharing,True,True,5,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,2,Fact-sharing,True,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,1,Fact-sharing,False,True,3,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Fact-sharing,False,True,5,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Fact-sharing,True,True,5,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Fact-sharing,False,True,5,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Fact-sharing,True,True,5,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Fact-sharing,True,True,5,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Fact-sharing,True,True,5,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Fact-sharing,True,True,5,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Fact-sharing,True,True,5,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Fact-sharing,True,True,5,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Fact-sharing,True,True,5,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Fact-sharing,True,True,5,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Fact-sharing,True,True,5,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Fact-sharing,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Fact-sharing,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Fact-sharing,True,True,5,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Fact-sharing,True,True,5,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Fact-sharing,True,True,5,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Fact-sharing,True,True,5,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Fact-sharing,True,True,5,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Fact-sharing,True,True,5,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Fact-sharing,True,True,5,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,6,Fact-sharing,True,True,5,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,4,Fact-sharing,True,True,5,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,5,Fact-sharing,True,True,4,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Fact-sharing,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Fact-sharing,True,True,5,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Fact-sharing,True,True,5,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,7,Fact-sharing,True,True,5,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Fact-sharing,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Fact-sharing,True,True,5,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Fact-sharing,True,True,5,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Fact-sharing,True,True,5,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Fact-sharing,True,True,5,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Fact-sharing,True,True,5,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Fact-sharing,True,True,5,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Reasoned claim,True,True,5,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,2,Reasoned claim,True,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,1,Reasoned claim,True,True,5,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Reasoned claim,True,True,5,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Reasoned claim,True,True,5,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Reasoned claim,False,True,5,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Reasoned claim,True,True,5,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Reasoned claim,True,True,5,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Reasoned claim,True,True,5,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Reasoned claim,True,True,5,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Reasoned claim,True,True,5,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Reasoned claim,True,True,5,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Reasoned claim,True,True,5,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Reasoned claim,True,True,5,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Reasoned claim,True,True,5,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Reasoned claim,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Reasoned claim,,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Reasoned claim,True,True,5,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Reasoned claim,False,True,5,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Reasoned claim,True,True,5,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Reasoned claim,True,True,5,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Reasoned claim,True,True,5,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Reasoned claim,True,True,5,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Reasoned claim,True,True,5,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,6,Reasoned claim,True,True,5,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,4,Reasoned claim,True,True,5,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,5,Reasoned claim,True,True,5,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Reasoned claim,False,True,3,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Reasoned claim,True,True,5,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Reasoned claim,,True,5,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,7,Reasoned claim,True,True,5,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Reasoned claim,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Reasoned claim,True,True,5,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Reasoned claim,True,True,5,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Reasoned claim,True,True,5,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Reasoned claim,True,True,5,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Reasoned claim,True,True,5,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Reasoned claim,False,True,5,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Constructive engagement,True,True,5,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,2,Constructive engagement,True,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,1,Constructive engagement,True,True,5,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Constructive engagement,True,True,5,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Constructive engagement,True,True,5,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Constructive engagement,True,True,5,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Constructive engagement,True,True,5,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Constructive engagement,True,True,5,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Constructive engagement,True,True,5,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Constructive engagement,True,True,5,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Constructive engagement,True,True,5,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Constructive engagement,True,True,5,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Constructive engagement,True,True,5,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Constructive engagement,True,True,5,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Constructive engagement,True,True,4,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Constructive engagement,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Constructive engagement,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Constructive engagement,True,True,5,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Constructive engagement,False,True,5,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Constructive engagement,True,True,5,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Constructive engagement,True,True,5,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Constructive engagement,True,True,5,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Constructive engagement,True,True,5,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Constructive engagement,True,True,5,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,6,Constructive engagement,True,True,5,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,4,Constructive engagement,True,True,5,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,5,Constructive engagement,True,True,5,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Constructive engagement,True,True,5,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Constructive engagement,True,True,5,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Constructive engagement,True,True,5,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,7,Constructive engagement,True,True,5,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Constructive engagement,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Constructive engagement,False,True,5,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Constructive engagement,True,True,5,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Constructive engagement,True,True,5,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Constructive engagement,True,True,5,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Constructive engagement,True,True,5,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Constructive engagement,False,True,5,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Deceptive falsehood,False,True,3,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,2,Deceptive falsehood,True,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,1,Deceptive falsehood,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Deceptive falsehood,True,True,4,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Deceptive falsehood,True,True,5,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Deceptive falsehood,True,True,5,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Deceptive falsehood,True,True,4,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Deceptive falsehood,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Deceptive falsehood,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Deceptive falsehood,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Deceptive falsehood,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Deceptive falsehood,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Deceptive falsehood,True,True,5,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Deceptive falsehood,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Deceptive falsehood,True,True,5,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Deceptive falsehood,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Deceptive falsehood,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Deceptive falsehood,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Deceptive falsehood,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Deceptive falsehood,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Deceptive falsehood,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Deceptive falsehood,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Deceptive falsehood,False,False,1,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Deceptive falsehood,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,6,Deceptive falsehood,True,False,2,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,4,Deceptive falsehood,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,5,Deceptive falsehood,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Deceptive falsehood,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Deceptive falsehood,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Deceptive falsehood,True,True,4,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,7,Deceptive falsehood,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Deceptive falsehood,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Deceptive falsehood,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Deceptive falsehood,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Deceptive falsehood,True,True,3,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Deceptive falsehood,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Deceptive falsehood,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Deceptive falsehood,False,True,5,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Feigning ignorance or innocence,False,True,3,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,2,Feigning ignorance or innocence,True,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,1,Feigning ignorance or innocence,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Feigning ignorance or innocence,True,True,5,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Feigning ignorance or innocence,True,True,5,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Feigning ignorance or innocence,True,True,5,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Feigning ignorance or innocence,True,True,4,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Feigning ignorance or innocence,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Feigning ignorance or innocence,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Feigning ignorance or innocence,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Feigning ignorance or innocence,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Feigning ignorance or innocence,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Feigning ignorance or innocence,True,True,4,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Feigning ignorance or innocence,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Feigning ignorance or innocence,True,True,5,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Feigning ignorance or innocence,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Feigning ignorance or innocence,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Feigning ignorance or innocence,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Feigning ignorance or innocence,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Feigning ignorance or innocence,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Feigning ignorance or innocence,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Feigning ignorance or innocence,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Feigning ignorance or innocence,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Feigning ignorance or innocence,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,6,Feigning ignorance or innocence,True,True,3,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,4,Feigning ignorance or innocence,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,5,Feigning ignorance or innocence,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Feigning ignorance or innocence,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Feigning ignorance or innocence,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Feigning ignorance or innocence,False,True,4,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,7,Feigning ignorance or innocence,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Feigning ignorance or innocence,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Feigning ignorance or innocence,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Feigning ignorance or innocence,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Feigning ignorance or innocence,False,True,3,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Feigning ignorance or innocence,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Feigning ignorance or innocence,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Feigning ignorance or innocence,True,True,5,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Memory/perception manipulation,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,2,Memory/perception manipulation,True,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,1,Memory/perception manipulation,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Memory/perception manipulation,False,True,3,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Memory/perception manipulation,False,False,1,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Memory/perception manipulation,True,True,4,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Memory/perception manipulation,True,False,1,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Memory/perception manipulation,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Memory/perception manipulation,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Memory/perception manipulation,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Memory/perception manipulation,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Memory/perception manipulation,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Memory/perception manipulation,True,True,5,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Memory/perception manipulation,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Memory/perception manipulation,False,True,4,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Memory/perception manipulation,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Memory/perception manipulation,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Memory/perception manipulation,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Memory/perception manipulation,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Memory/perception manipulation,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Memory/perception manipulation,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Memory/perception manipulation,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Memory/perception manipulation,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Memory/perception manipulation,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,6,Memory/perception manipulation,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,4,Memory/perception manipulation,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,5,Memory/perception manipulation,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Memory/perception manipulation,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Memory/perception manipulation,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Memory/perception manipulation,True,True,5,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,7,Memory/perception manipulation,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Memory/perception manipulation,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Memory/perception manipulation,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Memory/perception manipulation,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Memory/perception manipulation,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Memory/perception manipulation,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Memory/perception manipulation,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Memory/perception manipulation,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Withholding relevant information,True,True,4,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,2,Withholding relevant information,True,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,1,Withholding relevant information,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Withholding relevant information,True,True,5,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Withholding relevant information,True,True,5,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Withholding relevant information,True,True,5,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Withholding relevant information,True,True,4,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Withholding relevant information,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Withholding relevant information,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Withholding relevant information,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Withholding relevant information,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Withholding relevant information,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Withholding relevant information,False,True,4,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Withholding relevant information,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Withholding relevant information,False,True,3,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Withholding relevant information,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Withholding relevant information,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Withholding relevant information,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Withholding relevant information,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Withholding relevant information,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Withholding relevant information,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Withholding relevant information,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Withholding relevant information,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Withholding relevant information,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,6,Withholding relevant information,True,True,3,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,4,Withholding relevant information,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,5,Withholding relevant information,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Withholding relevant information,False,False,1,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Withholding relevant information,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Withholding relevant information,False,True,5,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,7,Withholding relevant information,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Withholding relevant information,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Withholding relevant information,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Withholding relevant information,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Withholding relevant information,True,True,4,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Withholding relevant information,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Withholding relevant information,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Withholding relevant information,True,True,5,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Uninformative alignment,False,False,2,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,2,Uninformative alignment,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,1,Uninformative alignment,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Uninformative alignment,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Uninformative alignment,False,False,1,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Uninformative alignment,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Uninformative alignment,False,False,2,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Uninformative alignment,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Uninformative alignment,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Uninformative alignment,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Uninformative alignment,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Uninformative alignment,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Uninformative alignment,True,False,1,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Uninformative alignment,True,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Uninformative alignment,False,False,1,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Uninformative alignment,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Uninformative alignment,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Uninformative alignment,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Uninformative alignment,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Uninformative alignment,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Uninformative alignment,False,False,1,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Uninformative alignment,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Uninformative alignment,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Uninformative alignment,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,6,Uninformative alignment,True,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,4,Uninformative alignment,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,5,Uninformative alignment,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Uninformative alignment,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Uninformative alignment,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Uninformative alignment,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,7,Uninformative alignment,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Uninformative alignment,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Uninformative alignment,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Uninformative alignment,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Uninformative alignment,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Uninformative alignment,True,True,3,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Uninformative alignment,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Uninformative alignment,True,False,1,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Minimal non-commitment,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,2,Minimal non-commitment,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,1,Minimal non-commitment,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Minimal non-commitment,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Minimal non-commitment,True,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Minimal non-commitment,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Minimal non-commitment,False,False,1,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Minimal non-commitment,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Minimal non-commitment,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Minimal non-commitment,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Minimal non-commitment,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Minimal non-commitment,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Minimal non-commitment,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Minimal non-commitment,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Minimal non-commitment,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Minimal non-commitment,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Minimal non-commitment,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Minimal non-commitment,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Minimal non-commitment,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Minimal non-commitment,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Minimal non-commitment,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Minimal non-commitment,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Minimal non-commitment,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Minimal non-commitment,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,6,Minimal non-commitment,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,4,Minimal non-commitment,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,5,Minimal non-commitment,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Minimal non-commitment,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Minimal non-commitment,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Minimal non-commitment,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,7,Minimal non-commitment,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Minimal non-commitment,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Minimal non-commitment,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Minimal non-commitment,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Minimal non-commitment,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Minimal non-commitment,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Minimal non-commitment,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Minimal non-commitment,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Deflection,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,2,Deflection,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,1,Deflection,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Deflection,True,True,5,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Deflection,True,True,4,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Deflection,True,True,5,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Deflection,True,True,3,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Deflection,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Deflection,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Deflection,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Deflection,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Deflection,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Deflection,True,True,4,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Deflection,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Deflection,True,True,5,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Deflection,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Deflection,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Deflection,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Deflection,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Deflection,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Deflection,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Deflection,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Deflection,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Deflection,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,6,Deflection,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,4,Deflection,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,5,Deflection,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Deflection,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Deflection,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Deflection,True,False,1,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,7,Deflection,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Deflection,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Deflection,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Deflection,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Deflection,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Deflection,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Deflection,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Deflection,True,False,2,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Unsupported accusation,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,2,Unsupported accusation,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,1,Unsupported accusation,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Unsupported accusation,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Unsupported accusation,True,True,4,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Unsupported accusation,True,True,5,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Unsupported accusation,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Unsupported accusation,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Unsupported accusation,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Unsupported accusation,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Unsupported accusation,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Unsupported accusation,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Unsupported accusation,True,True,4,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Unsupported accusation,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Unsupported accusation,False,False,2,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Unsupported accusation,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Unsupported accusation,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Unsupported accusation,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Unsupported accusation,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Unsupported accusation,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Unsupported accusation,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Unsupported accusation,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Unsupported accusation,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Unsupported accusation,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,6,Unsupported accusation,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,4,Unsupported accusation,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,5,Unsupported accusation,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Unsupported accusation,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Unsupported accusation,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Unsupported accusation,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,7,Unsupported accusation,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Unsupported accusation,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Unsupported accusation,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Unsupported accusation,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Unsupported accusation,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Unsupported accusation,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Unsupported accusation,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Unsupported accusation,True,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Vagueness or obscuring communication,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,2,Vagueness or obscuring communication,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,1,Vagueness or obscuring communication,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Vagueness or obscuring communication,False,False,2,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Vagueness or obscuring communication,True,False,2,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Vagueness or obscuring communication,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Vagueness or obscuring communication,False,True,3,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Vagueness or obscuring communication,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Vagueness or obscuring communication,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Vagueness or obscuring communication,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Vagueness or obscuring communication,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Vagueness or obscuring communication,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Vagueness or obscuring communication,True,False,2,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Vagueness or obscuring communication,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Vagueness or obscuring communication,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Vagueness or obscuring communication,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Vagueness or obscuring communication,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Vagueness or obscuring communication,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Vagueness or obscuring communication,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Vagueness or obscuring communication,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Vagueness or obscuring communication,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Vagueness or obscuring communication,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Vagueness or obscuring communication,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Vagueness or obscuring communication,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,6,Vagueness or obscuring communication,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,4,Vagueness or obscuring communication,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,5,Vagueness or obscuring communication,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Vagueness or obscuring communication,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Vagueness or obscuring communication,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Vagueness or obscuring communication,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,7,Vagueness or obscuring communication,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Vagueness or obscuring communication,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Vagueness or obscuring communication,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Vagueness or obscuring communication,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Vagueness or obscuring communication,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Vagueness or obscuring communication,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Vagueness or obscuring communication,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Vagueness or obscuring communication,True,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Playful / nonliteral communication,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,2,Playful / nonliteral communication,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,1,Playful / nonliteral communication,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Playful / nonliteral communication,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Playful / nonliteral communication,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Playful / nonliteral communication,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Playful / nonliteral communication,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Playful / nonliteral communication,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Playful / nonliteral communication,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Playful / nonliteral communication,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Playful / nonliteral communication,False,False,0,5
+expanded5,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Playful / nonliteral communication,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Playful / nonliteral communication,,False,1,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Playful / nonliteral communication,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Playful / nonliteral communication,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Playful / nonliteral communication,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Playful / nonliteral communication,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Playful / nonliteral communication,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Playful / nonliteral communication,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Playful / nonliteral communication,False,False,0,5
+expanded5,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Playful / nonliteral communication,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Playful / nonliteral communication,False,False,0,5
+expanded5,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Playful / nonliteral communication,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Playful / nonliteral communication,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,6,Playful / nonliteral communication,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,4,Playful / nonliteral communication,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,5,Playful / nonliteral communication,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Playful / nonliteral communication,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Playful / nonliteral communication,False,False,0,5
+expanded5,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Playful / nonliteral communication,False,False,0,5
+expanded5,af3ae88d-1658-4107-8d64-d963f70d8190,7,Playful / nonliteral communication,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Playful / nonliteral communication,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Playful / nonliteral communication,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Playful / nonliteral communication,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Playful / nonliteral communication,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Playful / nonliteral communication,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Playful / nonliteral communication,False,False,0,5
+expanded5,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Playful / nonliteral communication,False,False,0,5
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Fact-sharing,True,True,3,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Fact-sharing,True,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Fact-sharing,False,False,1,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Fact-sharing,False,True,3,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Fact-sharing,True,True,3,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Fact-sharing,False,True,3,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Fact-sharing,True,True,3,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Fact-sharing,True,True,3,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Fact-sharing,True,True,3,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Fact-sharing,True,True,3,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Fact-sharing,True,True,3,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Fact-sharing,True,True,3,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Fact-sharing,True,True,3,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Fact-sharing,True,True,3,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Fact-sharing,True,True,3,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Fact-sharing,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Fact-sharing,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Fact-sharing,True,True,3,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Fact-sharing,True,True,3,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Fact-sharing,True,True,3,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Fact-sharing,True,True,3,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Fact-sharing,True,True,3,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Fact-sharing,True,True,3,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Fact-sharing,True,True,3,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Fact-sharing,True,True,3,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Fact-sharing,True,True,3,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Fact-sharing,True,True,3,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Fact-sharing,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Fact-sharing,True,True,3,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Fact-sharing,True,True,3,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Fact-sharing,True,True,3,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Fact-sharing,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Fact-sharing,True,True,3,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Fact-sharing,True,True,3,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Fact-sharing,True,True,3,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Fact-sharing,True,True,3,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Fact-sharing,True,True,3,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Fact-sharing,True,True,3,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Reasoned claim,True,True,3,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Reasoned claim,True,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Reasoned claim,True,True,3,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Reasoned claim,True,True,3,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Reasoned claim,True,True,3,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Reasoned claim,False,True,3,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Reasoned claim,True,True,3,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Reasoned claim,True,True,3,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Reasoned claim,True,True,3,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Reasoned claim,True,True,3,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Reasoned claim,True,True,3,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Reasoned claim,True,True,3,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Reasoned claim,True,True,3,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Reasoned claim,True,True,3,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Reasoned claim,True,True,3,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Reasoned claim,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Reasoned claim,,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Reasoned claim,True,True,3,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Reasoned claim,False,True,2,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Reasoned claim,True,True,3,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Reasoned claim,True,True,3,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Reasoned claim,True,True,3,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Reasoned claim,True,True,3,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Reasoned claim,True,True,3,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Reasoned claim,True,True,3,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Reasoned claim,True,True,3,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Reasoned claim,True,True,3,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Reasoned claim,False,False,1,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Reasoned claim,True,True,3,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Reasoned claim,,True,3,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Reasoned claim,True,True,3,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Reasoned claim,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Reasoned claim,True,True,3,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Reasoned claim,True,True,3,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Reasoned claim,True,True,3,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Reasoned claim,True,True,3,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Reasoned claim,True,True,3,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Reasoned claim,False,True,3,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Constructive engagement,True,True,3,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Constructive engagement,True,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Constructive engagement,True,True,3,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Constructive engagement,True,True,3,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Constructive engagement,True,True,3,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Constructive engagement,True,True,3,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Constructive engagement,True,True,3,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Constructive engagement,True,True,3,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Constructive engagement,True,True,3,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Constructive engagement,True,True,3,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Constructive engagement,True,True,3,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Constructive engagement,True,True,3,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Constructive engagement,True,True,3,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Constructive engagement,True,True,3,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Constructive engagement,True,True,3,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Constructive engagement,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Constructive engagement,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Constructive engagement,True,True,3,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Constructive engagement,False,True,3,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Constructive engagement,True,True,3,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Constructive engagement,True,True,3,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Constructive engagement,True,True,3,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Constructive engagement,True,True,3,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Constructive engagement,True,True,3,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Constructive engagement,True,True,3,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Constructive engagement,True,True,3,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Constructive engagement,True,True,3,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Constructive engagement,True,True,3,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Constructive engagement,True,True,3,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Constructive engagement,True,True,3,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Constructive engagement,True,True,3,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Constructive engagement,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Constructive engagement,False,True,3,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Constructive engagement,True,True,3,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Constructive engagement,True,True,3,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Constructive engagement,True,True,3,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Constructive engagement,True,True,3,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Constructive engagement,False,True,3,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Deceptive falsehood,False,True,2,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Deceptive falsehood,True,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Deceptive falsehood,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Deceptive falsehood,True,True,3,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Deceptive falsehood,True,True,3,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Deceptive falsehood,True,True,3,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Deceptive falsehood,True,True,2,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Deceptive falsehood,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Deceptive falsehood,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Deceptive falsehood,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Deceptive falsehood,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Deceptive falsehood,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Deceptive falsehood,True,True,3,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Deceptive falsehood,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Deceptive falsehood,True,True,3,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Deceptive falsehood,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Deceptive falsehood,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Deceptive falsehood,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Deceptive falsehood,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Deceptive falsehood,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Deceptive falsehood,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Deceptive falsehood,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Deceptive falsehood,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Deceptive falsehood,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Deceptive falsehood,True,True,2,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Deceptive falsehood,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Deceptive falsehood,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Deceptive falsehood,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Deceptive falsehood,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Deceptive falsehood,True,True,3,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Deceptive falsehood,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Deceptive falsehood,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Deceptive falsehood,False,False,1,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Deceptive falsehood,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Deceptive falsehood,True,True,2,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Deceptive falsehood,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Deceptive falsehood,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Deceptive falsehood,False,True,3,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Feigning ignorance or innocence,False,True,2,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Feigning ignorance or innocence,True,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Feigning ignorance or innocence,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Feigning ignorance or innocence,True,True,3,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Feigning ignorance or innocence,True,True,3,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Feigning ignorance or innocence,True,True,3,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Feigning ignorance or innocence,True,True,2,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Feigning ignorance or innocence,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Feigning ignorance or innocence,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Feigning ignorance or innocence,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Feigning ignorance or innocence,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Feigning ignorance or innocence,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Feigning ignorance or innocence,True,True,2,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Feigning ignorance or innocence,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Feigning ignorance or innocence,True,True,2,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Feigning ignorance or innocence,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Feigning ignorance or innocence,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Feigning ignorance or innocence,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Feigning ignorance or innocence,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Feigning ignorance or innocence,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Feigning ignorance or innocence,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Feigning ignorance or innocence,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Feigning ignorance or innocence,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Feigning ignorance or innocence,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Feigning ignorance or innocence,True,False,1,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Feigning ignorance or innocence,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Feigning ignorance or innocence,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Feigning ignorance or innocence,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Feigning ignorance or innocence,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Feigning ignorance or innocence,False,True,3,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Feigning ignorance or innocence,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Feigning ignorance or innocence,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Feigning ignorance or innocence,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Feigning ignorance or innocence,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Feigning ignorance or innocence,False,True,2,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Feigning ignorance or innocence,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Feigning ignorance or innocence,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Feigning ignorance or innocence,True,True,3,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Memory/perception manipulation,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Memory/perception manipulation,True,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Memory/perception manipulation,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Memory/perception manipulation,False,False,1,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Memory/perception manipulation,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Memory/perception manipulation,True,True,2,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Memory/perception manipulation,True,True,2,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Memory/perception manipulation,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Memory/perception manipulation,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Memory/perception manipulation,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Memory/perception manipulation,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Memory/perception manipulation,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Memory/perception manipulation,True,True,2,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Memory/perception manipulation,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Memory/perception manipulation,False,True,3,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Memory/perception manipulation,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Memory/perception manipulation,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Memory/perception manipulation,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Memory/perception manipulation,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Memory/perception manipulation,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Memory/perception manipulation,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Memory/perception manipulation,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Memory/perception manipulation,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Memory/perception manipulation,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Memory/perception manipulation,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Memory/perception manipulation,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Memory/perception manipulation,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Memory/perception manipulation,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Memory/perception manipulation,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Memory/perception manipulation,True,True,3,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Memory/perception manipulation,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Memory/perception manipulation,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Memory/perception manipulation,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Memory/perception manipulation,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Memory/perception manipulation,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Memory/perception manipulation,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Memory/perception manipulation,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Memory/perception manipulation,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Withholding relevant information,True,True,3,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Withholding relevant information,True,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Withholding relevant information,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Withholding relevant information,True,True,3,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Withholding relevant information,True,True,3,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Withholding relevant information,True,True,3,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Withholding relevant information,True,True,2,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Withholding relevant information,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Withholding relevant information,False,False,1,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Withholding relevant information,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Withholding relevant information,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Withholding relevant information,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Withholding relevant information,False,True,2,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Withholding relevant information,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Withholding relevant information,False,False,1,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Withholding relevant information,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Withholding relevant information,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Withholding relevant information,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Withholding relevant information,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Withholding relevant information,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Withholding relevant information,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Withholding relevant information,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Withholding relevant information,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Withholding relevant information,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Withholding relevant information,True,True,2,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Withholding relevant information,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Withholding relevant information,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Withholding relevant information,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Withholding relevant information,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Withholding relevant information,False,True,3,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Withholding relevant information,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Withholding relevant information,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Withholding relevant information,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Withholding relevant information,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Withholding relevant information,True,True,3,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Withholding relevant information,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Withholding relevant information,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Withholding relevant information,True,True,3,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Uninformative alignment,False,True,2,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Uninformative alignment,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Uninformative alignment,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Uninformative alignment,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Uninformative alignment,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Uninformative alignment,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Uninformative alignment,False,False,1,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Uninformative alignment,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Uninformative alignment,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Uninformative alignment,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Uninformative alignment,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Uninformative alignment,False,False,1,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Uninformative alignment,True,False,1,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Uninformative alignment,True,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Uninformative alignment,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Uninformative alignment,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Uninformative alignment,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Uninformative alignment,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Uninformative alignment,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Uninformative alignment,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Uninformative alignment,False,False,1,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Uninformative alignment,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Uninformative alignment,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Uninformative alignment,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Uninformative alignment,True,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Uninformative alignment,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Uninformative alignment,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Uninformative alignment,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Uninformative alignment,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Uninformative alignment,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Uninformative alignment,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Uninformative alignment,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Uninformative alignment,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Uninformative alignment,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Uninformative alignment,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Uninformative alignment,True,True,2,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Uninformative alignment,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Uninformative alignment,True,False,1,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Minimal non-commitment,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Minimal non-commitment,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Minimal non-commitment,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Minimal non-commitment,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Minimal non-commitment,True,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Minimal non-commitment,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Minimal non-commitment,False,False,1,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Minimal non-commitment,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Minimal non-commitment,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Minimal non-commitment,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Minimal non-commitment,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Minimal non-commitment,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Minimal non-commitment,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Minimal non-commitment,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Minimal non-commitment,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Minimal non-commitment,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Minimal non-commitment,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Minimal non-commitment,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Minimal non-commitment,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Minimal non-commitment,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Minimal non-commitment,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Minimal non-commitment,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Minimal non-commitment,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Minimal non-commitment,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Minimal non-commitment,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Minimal non-commitment,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Minimal non-commitment,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Minimal non-commitment,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Minimal non-commitment,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Minimal non-commitment,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Minimal non-commitment,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Minimal non-commitment,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Minimal non-commitment,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Minimal non-commitment,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Minimal non-commitment,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Minimal non-commitment,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Minimal non-commitment,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Minimal non-commitment,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Deflection,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Deflection,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Deflection,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Deflection,True,True,3,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Deflection,True,True,3,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Deflection,True,True,3,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Deflection,True,False,1,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Deflection,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Deflection,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Deflection,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Deflection,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Deflection,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Deflection,True,True,3,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Deflection,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Deflection,True,True,3,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Deflection,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Deflection,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Deflection,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Deflection,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Deflection,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Deflection,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Deflection,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Deflection,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Deflection,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Deflection,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Deflection,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Deflection,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Deflection,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Deflection,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Deflection,True,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Deflection,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Deflection,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Deflection,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Deflection,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Deflection,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Deflection,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Deflection,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Deflection,True,False,1,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Unsupported accusation,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Unsupported accusation,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Unsupported accusation,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Unsupported accusation,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Unsupported accusation,True,True,3,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Unsupported accusation,True,True,2,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Unsupported accusation,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Unsupported accusation,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Unsupported accusation,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Unsupported accusation,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Unsupported accusation,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Unsupported accusation,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Unsupported accusation,True,True,3,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Unsupported accusation,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Unsupported accusation,False,False,1,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Unsupported accusation,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Unsupported accusation,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Unsupported accusation,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Unsupported accusation,False,False,1,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Unsupported accusation,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Unsupported accusation,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Unsupported accusation,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Unsupported accusation,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Unsupported accusation,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Unsupported accusation,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Unsupported accusation,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Unsupported accusation,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Unsupported accusation,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Unsupported accusation,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Unsupported accusation,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Unsupported accusation,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Unsupported accusation,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Unsupported accusation,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Unsupported accusation,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Unsupported accusation,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Unsupported accusation,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Unsupported accusation,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Unsupported accusation,True,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Vagueness or obscuring communication,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Vagueness or obscuring communication,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Vagueness or obscuring communication,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Vagueness or obscuring communication,False,False,1,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Vagueness or obscuring communication,True,False,1,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Vagueness or obscuring communication,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Vagueness or obscuring communication,False,False,1,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Vagueness or obscuring communication,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Vagueness or obscuring communication,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Vagueness or obscuring communication,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Vagueness or obscuring communication,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Vagueness or obscuring communication,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Vagueness or obscuring communication,True,False,1,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Vagueness or obscuring communication,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Vagueness or obscuring communication,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Vagueness or obscuring communication,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Vagueness or obscuring communication,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Vagueness or obscuring communication,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Vagueness or obscuring communication,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Vagueness or obscuring communication,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Vagueness or obscuring communication,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Vagueness or obscuring communication,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Vagueness or obscuring communication,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Vagueness or obscuring communication,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Vagueness or obscuring communication,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Vagueness or obscuring communication,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Vagueness or obscuring communication,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Vagueness or obscuring communication,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Vagueness or obscuring communication,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Vagueness or obscuring communication,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Vagueness or obscuring communication,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Vagueness or obscuring communication,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Vagueness or obscuring communication,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Vagueness or obscuring communication,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Vagueness or obscuring communication,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Vagueness or obscuring communication,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Vagueness or obscuring communication,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Vagueness or obscuring communication,True,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Playful / nonliteral communication,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Playful / nonliteral communication,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Playful / nonliteral communication,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Playful / nonliteral communication,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Playful / nonliteral communication,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Playful / nonliteral communication,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Playful / nonliteral communication,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Playful / nonliteral communication,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Playful / nonliteral communication,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Playful / nonliteral communication,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Playful / nonliteral communication,False,False,0,3
+agreement_top3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Playful / nonliteral communication,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Playful / nonliteral communication,,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Playful / nonliteral communication,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Playful / nonliteral communication,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Playful / nonliteral communication,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Playful / nonliteral communication,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Playful / nonliteral communication,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Playful / nonliteral communication,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Playful / nonliteral communication,False,False,0,3
+agreement_top3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Playful / nonliteral communication,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Playful / nonliteral communication,False,False,0,3
+agreement_top3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Playful / nonliteral communication,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Playful / nonliteral communication,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Playful / nonliteral communication,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Playful / nonliteral communication,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Playful / nonliteral communication,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Playful / nonliteral communication,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Playful / nonliteral communication,False,False,0,3
+agreement_top3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Playful / nonliteral communication,False,False,0,3
+agreement_top3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Playful / nonliteral communication,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Playful / nonliteral communication,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Playful / nonliteral communication,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Playful / nonliteral communication,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Playful / nonliteral communication,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Playful / nonliteral communication,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Playful / nonliteral communication,False,False,0,3
+agreement_top3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Playful / nonliteral communication,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Fact-sharing,True,True,3,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Fact-sharing,True,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Fact-sharing,False,True,2,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Fact-sharing,False,True,3,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Fact-sharing,True,True,3,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Fact-sharing,False,True,3,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Fact-sharing,True,True,3,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Fact-sharing,True,True,3,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Fact-sharing,True,True,3,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Fact-sharing,True,True,3,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Fact-sharing,True,True,3,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Fact-sharing,True,True,3,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Fact-sharing,True,True,3,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Fact-sharing,True,True,3,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Fact-sharing,True,True,3,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Fact-sharing,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Fact-sharing,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Fact-sharing,True,True,3,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Fact-sharing,True,True,3,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Fact-sharing,True,True,3,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Fact-sharing,True,True,3,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Fact-sharing,True,True,3,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Fact-sharing,True,True,3,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Fact-sharing,True,True,3,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Fact-sharing,True,True,3,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Fact-sharing,True,True,3,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Fact-sharing,True,True,3,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Fact-sharing,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Fact-sharing,True,True,3,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Fact-sharing,True,True,3,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Fact-sharing,True,True,3,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Fact-sharing,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Fact-sharing,True,True,3,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Fact-sharing,True,True,3,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Fact-sharing,True,True,3,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Fact-sharing,True,True,3,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Fact-sharing,True,True,3,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Fact-sharing,True,True,3,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Reasoned claim,True,True,3,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Reasoned claim,True,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Reasoned claim,True,True,3,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Reasoned claim,True,True,3,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Reasoned claim,True,True,3,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Reasoned claim,False,True,3,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Reasoned claim,True,True,3,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Reasoned claim,True,True,3,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Reasoned claim,True,True,3,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Reasoned claim,True,True,3,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Reasoned claim,True,True,3,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Reasoned claim,True,True,3,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Reasoned claim,True,True,3,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Reasoned claim,True,True,3,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Reasoned claim,True,True,3,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Reasoned claim,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Reasoned claim,,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Reasoned claim,True,True,3,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Reasoned claim,False,True,3,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Reasoned claim,True,True,3,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Reasoned claim,True,True,3,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Reasoned claim,True,True,3,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Reasoned claim,True,True,3,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Reasoned claim,True,True,3,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Reasoned claim,True,True,3,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Reasoned claim,True,True,3,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Reasoned claim,True,True,3,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Reasoned claim,False,True,2,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Reasoned claim,True,True,3,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Reasoned claim,,True,3,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Reasoned claim,True,True,3,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Reasoned claim,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Reasoned claim,True,True,3,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Reasoned claim,True,True,3,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Reasoned claim,True,True,3,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Reasoned claim,True,True,3,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Reasoned claim,True,True,3,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Reasoned claim,False,True,3,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Constructive engagement,True,True,3,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Constructive engagement,True,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Constructive engagement,True,True,3,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Constructive engagement,True,True,3,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Constructive engagement,True,True,3,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Constructive engagement,True,True,3,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Constructive engagement,True,True,3,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Constructive engagement,True,True,3,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Constructive engagement,True,True,3,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Constructive engagement,True,True,3,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Constructive engagement,True,True,3,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Constructive engagement,True,True,3,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Constructive engagement,True,True,3,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Constructive engagement,True,True,3,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Constructive engagement,True,True,2,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Constructive engagement,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Constructive engagement,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Constructive engagement,True,True,3,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Constructive engagement,False,True,3,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Constructive engagement,True,True,3,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Constructive engagement,True,True,3,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Constructive engagement,True,True,3,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Constructive engagement,True,True,3,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Constructive engagement,True,True,3,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Constructive engagement,True,True,3,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Constructive engagement,True,True,3,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Constructive engagement,True,True,3,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Constructive engagement,True,True,3,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Constructive engagement,True,True,3,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Constructive engagement,True,True,3,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Constructive engagement,True,True,3,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Constructive engagement,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Constructive engagement,False,True,3,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Constructive engagement,True,True,3,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Constructive engagement,True,True,3,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Constructive engagement,True,True,3,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Constructive engagement,True,True,3,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Constructive engagement,False,True,3,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Deceptive falsehood,False,False,1,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Deceptive falsehood,True,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Deceptive falsehood,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Deceptive falsehood,True,True,2,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Deceptive falsehood,True,True,3,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Deceptive falsehood,True,True,3,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Deceptive falsehood,True,True,2,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Deceptive falsehood,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Deceptive falsehood,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Deceptive falsehood,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Deceptive falsehood,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Deceptive falsehood,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Deceptive falsehood,True,True,3,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Deceptive falsehood,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Deceptive falsehood,True,True,3,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Deceptive falsehood,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Deceptive falsehood,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Deceptive falsehood,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Deceptive falsehood,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Deceptive falsehood,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Deceptive falsehood,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Deceptive falsehood,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Deceptive falsehood,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Deceptive falsehood,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Deceptive falsehood,True,False,1,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Deceptive falsehood,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Deceptive falsehood,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Deceptive falsehood,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Deceptive falsehood,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Deceptive falsehood,True,True,2,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Deceptive falsehood,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Deceptive falsehood,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Deceptive falsehood,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Deceptive falsehood,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Deceptive falsehood,True,False,1,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Deceptive falsehood,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Deceptive falsehood,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Deceptive falsehood,False,True,3,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Feigning ignorance or innocence,False,False,1,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Feigning ignorance or innocence,True,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Feigning ignorance or innocence,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Feigning ignorance or innocence,True,True,3,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Feigning ignorance or innocence,True,True,3,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Feigning ignorance or innocence,True,True,3,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Feigning ignorance or innocence,True,True,2,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Feigning ignorance or innocence,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Feigning ignorance or innocence,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Feigning ignorance or innocence,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Feigning ignorance or innocence,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Feigning ignorance or innocence,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Feigning ignorance or innocence,True,True,2,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Feigning ignorance or innocence,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Feigning ignorance or innocence,True,True,3,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Feigning ignorance or innocence,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Feigning ignorance or innocence,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Feigning ignorance or innocence,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Feigning ignorance or innocence,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Feigning ignorance or innocence,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Feigning ignorance or innocence,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Feigning ignorance or innocence,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Feigning ignorance or innocence,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Feigning ignorance or innocence,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Feigning ignorance or innocence,True,False,1,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Feigning ignorance or innocence,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Feigning ignorance or innocence,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Feigning ignorance or innocence,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Feigning ignorance or innocence,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Feigning ignorance or innocence,False,True,2,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Feigning ignorance or innocence,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Feigning ignorance or innocence,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Feigning ignorance or innocence,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Feigning ignorance or innocence,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Feigning ignorance or innocence,False,False,1,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Feigning ignorance or innocence,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Feigning ignorance or innocence,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Feigning ignorance or innocence,True,True,3,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Memory/perception manipulation,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Memory/perception manipulation,True,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Memory/perception manipulation,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Memory/perception manipulation,False,False,1,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Memory/perception manipulation,False,False,1,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Memory/perception manipulation,True,True,2,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Memory/perception manipulation,True,False,1,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Memory/perception manipulation,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Memory/perception manipulation,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Memory/perception manipulation,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Memory/perception manipulation,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Memory/perception manipulation,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Memory/perception manipulation,True,True,3,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Memory/perception manipulation,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Memory/perception manipulation,False,True,2,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Memory/perception manipulation,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Memory/perception manipulation,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Memory/perception manipulation,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Memory/perception manipulation,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Memory/perception manipulation,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Memory/perception manipulation,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Memory/perception manipulation,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Memory/perception manipulation,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Memory/perception manipulation,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Memory/perception manipulation,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Memory/perception manipulation,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Memory/perception manipulation,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Memory/perception manipulation,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Memory/perception manipulation,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Memory/perception manipulation,True,True,3,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Memory/perception manipulation,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Memory/perception manipulation,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Memory/perception manipulation,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Memory/perception manipulation,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Memory/perception manipulation,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Memory/perception manipulation,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Memory/perception manipulation,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Memory/perception manipulation,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Withholding relevant information,True,True,2,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Withholding relevant information,True,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Withholding relevant information,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Withholding relevant information,True,True,3,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Withholding relevant information,True,True,3,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Withholding relevant information,True,True,3,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Withholding relevant information,True,True,2,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Withholding relevant information,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Withholding relevant information,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Withholding relevant information,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Withholding relevant information,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Withholding relevant information,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Withholding relevant information,False,True,2,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Withholding relevant information,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Withholding relevant information,False,True,2,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Withholding relevant information,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Withholding relevant information,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Withholding relevant information,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Withholding relevant information,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Withholding relevant information,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Withholding relevant information,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Withholding relevant information,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Withholding relevant information,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Withholding relevant information,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Withholding relevant information,True,False,1,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Withholding relevant information,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Withholding relevant information,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Withholding relevant information,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Withholding relevant information,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Withholding relevant information,False,True,3,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Withholding relevant information,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Withholding relevant information,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Withholding relevant information,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Withholding relevant information,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Withholding relevant information,True,True,2,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Withholding relevant information,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Withholding relevant information,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Withholding relevant information,True,True,3,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Uninformative alignment,False,True,2,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Uninformative alignment,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Uninformative alignment,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Uninformative alignment,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Uninformative alignment,False,False,1,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Uninformative alignment,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Uninformative alignment,False,True,2,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Uninformative alignment,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Uninformative alignment,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Uninformative alignment,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Uninformative alignment,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Uninformative alignment,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Uninformative alignment,True,False,1,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Uninformative alignment,True,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Uninformative alignment,False,False,1,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Uninformative alignment,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Uninformative alignment,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Uninformative alignment,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Uninformative alignment,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Uninformative alignment,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Uninformative alignment,False,False,1,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Uninformative alignment,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Uninformative alignment,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Uninformative alignment,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Uninformative alignment,True,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Uninformative alignment,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Uninformative alignment,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Uninformative alignment,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Uninformative alignment,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Uninformative alignment,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Uninformative alignment,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Uninformative alignment,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Uninformative alignment,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Uninformative alignment,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Uninformative alignment,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Uninformative alignment,True,True,2,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Uninformative alignment,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Uninformative alignment,True,False,1,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Minimal non-commitment,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Minimal non-commitment,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Minimal non-commitment,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Minimal non-commitment,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Minimal non-commitment,True,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Minimal non-commitment,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Minimal non-commitment,False,False,1,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Minimal non-commitment,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Minimal non-commitment,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Minimal non-commitment,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Minimal non-commitment,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Minimal non-commitment,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Minimal non-commitment,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Minimal non-commitment,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Minimal non-commitment,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Minimal non-commitment,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Minimal non-commitment,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Minimal non-commitment,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Minimal non-commitment,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Minimal non-commitment,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Minimal non-commitment,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Minimal non-commitment,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Minimal non-commitment,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Minimal non-commitment,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Minimal non-commitment,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Minimal non-commitment,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Minimal non-commitment,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Minimal non-commitment,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Minimal non-commitment,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Minimal non-commitment,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Minimal non-commitment,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Minimal non-commitment,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Minimal non-commitment,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Minimal non-commitment,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Minimal non-commitment,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Minimal non-commitment,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Minimal non-commitment,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Minimal non-commitment,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Deflection,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Deflection,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Deflection,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Deflection,True,True,3,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Deflection,True,True,3,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Deflection,True,True,3,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Deflection,True,True,2,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Deflection,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Deflection,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Deflection,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Deflection,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Deflection,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Deflection,True,True,3,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Deflection,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Deflection,True,True,3,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Deflection,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Deflection,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Deflection,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Deflection,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Deflection,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Deflection,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Deflection,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Deflection,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Deflection,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Deflection,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Deflection,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Deflection,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Deflection,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Deflection,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Deflection,True,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Deflection,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Deflection,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Deflection,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Deflection,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Deflection,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Deflection,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Deflection,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Deflection,True,False,1,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Unsupported accusation,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Unsupported accusation,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Unsupported accusation,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Unsupported accusation,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Unsupported accusation,True,True,3,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Unsupported accusation,True,True,3,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Unsupported accusation,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Unsupported accusation,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Unsupported accusation,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Unsupported accusation,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Unsupported accusation,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Unsupported accusation,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Unsupported accusation,True,True,3,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Unsupported accusation,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Unsupported accusation,False,True,2,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Unsupported accusation,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Unsupported accusation,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Unsupported accusation,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Unsupported accusation,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Unsupported accusation,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Unsupported accusation,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Unsupported accusation,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Unsupported accusation,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Unsupported accusation,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Unsupported accusation,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Unsupported accusation,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Unsupported accusation,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Unsupported accusation,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Unsupported accusation,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Unsupported accusation,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Unsupported accusation,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Unsupported accusation,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Unsupported accusation,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Unsupported accusation,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Unsupported accusation,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Unsupported accusation,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Unsupported accusation,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Unsupported accusation,True,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Vagueness or obscuring communication,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Vagueness or obscuring communication,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Vagueness or obscuring communication,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Vagueness or obscuring communication,False,False,1,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Vagueness or obscuring communication,True,True,2,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Vagueness or obscuring communication,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Vagueness or obscuring communication,False,True,2,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Vagueness or obscuring communication,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Vagueness or obscuring communication,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Vagueness or obscuring communication,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Vagueness or obscuring communication,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Vagueness or obscuring communication,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Vagueness or obscuring communication,True,False,1,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Vagueness or obscuring communication,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Vagueness or obscuring communication,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Vagueness or obscuring communication,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Vagueness or obscuring communication,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Vagueness or obscuring communication,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Vagueness or obscuring communication,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Vagueness or obscuring communication,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Vagueness or obscuring communication,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Vagueness or obscuring communication,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Vagueness or obscuring communication,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Vagueness or obscuring communication,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Vagueness or obscuring communication,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Vagueness or obscuring communication,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Vagueness or obscuring communication,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Vagueness or obscuring communication,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Vagueness or obscuring communication,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Vagueness or obscuring communication,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Vagueness or obscuring communication,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Vagueness or obscuring communication,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Vagueness or obscuring communication,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Vagueness or obscuring communication,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Vagueness or obscuring communication,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Vagueness or obscuring communication,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Vagueness or obscuring communication,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Vagueness or obscuring communication,True,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,2,Playful / nonliteral communication,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,2,Playful / nonliteral communication,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,1,Playful / nonliteral communication,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,1,Playful / nonliteral communication,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,2,Playful / nonliteral communication,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,2,Playful / nonliteral communication,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,7,Playful / nonliteral communication,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,3,Playful / nonliteral communication,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,1,Playful / nonliteral communication,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,3,Playful / nonliteral communication,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,5,Playful / nonliteral communication,False,False,0,3
+noncohort3,37376376-3f6d-41d0-b6f8-0a6c19243469,6,Playful / nonliteral communication,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,3,Playful / nonliteral communication,,False,1,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,4,Playful / nonliteral communication,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,7,Playful / nonliteral communication,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,1,Playful / nonliteral communication,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,2,Playful / nonliteral communication,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,5,Playful / nonliteral communication,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,1,Playful / nonliteral communication,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,4,Playful / nonliteral communication,False,False,0,3
+noncohort3,d40dea30-f7a7-4cac-ad36-1b0651407338,7,Playful / nonliteral communication,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,5,Playful / nonliteral communication,False,False,0,3
+noncohort3,8ec178a2-d348-4dd0-b2c2-9038ef973708,6,Playful / nonliteral communication,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,6,Playful / nonliteral communication,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,6,Playful / nonliteral communication,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,4,Playful / nonliteral communication,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,5,Playful / nonliteral communication,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,5,Playful / nonliteral communication,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,3,Playful / nonliteral communication,False,False,0,3
+noncohort3,b0ce09a9-a1df-40bc-9589-c0f79d5137ec,4,Playful / nonliteral communication,False,False,0,3
+noncohort3,af3ae88d-1658-4107-8d64-d963f70d8190,7,Playful / nonliteral communication,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,7,Playful / nonliteral communication,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,3,Playful / nonliteral communication,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,2,Playful / nonliteral communication,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,4,Playful / nonliteral communication,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,6,Playful / nonliteral communication,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,1,Playful / nonliteral communication,False,False,0,3
+noncohort3,78d9f3ca-9438-4b96-9cee-506e1413b2f8,5,Playful / nonliteral communication,False,False,0,3

@@ -1,0 +1,1581 @@
+{
+  "created_at": "2026-08-01T15:37:06.722439+00:00",
+  "prompt_version": "social-behavior-human-gold-v1",
+  "human_csv": "LLM_judge/data/human_ratings_gold.csv",
+  "models": [
+    {
+      "key": "inkling-small",
+      "model": "thinkingmachines/inkling-small",
+      "provider": "deepinfra",
+      "provider_name": "DeepInfra",
+      "quantization": "fp8",
+      "sampling": {},
+      "reasoning": null,
+      "sampling_source": "no published model sampler; pinned provider defaults",
+      "request_parameters": {
+        "provider": {
+          "only": [
+            "deepinfra"
+          ],
+          "order": [
+            "deepinfra"
+          ],
+          "allow_fallbacks": false,
+          "require_parameters": true
+        }
+      }
+    },
+    {
+      "key": "longcat-2.0",
+      "model": "meituan/longcat-2.0",
+      "provider": "atlas-cloud",
+      "provider_name": "AtlasCloud",
+      "quantization": "fp8",
+      "sampling": {
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "top_k": 0
+      },
+      "reasoning": null,
+      "sampling_source": "OpenRouter model defaults",
+      "request_parameters": {
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "top_k": 0,
+        "provider": {
+          "only": [
+            "atlas-cloud"
+          ],
+          "order": [
+            "atlas-cloud"
+          ],
+          "allow_fallbacks": false,
+          "require_parameters": true
+        }
+      }
+    },
+    {
+      "key": "hy3",
+      "model": "tencent/hy3",
+      "provider": "gmicloud",
+      "provider_name": "GMICloud",
+      "quantization": "bf16",
+      "sampling": {
+        "temperature": 0.9,
+        "top_p": 1.0
+      },
+      "reasoning": null,
+      "sampling_source": "Tencent recommendation",
+      "request_parameters": {
+        "temperature": 0.9,
+        "top_p": 1.0,
+        "provider": {
+          "only": [
+            "gmicloud"
+          ],
+          "order": [
+            "gmicloud"
+          ],
+          "allow_fallbacks": false,
+          "require_parameters": true
+        }
+      }
+    },
+    {
+      "key": "glm-5.2",
+      "model": "z-ai/glm-5.2",
+      "provider": "gmicloud",
+      "provider_name": "GMICloud",
+      "quantization": "fp8",
+      "sampling": {
+        "temperature": 1.0,
+        "top_p": 0.95
+      },
+      "reasoning": null,
+      "sampling_source": "Z.ai recommendation",
+      "request_parameters": {
+        "temperature": 1.0,
+        "top_p": 0.95,
+        "provider": {
+          "only": [
+            "gmicloud"
+          ],
+          "order": [
+            "gmicloud"
+          ],
+          "allow_fallbacks": false,
+          "require_parameters": true
+        }
+      }
+    },
+    {
+      "key": "nex-n2-pro",
+      "model": "nex-agi/nex-n2-pro",
+      "provider": "nex-agi",
+      "provider_name": "Nex AGI",
+      "quantization": "fp8",
+      "sampling": {
+        "temperature": 0.7,
+        "top_p": 0.95,
+        "top_k": 40
+      },
+      "reasoning": null,
+      "sampling_source": "Nex AGI recommendation",
+      "request_parameters": {
+        "temperature": 0.7,
+        "top_p": 0.95,
+        "top_k": 40,
+        "provider": {
+          "only": [
+            "nex-agi"
+          ],
+          "order": [
+            "nex-agi"
+          ],
+          "allow_fallbacks": false,
+          "require_parameters": true
+        }
+      }
+    },
+    {
+      "key": "qwen3.7-plus",
+      "model": "qwen/qwen3.7-plus",
+      "provider": "alibaba",
+      "provider_name": "Alibaba",
+      "quantization": "fp8",
+      "sampling": {
+        "temperature": 1.0,
+        "top_p": 1.0
+      },
+      "reasoning": {
+        "enabled": false
+      },
+      "sampling_source": "OpenRouter defaults; non-thinking mode for JSON",
+      "request_parameters": {
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "reasoning": {
+          "enabled": false
+        },
+        "provider": {
+          "only": [
+            "alibaba"
+          ],
+          "order": [
+            "alibaba"
+          ],
+          "allow_fallbacks": false,
+          "require_parameters": true
+        }
+      }
+    },
+    {
+      "key": "minimax-m3",
+      "model": "minimax/minimax-m3",
+      "provider": "minimax",
+      "provider_name": "MiniMax",
+      "quantization": "fp8",
+      "sampling": {
+        "temperature": 1.0,
+        "top_p": 0.95
+      },
+      "reasoning": null,
+      "sampling_source": "MiniMax recommendation",
+      "request_parameters": {
+        "temperature": 1.0,
+        "top_p": 0.95,
+        "provider": {
+          "only": [
+            "minimax"
+          ],
+          "order": [
+            "minimax"
+          ],
+          "allow_fallbacks": false,
+          "require_parameters": true
+        }
+      }
+    },
+    {
+      "key": "step-3.7-flash",
+      "model": "stepfun/step-3.7-flash",
+      "provider": "stepfun",
+      "provider_name": "StepFun",
+      "quantization": "fp8",
+      "sampling": {
+        "temperature": 1.0
+      },
+      "reasoning": null,
+      "sampling_source": "StepFun llama.cpp example; top-p left at provider default",
+      "request_parameters": {
+        "temperature": 1.0,
+        "provider": {
+          "only": [
+            "stepfun"
+          ],
+          "order": [
+            "stepfun"
+          ],
+          "allow_fallbacks": false,
+          "require_parameters": true
+        }
+      }
+    },
+    {
+      "key": "grok-4.3",
+      "model": "x-ai/grok-4.3",
+      "provider": "xai",
+      "provider_name": "xAI",
+      "quantization": "provider native",
+      "sampling": {},
+      "reasoning": {
+        "effort": "low"
+      },
+      "sampling_source": "unpublished sampler defaults; published low reasoning default",
+      "request_parameters": {
+        "reasoning": {
+          "effort": "low"
+        },
+        "provider": {
+          "only": [
+            "xai"
+          ],
+          "order": [
+            "xai"
+          ],
+          "allow_fallbacks": false,
+          "require_parameters": true
+        }
+      }
+    },
+    {
+      "key": "mimo-v2.5-pro",
+      "model": "xiaomi/mimo-v2.5-pro",
+      "provider": "xiaomi",
+      "provider_name": "Xiaomi",
+      "quantization": "fp8",
+      "sampling": {
+        "temperature": 1.0,
+        "top_p": 0.95
+      },
+      "reasoning": null,
+      "sampling_source": "Xiaomi recommendation",
+      "request_parameters": {
+        "temperature": 1.0,
+        "top_p": 0.95,
+        "provider": {
+          "only": [
+            "xiaomi"
+          ],
+          "order": [
+            "xiaomi"
+          ],
+          "allow_fallbacks": false,
+          "require_parameters": true
+        }
+      }
+    },
+    {
+      "key": "claude-sonnet-5",
+      "model": "anthropic/claude-sonnet-5",
+      "provider": "anthropic",
+      "provider_name": "Anthropic",
+      "quantization": "provider native",
+      "sampling": {},
+      "reasoning": {
+        "effort": "low"
+      },
+      "sampling_source": "native endpoint does not accept temperature/top-p; low reasoning pinned",
+      "request_parameters": {
+        "reasoning": {
+          "effort": "low"
+        },
+        "provider": {
+          "only": [
+            "anthropic"
+          ],
+          "order": [
+            "anthropic"
+          ],
+          "allow_fallbacks": false,
+          "require_parameters": true
+        }
+      }
+    },
+    {
+      "key": "grok-4.5",
+      "model": "x-ai/grok-4.5",
+      "provider": "xai",
+      "provider_name": "xAI",
+      "quantization": "provider native",
+      "sampling": {
+        "temperature": 1.0,
+        "top_p": 1.0
+      },
+      "reasoning": {
+        "effort": "low"
+      },
+      "sampling_source": "OpenRouter sampler defaults; xAI low reasoning setting",
+      "request_parameters": {
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "reasoning": {
+          "effort": "low"
+        },
+        "provider": {
+          "only": [
+            "xai"
+          ],
+          "order": [
+            "xai"
+          ],
+          "allow_fallbacks": false,
+          "require_parameters": true
+        }
+      }
+    },
+    {
+      "key": "deepseek-v4-flash-0731",
+      "model": "deepseek/deepseek-v4-flash-0731",
+      "provider": "gmicloud",
+      "provider_name": "GMICloud",
+      "quantization": "fp8",
+      "sampling": {
+        "temperature": 1.0,
+        "top_p": 1.0
+      },
+      "reasoning": {
+        "effort": "low"
+      },
+      "sampling_source": "OpenRouter sampler defaults; low reasoning pinned",
+      "request_parameters": {
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "reasoning": {
+          "effort": "low"
+        },
+        "provider": {
+          "only": [
+            "gmicloud"
+          ],
+          "order": [
+            "gmicloud"
+          ],
+          "allow_fallbacks": false,
+          "require_parameters": true
+        }
+      }
+    },
+    {
+      "key": "muse-spark-1.1",
+      "model": "meta/muse-spark-1.1",
+      "provider": "meta",
+      "provider_name": "Meta",
+      "quantization": "provider native",
+      "sampling": {
+        "temperature": 1.0,
+        "top_p": 1.0
+      },
+      "reasoning": {
+        "effort": "low"
+      },
+      "sampling_source": "neutral sampler; lowest supported reasoning effort above minimal",
+      "request_parameters": {
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "reasoning": {
+          "effort": "low"
+        },
+        "provider": {
+          "only": [
+            "meta"
+          ],
+          "order": [
+            "meta"
+          ],
+          "allow_fallbacks": false,
+          "require_parameters": true
+        }
+      }
+    }
+  ],
+  "provider_preflight": [
+    {
+      "candidate": "inkling-small",
+      "model": "thinkingmachines/inkling-small",
+      "provider": "deepinfra",
+      "provider_name": "DeepInfra",
+      "tag": "deepinfra/fp8",
+      "quantization": "fp8",
+      "pricing": {
+        "prompt": "0.0000005",
+        "completion": "0.0000012",
+        "input_cache_read": "0.0000001",
+        "discount": 0
+      },
+      "supported_parameters": [
+        "reasoning",
+        "include_reasoning",
+        "max_tokens",
+        "temperature",
+        "top_p",
+        "stop",
+        "frequency_penalty",
+        "presence_penalty",
+        "repetition_penalty",
+        "top_k",
+        "seed",
+        "min_p",
+        "logit_bias",
+        "reasoning_effort"
+      ],
+      "checked_at": "2026-08-01T15:37:05.221532+00:00"
+    },
+    {
+      "candidate": "longcat-2.0",
+      "model": "meituan/longcat-2.0",
+      "provider": "atlas-cloud",
+      "provider_name": "AtlasCloud",
+      "tag": "atlas-cloud/fp8",
+      "quantization": "fp8",
+      "pricing": {
+        "prompt": "0.0000003",
+        "completion": "0.0000012",
+        "input_cache_read": "0.000000006",
+        "discount": 0.6
+      },
+      "supported_parameters": [
+        "reasoning",
+        "include_reasoning",
+        "max_tokens",
+        "temperature",
+        "top_p",
+        "top_k",
+        "min_p",
+        "frequency_penalty",
+        "presence_penalty",
+        "repetition_penalty",
+        "seed",
+        "logit_bias",
+        "stop",
+        "tools",
+        "tool_choice"
+      ],
+      "checked_at": "2026-08-01T15:37:05.350042+00:00"
+    },
+    {
+      "candidate": "hy3",
+      "model": "tencent/hy3",
+      "provider": "gmicloud",
+      "provider_name": "GMICloud",
+      "tag": "gmicloud/bf16",
+      "quantization": "bf16",
+      "pricing": {
+        "prompt": "0.0000001288",
+        "completion": "0.0000005336",
+        "input_cache_read": "0.0000000322",
+        "discount": 0.08
+      },
+      "supported_parameters": [
+        "reasoning",
+        "include_reasoning",
+        "max_tokens",
+        "temperature",
+        "top_p",
+        "seed",
+        "response_format",
+        "reasoning_effort"
+      ],
+      "checked_at": "2026-08-01T15:37:05.464395+00:00"
+    },
+    {
+      "candidate": "glm-5.2",
+      "model": "z-ai/glm-5.2",
+      "provider": "gmicloud",
+      "provider_name": "GMICloud",
+      "tag": "gmicloud/fp8",
+      "quantization": "fp8",
+      "pricing": {
+        "prompt": "0.000000924",
+        "completion": "0.000002904",
+        "input_cache_read": "0.0000001716",
+        "discount": 0.34
+      },
+      "supported_parameters": [
+        "reasoning",
+        "include_reasoning",
+        "max_tokens",
+        "temperature",
+        "top_p",
+        "seed",
+        "structured_outputs",
+        "response_format",
+        "tools",
+        "tool_choice",
+        "logprobs",
+        "top_logprobs",
+        "reasoning_effort"
+      ],
+      "checked_at": "2026-08-01T15:37:05.557342+00:00"
+    },
+    {
+      "candidate": "nex-n2-pro",
+      "model": "nex-agi/nex-n2-pro",
+      "provider": "nex-agi",
+      "provider_name": "Nex AGI",
+      "tag": "nex-agi/fp8",
+      "quantization": "fp8",
+      "pricing": {
+        "prompt": "0.00000025",
+        "completion": "0.000001",
+        "input_cache_read": "0.000000025",
+        "discount": 0
+      },
+      "supported_parameters": [
+        "reasoning",
+        "include_reasoning",
+        "top_p",
+        "top_k",
+        "temperature",
+        "max_tokens",
+        "logprobs",
+        "top_logprobs",
+        "tools",
+        "tool_choice"
+      ],
+      "checked_at": "2026-08-01T15:37:05.621751+00:00"
+    },
+    {
+      "candidate": "qwen3.7-plus",
+      "model": "qwen/qwen3.7-plus",
+      "provider": "alibaba",
+      "provider_name": "Alibaba",
+      "tag": "alibaba/fp8",
+      "quantization": "fp8",
+      "pricing": {
+        "prompt": "0.00000032",
+        "completion": "0.00000128",
+        "input_cache_read": "0.000000064",
+        "input_cache_write": "0.0000004",
+        "discount": 0,
+        "overrides": [
+          {
+            "min_prompt_tokens": 256000,
+            "prompt": "0.00000096",
+            "completion": "0.00000384",
+            "input_cache_read": "0.000000192",
+            "input_cache_write": "0.0000012"
+          }
+        ]
+      },
+      "supported_parameters": [
+        "reasoning",
+        "include_reasoning",
+        "max_tokens",
+        "temperature",
+        "top_p",
+        "seed",
+        "presence_penalty",
+        "response_format",
+        "logprobs",
+        "top_logprobs",
+        "tools",
+        "tool_choice",
+        "structured_outputs",
+        "top_k",
+        "frequency_penalty",
+        "stop"
+      ],
+      "checked_at": "2026-08-01T15:37:05.705405+00:00"
+    },
+    {
+      "candidate": "minimax-m3",
+      "model": "minimax/minimax-m3",
+      "provider": "minimax",
+      "provider_name": "Minimax",
+      "tag": "minimax/fp8",
+      "quantization": "fp8",
+      "pricing": {
+        "prompt": "0.0000003",
+        "completion": "0.0000012",
+        "input_cache_read": "0.00000006",
+        "discount": 0
+      },
+      "supported_parameters": [
+        "reasoning",
+        "include_reasoning",
+        "max_tokens",
+        "temperature",
+        "top_p",
+        "response_format",
+        "tool_choice",
+        "tools"
+      ],
+      "checked_at": "2026-08-01T15:37:05.781979+00:00"
+    },
+    {
+      "candidate": "step-3.7-flash",
+      "model": "stepfun/step-3.7-flash",
+      "provider": "stepfun",
+      "provider_name": "StepFun",
+      "tag": "stepfun/fp8",
+      "quantization": "fp8",
+      "pricing": {
+        "prompt": "0.0000002",
+        "completion": "0.00000115",
+        "input_cache_read": "0.00000004",
+        "discount": 0
+      },
+      "supported_parameters": [
+        "reasoning",
+        "include_reasoning",
+        "temperature",
+        "max_tokens",
+        "tools",
+        "top_p",
+        "stop",
+        "frequency_penalty",
+        "logprobs",
+        "top_logprobs",
+        "response_format",
+        "structured_outputs",
+        "tool_choice",
+        "reasoning_effort"
+      ],
+      "checked_at": "2026-08-01T15:37:05.872158+00:00"
+    },
+    {
+      "candidate": "grok-4.3",
+      "model": "x-ai/grok-4.3",
+      "provider": "xai",
+      "provider_name": "xAI",
+      "tag": "xai",
+      "quantization": "unknown",
+      "pricing": {
+        "prompt": "0.00000125",
+        "completion": "0.0000025",
+        "web_search": "0.005",
+        "input_cache_read": "0.0000002",
+        "discount": 0,
+        "overrides": [
+          {
+            "min_prompt_tokens": 200000,
+            "prompt": "0.0000025",
+            "completion": "0.000005",
+            "input_cache_read": "0.0000004"
+          }
+        ]
+      },
+      "supported_parameters": [
+        "reasoning",
+        "include_reasoning",
+        "structured_outputs",
+        "response_format",
+        "max_tokens",
+        "temperature",
+        "top_p",
+        "seed",
+        "logprobs",
+        "top_logprobs",
+        "stop",
+        "frequency_penalty",
+        "presence_penalty",
+        "tools",
+        "tool_choice",
+        "reasoning_effort"
+      ],
+      "checked_at": "2026-08-01T15:37:05.980197+00:00"
+    },
+    {
+      "candidate": "mimo-v2.5-pro",
+      "model": "xiaomi/mimo-v2.5-pro",
+      "provider": "xiaomi",
+      "provider_name": "Xiaomi",
+      "tag": "xiaomi/fp8",
+      "quantization": "fp8",
+      "pricing": {
+        "prompt": "0.000000435",
+        "completion": "0.00000087",
+        "input_cache_read": "0.0000000036",
+        "discount": 0
+      },
+      "supported_parameters": [
+        "reasoning",
+        "include_reasoning",
+        "max_tokens",
+        "temperature",
+        "top_p",
+        "stop",
+        "frequency_penalty",
+        "presence_penalty",
+        "response_format",
+        "tools",
+        "tool_choice"
+      ],
+      "checked_at": "2026-08-01T15:37:06.067957+00:00"
+    },
+    {
+      "candidate": "claude-sonnet-5",
+      "model": "anthropic/claude-sonnet-5",
+      "provider": "anthropic",
+      "provider_name": "Anthropic",
+      "tag": "anthropic",
+      "quantization": "unknown",
+      "pricing": {
+        "prompt": "0.000002",
+        "completion": "0.00001",
+        "web_search": "0.01",
+        "input_cache_read": "0.0000002",
+        "input_cache_write": "0.0000025",
+        "input_cache_write_1h": "0.000004",
+        "discount": 0
+      },
+      "supported_parameters": [
+        "max_tokens",
+        "stop",
+        "reasoning",
+        "include_reasoning",
+        "tools",
+        "tool_choice",
+        "structured_outputs",
+        "response_format",
+        "verbosity",
+        "reasoning_effort"
+      ],
+      "checked_at": "2026-08-01T15:37:06.142789+00:00"
+    },
+    {
+      "candidate": "grok-4.5",
+      "model": "x-ai/grok-4.5",
+      "provider": "xai",
+      "provider_name": "xAI",
+      "tag": "xai",
+      "quantization": "unknown",
+      "pricing": {
+        "prompt": "0.000002",
+        "completion": "0.000006",
+        "web_search": "0.005",
+        "input_cache_read": "0.0000003",
+        "discount": 0,
+        "overrides": [
+          {
+            "min_prompt_tokens": 200000,
+            "prompt": "0.000004",
+            "completion": "0.000012",
+            "input_cache_read": "0.0000006"
+          }
+        ]
+      },
+      "supported_parameters": [
+        "reasoning",
+        "include_reasoning",
+        "structured_outputs",
+        "response_format",
+        "max_tokens",
+        "temperature",
+        "top_p",
+        "seed",
+        "logprobs",
+        "top_logprobs",
+        "stop",
+        "frequency_penalty",
+        "presence_penalty",
+        "tools",
+        "tool_choice",
+        "reasoning_effort"
+      ],
+      "checked_at": "2026-08-01T15:37:06.351818+00:00"
+    },
+    {
+      "candidate": "deepseek-v4-flash-0731",
+      "model": "deepseek/deepseek-v4-flash-0731",
+      "provider": "gmicloud",
+      "provider_name": "GMICloud",
+      "tag": "gmicloud/fp8",
+      "quantization": "fp8",
+      "pricing": {
+        "prompt": "0.000000133",
+        "completion": "0.000000266",
+        "input_cache_read": "0.0000000266",
+        "discount": 0.05
+      },
+      "supported_parameters": [
+        "reasoning",
+        "include_reasoning",
+        "max_tokens",
+        "temperature",
+        "top_p",
+        "seed",
+        "response_format",
+        "tools",
+        "tool_choice",
+        "logprobs",
+        "top_logprobs",
+        "reasoning_effort"
+      ],
+      "checked_at": "2026-08-01T15:37:06.543485+00:00"
+    },
+    {
+      "candidate": "muse-spark-1.1",
+      "model": "meta/muse-spark-1.1",
+      "provider": "meta",
+      "provider_name": "Meta",
+      "tag": "meta",
+      "quantization": "unknown",
+      "pricing": {
+        "prompt": "0.00000125",
+        "completion": "0.00000425",
+        "web_search": "0.0025",
+        "input_cache_read": "0.00000015",
+        "discount": 0
+      },
+      "supported_parameters": [
+        "reasoning",
+        "include_reasoning",
+        "max_tokens",
+        "repetition_penalty",
+        "top_k",
+        "temperature",
+        "top_p",
+        "tools",
+        "tool_choice",
+        "structured_outputs",
+        "response_format",
+        "reasoning_effort"
+      ],
+      "checked_at": "2026-08-01T15:37:06.637482+00:00"
+    }
+  ],
+  "excluded_candidates": [
+    {
+      "candidate": "laguna-s-2.1",
+      "model": "poolside/laguna-s-2.1",
+      "provider": "poolside/fp4",
+      "reason": "excluded without a quality score: the model's only OpenRouter endpoint could not complete the gold set because its shared pool stayed rate-limited"
+    }
+  ],
+  "units": [
+    {
+      "game_id": "b0ce09a9-a1df-40bc-9589-c0f79d5137ec",
+      "player_num": 2,
+      "labels": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "game_id": "af3ae88d-1658-4107-8d64-d963f70d8190",
+      "player_num": 2,
+      "labels": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "game_id": "af3ae88d-1658-4107-8d64-d963f70d8190",
+      "player_num": 1,
+      "labels": [
+        false,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "game_id": "d40dea30-f7a7-4cac-ad36-1b0651407338",
+      "player_num": 1,
+      "labels": [
+        false,
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "game_id": "37376376-3f6d-41d0-b6f8-0a6c19243469",
+      "player_num": 2,
+      "labels": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        false
+      ]
+    },
+    {
+      "game_id": "d40dea30-f7a7-4cac-ad36-1b0651407338",
+      "player_num": 2,
+      "labels": [
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        true,
+        true,
+        false,
+        false
+      ]
+    },
+    {
+      "game_id": "37376376-3f6d-41d0-b6f8-0a6c19243469",
+      "player_num": 7,
+      "labels": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "game_id": "d40dea30-f7a7-4cac-ad36-1b0651407338",
+      "player_num": 3,
+      "labels": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "game_id": "37376376-3f6d-41d0-b6f8-0a6c19243469",
+      "player_num": 1,
+      "labels": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "game_id": "37376376-3f6d-41d0-b6f8-0a6c19243469",
+      "player_num": 3,
+      "labels": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "game_id": "37376376-3f6d-41d0-b6f8-0a6c19243469",
+      "player_num": 5,
+      "labels": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "game_id": "37376376-3f6d-41d0-b6f8-0a6c19243469",
+      "player_num": 6,
+      "labels": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "game_id": "8ec178a2-d348-4dd0-b2c2-9038ef973708",
+      "player_num": 3,
+      "labels": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        false,
+        true,
+        true,
+        true,
+        null
+      ]
+    },
+    {
+      "game_id": "d40dea30-f7a7-4cac-ad36-1b0651407338",
+      "player_num": 4,
+      "labels": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "game_id": "8ec178a2-d348-4dd0-b2c2-9038ef973708",
+      "player_num": 7,
+      "labels": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "game_id": "8ec178a2-d348-4dd0-b2c2-9038ef973708",
+      "player_num": 1,
+      "labels": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "game_id": "8ec178a2-d348-4dd0-b2c2-9038ef973708",
+      "player_num": 2,
+      "labels": [
+        false,
+        null,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "game_id": "d40dea30-f7a7-4cac-ad36-1b0651407338",
+      "player_num": 5,
+      "labels": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "game_id": "b0ce09a9-a1df-40bc-9589-c0f79d5137ec",
+      "player_num": 1,
+      "labels": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "game_id": "8ec178a2-d348-4dd0-b2c2-9038ef973708",
+      "player_num": 4,
+      "labels": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "game_id": "d40dea30-f7a7-4cac-ad36-1b0651407338",
+      "player_num": 7,
+      "labels": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "game_id": "8ec178a2-d348-4dd0-b2c2-9038ef973708",
+      "player_num": 5,
+      "labels": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "game_id": "8ec178a2-d348-4dd0-b2c2-9038ef973708",
+      "player_num": 6,
+      "labels": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "game_id": "b0ce09a9-a1df-40bc-9589-c0f79d5137ec",
+      "player_num": 6,
+      "labels": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "game_id": "af3ae88d-1658-4107-8d64-d963f70d8190",
+      "player_num": 6,
+      "labels": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "game_id": "af3ae88d-1658-4107-8d64-d963f70d8190",
+      "player_num": 4,
+      "labels": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "game_id": "af3ae88d-1658-4107-8d64-d963f70d8190",
+      "player_num": 5,
+      "labels": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "game_id": "b0ce09a9-a1df-40bc-9589-c0f79d5137ec",
+      "player_num": 5,
+      "labels": [
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "game_id": "b0ce09a9-a1df-40bc-9589-c0f79d5137ec",
+      "player_num": 3,
+      "labels": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "game_id": "b0ce09a9-a1df-40bc-9589-c0f79d5137ec",
+      "player_num": 4,
+      "labels": [
+        true,
+        null,
+        true,
+        true,
+        false,
+        true,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "game_id": "af3ae88d-1658-4107-8d64-d963f70d8190",
+      "player_num": 7,
+      "labels": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "game_id": "78d9f3ca-9438-4b96-9cee-506e1413b2f8",
+      "player_num": 7,
+      "labels": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "game_id": "78d9f3ca-9438-4b96-9cee-506e1413b2f8",
+      "player_num": 3,
+      "labels": [
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "game_id": "78d9f3ca-9438-4b96-9cee-506e1413b2f8",
+      "player_num": 2,
+      "labels": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "game_id": "78d9f3ca-9438-4b96-9cee-506e1413b2f8",
+      "player_num": 4,
+      "labels": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "game_id": "78d9f3ca-9438-4b96-9cee-506e1413b2f8",
+      "player_num": 6,
+      "labels": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "game_id": "78d9f3ca-9438-4b96-9cee-506e1413b2f8",
+      "player_num": 1,
+      "labels": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "game_id": "78d9f3ca-9438-4b96-9cee-506e1413b2f8",
+      "player_num": 5,
+      "labels": [
+        true,
+        false,
+        false,
+        false,
+        true,
+        false,
+        true,
+        true,
+        false,
+        true,
+        true,
+        true,
+        false
+      ]
+    }
+  ]
+}

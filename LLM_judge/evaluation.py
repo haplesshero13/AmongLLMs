@@ -2,11 +2,11 @@
 LLM-as-Judge evaluation pipeline for AmongLLMs.
 
 Usage:
-    python evaluation.py [game_folder] [--judges m1,m2,m3]
+    python evaluation.py [game_folder] [--judge-panel PANEL]
 
 If game_folder is omitted, the most-recent unprocessed game from R2 is evaluated.
-If --judges is omitted, the default JUDGE_MODELS dict below is used. When given,
-it must be a comma-separated list of exactly 3 OpenRouter model strings.
+The default panel is ``agreement_top3``. Every known judge has a fixed provider and
+sampling configuration; provider fallback is disabled.
 
 The aggregated final judgement is uploaded to:
     s3://amongus-leaderboard/results/<game_folder>/judged_game.json
@@ -15,7 +15,6 @@ The aggregated final judgement is uploaded to:
 import json
 import os
 import re
-import glob
 import asyncio
 import argparse
 from collections import Counter
@@ -27,7 +26,7 @@ from dotenv import load_dotenv
 from tqdm import tqdm
 from tqdm.asyncio import tqdm as async_tqdm
 
-from data import get_r2_client, load_all_games, load_new_games, fetch_game_logs, mark_game_processed
+from data import get_r2_client, load_new_games, fetch_game_logs, mark_game_processed
 from parsing import parse_game_logs, create_game_log, get_player_experience_str, get_player_experience_with_ground_truth
 from prompts import FRAMING_TEXT, CHECKLIST_RUBRIC, LANGUAGE_DATA_RUBRIC, BELIEF_TRACKING_ANALYSIS
 
@@ -40,14 +39,62 @@ DATA_DIR = Path(__file__).resolve().parent / "data"
 RESULTS_DIR = DATA_DIR / "results"
 
 # ---------------------------------------------------------------------------
-# Judge models — 3 independent judges for majority vote
+# Judge models and named ablation panels
 # ---------------------------------------------------------------------------
 
-JUDGE_MODELS = {
-    "judge_1": "anthropic/claude-opus-4.6:nitro",
-    "judge_2": "google/gemini-3.1-pro-preview:nitro",
-    "judge_3": "z-ai/glm-5.1:nitro",
+JUDGE_SPECS = {
+    "claude": {
+        "model": "anthropic/claude-opus-4.6",
+        "provider": "anthropic",
+        "sampling": {"temperature": 0.1},
+    },
+    "gemini": {
+        "model": "google/gemini-3.1-pro-preview",
+        "provider": "google-ai-studio",
+        "sampling": {"temperature": 0.1},
+    },
+    "glm": {
+        "model": "z-ai/glm-5.2",
+        "provider": "gmicloud",
+        "sampling": {"temperature": 1.0, "top_p": 0.95},
+    },
+    "inkling": {
+        "model": "thinkingmachines/inkling-small",
+        "provider": "deepinfra",
+        "sampling": {},
+    },
+    "grok": {
+        "model": "x-ai/grok-4.3",
+        "provider": "xai",
+        "sampling": {},
+        "reasoning": {"effort": "low"},
+    },
+    "deepseek": {
+        "model": "deepseek/deepseek-v4-flash-0731",
+        "provider": "gmicloud",
+        "sampling": {"temperature": 1.0, "top_p": 1.0},
+        "reasoning": {"effort": "low"},
+    },
 }
+
+JUDGE_PANELS = {
+    "matched_original3": ("gemini", "glm", "claude"),
+    "expanded5": ("gemini", "glm", "claude", "inkling", "grok"),
+    "agreement_top3": ("glm", "deepseek", "grok"),
+    "noncohort3": ("glm", "inkling", "grok"),
+}
+DEFAULT_JUDGE_PANEL = "agreement_top3"
+
+
+def _models_for_panel(panel_name: str) -> dict[str, str]:
+    return {
+        judge_key: JUDGE_SPECS[judge_key]["model"]
+        for judge_key in JUDGE_PANELS[panel_name]
+    }
+
+
+JUDGE_MODELS = _models_for_panel(DEFAULT_JUDGE_PANEL)
+JUDGE_SPEC_BY_MODEL = {spec["model"]: spec for spec in JUDGE_SPECS.values()}
 
 # ---------------------------------------------------------------------------
 # LLM judging
@@ -55,6 +102,20 @@ JUDGE_MODELS = {
 
 
 async def judge_response(prompt, client, model, rubric=CHECKLIST_RUBRIC):
+    spec = JUDGE_SPEC_BY_MODEL.get(model)
+    if spec is None:
+        raise ValueError(f"Judge model has no pinned request configuration: {model}")
+    provider = spec["provider"]
+    extra_body = {
+        "provider": {
+            "only": [provider],
+            "order": [provider],
+            "allow_fallbacks": False,
+            "require_parameters": True,
+        }
+    }
+    if spec.get("reasoning") is not None:
+        extra_body["reasoning"] = spec["reasoning"]
     await asyncio.sleep(1)
     response = await client.chat.completions.create(
         model=model,
@@ -62,7 +123,8 @@ async def judge_response(prompt, client, model, rubric=CHECKLIST_RUBRIC):
             {"role": "system", "content": FRAMING_TEXT + "\n\n" + rubric},
             {"role": "user", "content": prompt},
         ],
-        temperature=0.1,
+        **spec["sampling"],
+        extra_body=extra_body,
     )
     return response.choices[0].message.content or ""
 
@@ -126,13 +188,17 @@ async def evaluate_player(player_id, game_data, model_str, client, max_retries: 
             return player_id, {"error": str(e)}
 
 
-async def evaluate_all(game_data, game_folder: str, client):
+async def evaluate_all(game_data, game_folder: str, client, only_model: str = None):
     """Run every judge model over every player and write per-judge JSON files."""
     for judge_id, model_str in JUDGE_MODELS.items():
         model_name = model_str.split("/")[-1]
+        players = game_data.get("players", [])
+        if only_model:
+            players = [p for p in players if p.get("model") == only_model]
+            tqdm.write(f"  Filtering to {only_model}: {len(players)} player(s)")
         tasks = [
             evaluate_player(player.get("name"), game_data, model_str, client)
-            for player in game_data.get("players", [])
+            for player in players
         ]
         results = await async_tqdm.gather(
             *tasks,
@@ -148,14 +214,18 @@ async def evaluate_all(game_data, game_folder: str, client):
         tqdm.write(f"  Saved {output_file}")
 
 
-async def evaluate_all_language(game_data, game_folder: str, client):
+async def evaluate_all_language(game_data, game_folder: str, client, only_model: str = None):
     """Run every judge model over every player with the LANGUAGE_DATA_RUBRIC."""
     for judge_id, model_str in JUDGE_MODELS.items():
         model_name = model_str.split("/")[-1]
+        players = game_data.get("players", [])
+        if only_model:
+            players = [p for p in players if p.get("model") == only_model]
+            tqdm.write(f"  Filtering to {only_model}: {len(players)} player(s)")
         tasks = [
             evaluate_player(player.get("name"), game_data, model_str, client,
                             rubric=LANGUAGE_DATA_RUBRIC)
-            for player in game_data.get("players", [])
+            for player in players
         ]
         results = await async_tqdm.gather(
             *tasks,
@@ -218,13 +288,17 @@ async def evaluate_player_belief(player_id, game_data, model_str, client, max_re
             return player_id, {"error": str(e)}
 
 
-async def evaluate_all_beliefs(game_data, game_folder: str, client):
+async def evaluate_all_beliefs(game_data, game_folder: str, client, only_model: str = None):
     """Run every judge model over every player with the BELIEF_TRACKING_ANALYSIS rubric."""
     for judge_id, model_str in JUDGE_MODELS.items():
         model_name = model_str.split("/")[-1]
+        players = game_data.get("players", [])
+        if only_model:
+            players = [p for p in players if p.get("model") == only_model]
+            tqdm.write(f"  Filtering to {only_model}: {len(players)} player(s)")
         tasks = [
             evaluate_player_belief(player.get("name"), game_data, model_str, client)
-            for player in game_data.get("players", [])
+            for player in players
         ]
         results = await async_tqdm.gather(
             *tasks,
@@ -728,15 +802,24 @@ def upload_belief_judgement_to_r2(local_path: str, game_folder: str):
 # ---------------------------------------------------------------------------
 
 async def main(args):
+    global JUDGE_MODELS
     if args.judges:
         models = [m.strip() for m in args.judges.split(",") if m.strip()]
         if len(models) != 3:
             raise SystemExit(
                 f"--judges requires exactly 3 models, got {len(models)}: {models}"
             )
-        global JUDGE_MODELS
+        unknown = [model for model in models if model not in JUDGE_SPEC_BY_MODEL]
+        if unknown:
+            raise SystemExit(
+                "Custom judges must use known pinned configurations; "
+                f"unknown models: {unknown}"
+            )
         JUDGE_MODELS = {f"judge_{i+1}": m for i, m in enumerate(models)}
         print(f"Using override judges: {JUDGE_MODELS}")
+    else:
+        JUDGE_MODELS = _models_for_panel(args.judge_panel)
+        print(f"Using judge panel {args.judge_panel}: {JUDGE_MODELS}")
 
     client = AsyncOpenAI(
         base_url="https://openrouter.ai/api/v1",
@@ -785,8 +868,8 @@ async def main(args):
 
         # --- Checklist rubric ---
         if run_checklist:
-            tqdm.write(f"\n  --- Checklist rubric ---")
-            await evaluate_all(game_data, game_folder, client)
+            tqdm.write("\n  --- Checklist rubric ---")
+            await evaluate_all(game_data, game_folder, client, only_model=args.only_model)
 
             all_judges = load_current_judge_files(game_folder, player_model_map)
             if not all_judges:
@@ -802,8 +885,8 @@ async def main(args):
 
         # --- Language rubric ---
         if run_language:
-            tqdm.write(f"\n  --- Language rubric ---")
-            await evaluate_all_language(game_data, game_folder, client)
+            tqdm.write("\n  --- Language rubric ---")
+            await evaluate_all_language(game_data, game_folder, client, only_model=args.only_model)
 
             all_judges_lang = load_current_judge_files_language(game_folder, player_model_map)
             if not all_judges_lang:
@@ -819,8 +902,8 @@ async def main(args):
 
         # --- Belief tracking rubric ---
         if run_belief:
-            tqdm.write(f"\n  --- Belief tracking rubric ---")
-            await evaluate_all_beliefs(game_data, game_folder, client)
+            tqdm.write("\n  --- Belief tracking rubric ---")
+            await evaluate_all_beliefs(game_data, game_folder, client, only_model=args.only_model)
 
             all_judges_belief = load_current_belief_judge_files(game_folder, player_model_map)
             if not all_judges_belief:
@@ -858,9 +941,14 @@ def _parse_args():
     parser.add_argument(
         "--judges",
         default=None,
-        help="Comma-separated list of exactly 3 model strings to use as judges "
-             "(e.g. 'anthropic/claude-opus-4.6,openai/gpt-5.4,google/gemini-3.1-pro-preview'). "
-             "If omitted, the default JUDGE_MODELS dict in this file is used.",
+        help="Comma-separated list of exactly 3 known, pinned judge model strings. "
+             "Prefer --judge-panel for the paper ablations.",
+    )
+    parser.add_argument(
+        "--judge-panel",
+        choices=tuple(JUDGE_PANELS),
+        default=DEFAULT_JUDGE_PANEL,
+        help=f"Named judge panel (default: {DEFAULT_JUDGE_PANEL}).",
     )
     parser.add_argument(
         "--skip-language", action="store_true",
@@ -881,6 +969,11 @@ def _parse_args():
     parser.add_argument(
         "--local", action="store_true",
         help="Store results locally only — skip uploading to R2.",
+    )
+    parser.add_argument(
+        "--only-model",
+        default=None,
+        help="Judge only players running this model string (e.g. 'homosapiens/brain-1.0').",
     )
     return parser.parse_args()
 

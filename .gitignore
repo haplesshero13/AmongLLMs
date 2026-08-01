@@ -34,6 +34,19 @@ LLM_judge/data/**
 !LLM_judge/data/results/.gitkeep
 !LLM_judge/data/graphs/
 !LLM_judge/data/graphs/.gitkeep
+!LLM_judge/data/human_ratings_gold.csv
+!LLM_judge/data/agreement_candidates/
+LLM_judge/data/agreement_candidates/**
+!LLM_judge/data/agreement_candidates/candidate_summary.csv
+!LLM_judge/data/agreement_candidates/candidate_behavior_metrics.csv
+!LLM_judge/data/agreement_candidates/candidate_predictions.csv
+!LLM_judge/data/agreement_candidates/run_manifest.json
+!LLM_judge/data/agreement_candidates/top_three.json
+!LLM_judge/data/agreement_candidates/panel_summary.csv
+!LLM_judge/data/agreement_candidates/panel_behavior_metrics.csv
+!LLM_judge/data/agreement_candidates/panel_predictions.csv
+!LLM_judge/data/agreement_candidates/panel_manifest.json
+!LLM_judge/data/agreement_candidates/panel_report.md
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -217,18 +230,6 @@ CLAUDE.md
 
 .DS_Store
 .ruff_cache
-
-# trio
-AGENTS.md
-trio-agents/
-.codex/
-.opencode/
-.agents/
-.trio/
-.gemini/
-HANDOFF.md
-PLAN.md
-REVIEW.md
 
 # reporting artifacts (generated charts + markdown summaries)
 reporting/*.png

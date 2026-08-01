@@ -389,7 +389,7 @@ Alternatively, you can download the [HuggingFace dataset](https://huggingface.co
 
 > **Track 2 — Linguistic & behavioral analysis.** What deception, awareness, and planning patterns are visible in the transcripts — the qualitative complement to `reporting/`.
 
-`LLM_judge/evaluation.py` runs a 3-judge majority-vote evaluation over a game's logs against three rubrics (see `LLM_judge/prompts.py`): a **Checklist** (25 strategic behaviors), a **Language** rubric (14 linguistic behaviors), and a **Belief Tracking** analysis (theory of mind, cognitive biases, turn-by-turn belief accuracy). Results are saved to `LLM_judge/data/results/` and optionally uploaded to Cloudflare R2.
+`LLM_judge/evaluation.py` runs a majority-vote evaluation over a game's logs against three rubrics (see `LLM_judge/prompts.py`): a **Checklist** (25 strategic behaviors), a **Language** rubric (14 linguistic behaviors), and a **Belief Tracking** analysis (theory of mind, cognitive biases, turn-by-turn belief accuracy). Results are saved to `LLM_judge/data/results/` and optionally uploaded to Cloudflare R2.
 
 To evaluate the most-recent unprocessed game (tracked by local `.game_manifest.json`):
 
@@ -403,21 +403,74 @@ To evaluate a specific game folder (does not update the manifest — safe to re-
 uv run LLM_judge/evaluation.py game_7_2026-04-14_12-00-00
 ```
 
-### Overriding the judge models
+### Choosing a judge panel
 
-By default the 3 judges are hardcoded as `JUDGE_MODELS` at the top of `LLM_judge/evaluation.py`. To test a different set without editing code, pass `--judges` with a comma-separated list of **exactly 3** OpenRouter model strings:
+The default `agreement_top3` panel uses GLM 5.2, DeepSeek V4 Flash 0731,
+and Grok 4.3: the three best complete candidates against the human gold labels.
+None is an exact acting model. Run a named paper ablation without editing code:
 
 ```bash
 uv run LLM_judge/evaluation.py \
-    --judges anthropic/claude-opus-4.6,openai/gpt-5.4,google/gemini-3.1-pro-preview \
+    --judge-panel noncohort3 \
     game_7_2026-04-14_12-00-00
 ```
 
-Anything other than 3 models exits with an error. If `--judges` is omitted, the hardcoded defaults are used.
+The named panels are `agreement_top3`, `noncohort3`, `matched_original3`, and
+`expanded5`. `noncohort3` is the stricter lab-distinct GLM–Inkling–Grok panel.
+`matched_original3` reproduces the Gemini–GLM–Claude structure on the corrected
+gold set, while `expanded5` adds Inkling and Grok. Advanced `--judges` overrides
+still require exactly three known models with pinned request settings.
 
 > **Note:** The R2 output path is keyed only by `game_folder`, so re-running the same game with a different judge set **overwrites** the previous `judged_game.json`. The per-judge scratch files (`judge_game_{folder}_{model_name}.json`) are kept locally only.
 
-You will need a `.env` file with `OPENROUTER_API_KEY` and R2 credentials (`S3_ENDPOINT_URL`, `S3_ACCESS_KEY`, `S3_SECRET_KEY`, `S3_REGION`).
+### Choosing judges against human gold labels
+
+`LLM_judge/judge_agreement.py` runs the 14 candidate judges over only the
+player-game rows in the human ratings CSV. Each model has a fixed provider and
+its own sampling settings. Provider fallback is disabled. Among models that
+complete every gold row, the script ranks by pooled Cohen's kappa against the
+human labels, then by raw agreement.
+
+The final four are a robustness set from newer model generations: Claude Sonnet
+5, Grok 4.5, DeepSeek V4 Flash 0731, and Muse Spark 1.1. Some are
+from labs represented among the acting models, but none is the same model that
+acted in the games. This tests exact-model circularity without making the
+stronger and unnecessary claim that every judge must come from a new lab.
+
+Laguna S 2.1 was excluded without a quality score. Its only OpenRouter endpoint
+could not complete the gold set because the upstream shared pool stayed
+rate-limited, including at one request at a time.
+
+Check the full request plan without making network calls:
+
+```bash
+uv run python LLM_judge/judge_agreement.py \
+    --dry-run
+```
+
+Run and resume the analysis:
+
+```bash
+uv run python LLM_judge/judge_agreement.py
+```
+
+The runner tests five models at once by default, with up to four requests in
+flight per model. Use `--model-concurrency` and `--max-concurrency` to lower
+those limits if a provider starts rejecting bursts.
+
+The checked-in, de-identified gold labels are used by default from
+`LLM_judge/data/human_ratings_gold.csv`. Pass `--human-csv` only to analyze a
+different export.
+
+The default output directory is `LLM_judge/data/agreement_candidates/`. It
+contains one cached JSON file per request, the full prediction table,
+per-behavior scores, the ranked model summary, the exact run settings, and
+`top_three.json`. Re-running skips successful cached requests. Use
+`--refresh-judgments` only when a deliberate full rerun is needed.
+
+The agreement runner needs `OPENROUTER_API_KEY`. The main evaluation runner also
+needs the R2 credentials `S3_ENDPOINT_URL`, `S3_ACCESS_KEY`, `S3_SECRET_KEY`,
+and `S3_REGION`.
 
 ### Local-only mode
 

@@ -1,0 +1,29 @@
+[
+  {
+    "rank": 1,
+    "candidate": "glm-5.2",
+    "model": "z-ai/glm-5.2",
+    "provider": "gmicloud",
+    "cohen_kappa": 0.8051266662149211,
+    "agreement": 0.9164969450101833,
+    "unit_coverage": 1.0
+  },
+  {
+    "rank": 2,
+    "candidate": "deepseek-v4-flash-0731",
+    "model": "deepseek/deepseek-v4-flash-0731",
+    "provider": "gmicloud",
+    "cohen_kappa": 0.7997811925008702,
+    "agreement": 0.9164969450101833,
+    "unit_coverage": 1.0
+  },
+  {
+    "rank": 3,
+    "candidate": "grok-4.3",
+    "model": "x-ai/grok-4.3",
+    "provider": "xai",
+    "cohen_kappa": 0.784958393171795,
+    "agreement": 0.9124236252545825,
+    "unit_coverage": 1.0
+  }
+]
